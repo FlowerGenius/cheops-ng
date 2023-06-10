@@ -1,0 +1,5 @@
+0.1.13:
+	Fixing minor compiler issues
+0.2.1:
+*	Fixed new nmap mapping issues: the address xml entry was not parsed correctly
+*	Fixed a crash when reopening files

@@ -1,0 +1,416 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(cheops-gui.c)
+
+AC_CONFIG_HEADER(config.h)
+
+AC_SITE_LOAD()
+
+dnl Checks for programs.
+AC_PROG_CC
+ if test -n "$GCC"; then
+      CFLAGS="$CFLAGS -Wall "
+ fi
+AC_PROG_INSTALL
+AC_PROG_RANLIB
+
+dnl Host specific hacks
+AC_CANONICAL_HOST
+
+linux=no
+freebsd=no
+
+AC_PATH_PROG(FLEX, flex)
+AC_PATH_PROG(LEX, lex)
+if test "x$FLEX" = "x" ; then
+	if test "x$LEX" = "x" ; then
+		AC_MSG_ERROR(You need to install either flex (preferebly) or lex to compile cheops-ng)
+	fi
+fi
+
+AC_PATH_PROG(BISON, bison)
+AC_PATH_PROG(YACC, yacc)
+if test "x$BISON" = "x" ; then
+	if test "x$YACC" = "x" ; then
+		AC_MSG_ERROR(You need to install either bison (preferebly) or yacc to compile cheops-ng)
+	fi
+fi
+
+case "$host" in
+  *-netbsd*)
+    AC_DEFINE(NETBSD)
+    ;;
+  *-openbsd*)
+    AC_DEFINE(OPENBSD)
+    ;;
+  *-sgi-irix5*)
+    AC_DEFINE(IRIX)
+    no_libsocket=yes
+    no_libnsl=yes
+    if test -z "$GCC"; then
+      sgi_cc=yes
+    fi
+    ;;
+  *-sgi-irix6*)
+    AC_DEFINE(IRIX)
+    no_libsocket=yes
+    no_libnsl=yes
+    if test -z "$GCC"; then
+      sgi_cc=yes
+    fi
+    ;;
+  *-solaris2.0*)  
+    AC_DEFINE(STUPID_SOLARIS_CHECKSUM_BUG)
+    AC_DEFINE(SOLARIS)
+    ;;
+  *-solaris2.1*)
+    AC_DEFINE(STUPID_SOLARIS_CHECKSUM_BUG)
+    AC_DEFINE(SOLARIS)
+    ;;
+  *-solaris2.2*)
+    AC_DEFINE(STUPID_SOLARIS_CHECKSUM_BUG)
+    AC_DEFINE(SOLARIS)
+    ;;
+  *-solaris2.3*)
+    AC_DEFINE(STUPID_SOLARIS_CHECKSUM_BUG)
+    AC_DEFINE(SOLARIS)
+    ;;
+  *-solaris2.4*)
+    AC_DEFINE(STUPID_SOLARIS_CHECKSUM_BUG)
+    AC_DEFINE(SOLARIS)
+    ;;
+  *-solaris2.5.1)
+    AC_DEFINE(STUPID_SOLARIS_CHECKSUM_BUG)
+    AC_DEFINE(SOLARIS)
+    ;;
+  *-solaris*)
+    AC_DEFINE(SOLARIS)
+    ;;
+  *-sunos4*)
+    AC_DEFINE(SUNOS)
+    AC_DEFINE(SPRINTF_RETURNS_STRING)
+    no_libnsl=yes
+    no_libsocket=yes
+    ;;
+  *-linux*)
+    linux=yes
+    LIBS="-lpthread"
+    GLIB="glib-config  --cflags --libs"
+    AC_DEFINE(LINUX)
+    AC_DEFINE(PCAP_TIMEOUT_IGNORED)  # libpcap doesn't even LOOK at
+                                     # the timeout you give it under Linux
+    ;;
+  *-freebsd*)
+    AC_DEFINE(FREEBSD)
+    LIBS="-llthread -lkvm"
+    GLIB="glib12-config  --cflags --libs"
+    AC_SUBST(LIBS)
+    freebsd=yes
+    no_libnsl=yes
+    ;;
+  *-bsdi*)
+    AC_DEFINE(BSDI)
+    ;;
+esac
+
+AC_SUBST(GLIB)
+AC_SUBST(LIBS)
+
+CHEOPS_PACKAGE="cheops-ng"
+CHEOPS_VERSION="`cat version`"
+
+AC_SUBST(CHEOPS_PACKAGE)
+AC_SUBST(CHEOPS_VERSION)
+
+dnl Checks for libraries.
+dnl Replace `main' with a function in -ladns:
+AC_CHECK_LIB(adns, adns_processany)
+
+dnl Replace `main' with a function in -lncurses:
+AC_CHECK_LIB(ncurses, initscr)
+
+dnl Checks for libraries.
+dnl AC_CHECK_LIB(m, pow)
+
+if test $freebsd = no; then
+	dnl Replace `main' with a function in -lpthread:
+	AC_CHECK_LIB(pthread, pthread_create)
+else
+	dnl Replace `main' with a function in -llthread:
+	AC_CHECK_LIB(lthread, pthread_create)
+
+	dnl Replace `main' with a function in -lkvm:
+	AC_CHECK_LIB(kvm, kvm_openfiles)
+fi
+
+if test -z "$no_libnsl"; then
+AC_CHECK_LIB(nsl, inet_ntoa)
+fi
+if test -z "$no_libsocket"; then
+AC_CHECK_LIB(socket, socket)
+fi
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(fcntl.h malloc.h strings.h sys/ioctl.h sys/time.h unistd.h adsf.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_C_INLINE
+AC_TYPE_PID_T
+AC_TYPE_SIZE_T
+AC_HEADER_TIME
+AC_STRUCT_TM
+
+AC_MSG_CHECKING([for the openssl library])
+AC_TRY_COMPILE([#include <openssl/ssl.h>
+#include <openssl/err.h>
+#include <openssl/rand.h>],
+               [SSL_CTX ctx;],
+               [AC_MSG_RESULT(yes); openssl=yes],
+               [AC_MSG_RESULT(no); openssl=no]);
+if test $openssl = yes; then
+	LIBS="$LIBS -lssl -lcrypto"
+	AC_DEFINE(HAS_SSL)
+fi
+
+AC_MSG_CHECKING([struct ip])
+AC_TRY_COMPILE([#include <sys/types.h>
+#include <netinet/in.h>
+#include <netinet/in_systm.h>
+#include <netinet/ip.h>],
+               [struct ip ip;],
+               [AC_MSG_RESULT(yes); bsd_networking=yes],
+               [AC_MSG_RESULT(no); bsd_networking=no]);
+if test $bsd_networking = yes; then
+
+  AC_DEFINE(BSD_NETWORKING)
+  AC_MSG_CHECKING([ip_v in struct ip])
+  AC_TRY_COMPILE([#include <sys/types.h>
+#include <netinet/in.h>
+#include <netinet/in_systm.h>
+#include <netinet/ip.h>],
+                 [struct ip ip; ip.ip_v;],
+                 [AC_MSG_RESULT(yes); has_bitfields=yes],
+                 [AC_MSG_RESULT(no); has_bitfields=no])
+
+  if test $has_bitfields = no; then
+    SAVE_CFLAGS="$CFLAGS"
+    CFLAGS="-D__STDC__=2"
+
+    AC_MSG_CHECKING([if setting __STDC__=2 gives ip_v])
+    AC_TRY_COMPILE([#include <sys/types.h>
+#include <netinet/in.h>
+#include <netinet/in_systm.h>
+#include <netinet/ip.h>],
+                   [struct ip ip; ip.ip_v;],
+                   [AC_MSG_RESULT(yes); setting_stdc_helps=yes],
+                  [AC_MSG_RESULT(no); setting_stdc_helps=no])
+
+    CFLAGS="$SAVE_CFLAGS"
+    if test $setting_stdc_helps = yes; then
+      CFLAGS="$CFLAGS -D__STDC__=2"
+    else
+      AC_MSG_RESULT(Can't figure out how to get bitfields - configure failed)
+      exit 1
+    fi
+  fi
+fi
+
+AC_SUBST(CFLAGS)
+
+dnl See if we need to #define ip_sum ip_csum
+AC_CACHE_CHECK(if struct ip has member ip_csum,
+cheops_cv_ip_csum,
+[AC_TRY_COMPILE([#include<netinet/ip.h>
+struct ip ip;],[ip.ip_csum=0;],
+cheops_cv_ip_csum=yes,
+cheops_cv_ip_csum=no)])
+
+if test $cheops_cv_ip_csum != "yes"; then
+AC_CACHE_CHECK(if struct ip has member ip_sum,
+cheops_cv_ip_sum,
+[AC_TRY_COMPILE([#include<netinet/ip.h>
+struct ip ip;],[ip.ip_sum=0;],
+cheops_cv_ip_sum=yes,
+cheops_cv_ip_sum=no)])
+
+	if test $cheops_cv_ip_sum != "yes"; then
+		echo Doh: netinet/ip.h does not have ip_sum or ip_csum in struct ip.
+	fi
+else
+cheops_cv_ip_sum=no
+fi
+
+AC_SUBST(cheops_cv_ip_csum)
+AC_SUBST(cheops_cv_ip_sum)
+
+if test $cheops_cv_ip_csum = "yes"; then
+AC_DEFINE(CHEOPS_IP_CSUM,1)
+else
+AC_DEFINE(CHEOPS_IP_CSUM,0)
+fi
+
+if test $cheops_cv_ip_sum = "yes"; then
+AC_DEFINE(CHEOPS_IP_SUM,1)
+else
+AC_DEFINE(CHEOPS_IP_SUM,0)
+fi
+
+
+dnl This test is from the configure.in of Unix Network Programming second
+dnl edition example code by W. Richard Stevens
+dnl ##################################################################
+dnl Check if sockaddr{} has sa_len member.
+dnl
+AC_CACHE_CHECK(if sockaddr{} has sa_len member, ac_cv_sockaddr_has_sa_len,
+        AC_TRY_COMPILE([
+#               include <sys/types.h>
+#               include <sys/socket.h>],
+                [unsigned int i = sizeof(((struct sockaddr *)0)->sa_len)],
+        ac_cv_sockaddr_has_sa_len=yes,
+        ac_cv_sockaddr_has_sa_len=no))
+if test $ac_cv_sockaddr_has_sa_len = yes ; then
+        AC_DEFINE(HAVE_SOCKADDR_SA_LEN)
+fi
+
+dnl check endedness
+dnl AC_C_BIGENDIAN
+
+AC_MSG_CHECKING([if struct in_addr is a wacky huge structure (some Sun boxes)])
+
+AC_TRY_COMPILE([#include <netinet/in.h>], struct in_addr i; i._S_un._S_addr;, \
+              AC_DEFINE(IN_ADDR_DEEPSTRUCT) \
+              AC_MSG_RESULT(yes) , \
+              AC_TRY_COMPILE([#include <sys/types.h>
+#include <netinet/in.h>], struct in_addr i; i.S_un.S_addr;, \
+                             AC_DEFINE(IN_ADDR_DEEPSTRUCT) \
+                             AC_MSG_RESULT(yes) , \
+                             AC_MSG_RESULT(no);))
+
+AC_CACHE_CHECK(if struct icmp exists, ac_cv_struct_icmp_exists,
+        AC_TRY_COMPILE([
+#               include <sys/types.h>
+#               include <sys/param.h>
+#               include <netinet/in_systm.h>
+#               include <netinet/in.h>               
+#               define __USE_BSD
+#               define __FAVOR_BSD
+#               define __BSD_SOURCE
+#               include <netinet/ip.h>
+#               include <netinet/ip_icmp.h>],
+                [unsigned int i = sizeof(struct icmp)],
+        ac_cv_struct_icmp_exists=yes,
+        ac_cv_struct_icmp_exists=no))
+if test $ac_cv_struct_icmp_exists = yes ; then
+        AC_DEFINE(HAVE_STRUCT_ICMP)
+fi
+
+AC_CACHE_CHECK(if struct ip exists, ac_cv_struct_ip_exists,
+        AC_TRY_COMPILE([
+#               include <sys/types.h>
+#               include <sys/param.h>
+#               include <netinet/in_systm.h>
+#               include <netinet/in.h>               
+#               define __USE_BSD
+#               define __FAVOR_BSD
+#               define __BSD_SOURCE
+#               include <netinet/ip.h>],
+                [unsigned int i = sizeof(struct ip)],
+        ac_cv_struct_ip_exists=yes,
+        ac_cv_struct_ip_exists=no))
+if test $ac_cv_struct_ip_exists = yes ; then
+        AC_DEFINE(HAVE_STRUCT_IP)
+fi
+
+dnl Checks for library functions.
+dnl AC_TYPE_SIGNAL
+AC_CHECK_FUNCS(bzero snprintf memcpy usleep nanosleep strerror)
+
+AC_CHECK_FUNC(snprintf, , 
+  [ COMPAT_SRCS="$COMPAT_SRCS nmap/snprintf.c"
+    COMPAT_OBJS="$COMPAT_OBJS nmap/snprintf.o" ])
+
+AC_CHECK_FUNC(inet_aton, , 
+  [ COMPAT_SRCS="$COMPAT_SRCS nmap/inet_aton.c"
+    COMPAT_OBJS="$COMPAT_OBJS nmap/inet_aton.o" ])
+
+dnl Checks for library functions.
+AC_PROG_GCC_TRADITIONAL
+AC_TYPE_SIGNAL
+AC_FUNC_VPRINTF
+AC_CHECK_FUNCS(getcwd gethostname gettimeofday mkdir select socket strdup strerror strstr strtol strtoul)
+
+GNOME_INIT(gnome)
+GNOME_X_CHECKS
+CFLAGS="$CFLAGS $GNOME_INCLUDEDIR"
+LIBS="$LIBS $GTK_LIBS $GNOME_LIBDIR $GNOME_APPLETS_LIBS $GNOMEUI_LIBS"
+
+AM_PATH_GTK(1.2.0,
+            [LIBS="$LIBS $GTK_LIBS" CFLAGS="$CFLAGS $GTK_CFLAGS"],
+            AC_MSG_ERROR(Cannot find GTK: Is gtk-config in path, do you have it installed? if not, then install gtk-devel))
+
+AM_PATH_GLIB(1.2.0,
+             [LIBS="$LIBS $GLIB_LIBS" CFLAGS="$CFLAGS $GLIB_CFLAGS"],
+             AC_MSG_ERROR(Cannot find glib: Is glib-config in path, do you have it installed? if not, then install glib-devel))
+
+AM_PATH_IMLIB(1.9.0,
+             [LIBS="$LIBS $IMLIB_LIBS" CFLAGS="$CFLAGS $IMLIB_CFLAGS"],
+             AC_MSG_ERROR(Cannot find imlib: Is imlib-config in path, do you have it installed? if not, then install imlib-devel))
+
+
+if test "x$GNOME_INCLUDEDIR" = "x"; then
+	echo "#################################################"
+	echo "#################################################"
+	echo "You must have gnome-libs-devel installed on this system"
+	echo " if you do, then make sure that gnome-config is in"
+	echo " your path"
+	echo "#################################################"
+	echo "#################################################"
+fi
+
+dnl Get libxml flags & libs
+AC_PATH_PROG(xml_config, xml-config)
+if test "x$xml_config" = "x"; then
+  AC_MSG_ERROR([*** xml-config not found. do you have libxml-devel installed?])
+fi
+
+XML_CFLAGS="`$xml_config --cflags 2>/dev/null`"
+XML_LIBS="`$xml_config --libs 2>/dev/null`"
+CFLAGS="$CFLAGS $XML_CFLAGS"
+CPPFLAGS="$CPPFLAGS $XML_CFLAGS"
+LIBS="$LIBS $XML_LIBS"
+
+
+
+AC_PATH_PROG(nmap_exists, nmap, no)
+CHEOPS_DIR="$datadir/cheops-ng"
+AC_DEFINE(CHEOPS_DIR)
+AC_OUTPUT([Makefile cheops-ng.spec cheops-ng-static.spec])
+
+if test "x$nmap_exists" = "xno"; then
+	echo "#################################################"
+	echo "#################################################"
+	echo "WARNING!!!!"
+	echo " It does not look like nmap is installed on your "
+	echo " computer, please install nmap or check your path "
+	echo " to nmap (download from http://insecure.org)"
+	echo " (nmap is required to do OS detection)"
+	echo "#################################################"
+	echo "#################################################"
+fi
+
+dnl echo "#################################################"
+dnl echo "#################################################"
+dnl echo "Your configuration:"
+dnl echo "   ssl - $openssl"
+dnl if test $openssl = no; then
+dnl echo "         if you want to use password authentication"
+dnl echo "         to authenticate the cheops-ng clients"
+dnl echo "         then you should obtain openssl at www.openssl.org"
+dnl echo "         with './config --prefix=/usr/ --openssldir=/usr/local/openssl shared'"
+dnl fi
+dnl echo ""
+echo "#################################################"
+echo "configure done for $CHEOPS_PACKAGE $CHEOPS_VERSION"
+echo "now type 'make' and 'make install'"
+echo "#################################################"

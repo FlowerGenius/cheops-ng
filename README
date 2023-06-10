@@ -1,0 +1,130 @@
+Cheops Network User Interface (the choice of a New Generation)
+=============================
+Copyright (C) 1999, Brent Priddy
+<toopriddy@mailcity.com http://www.linuxcarcam.com>
+
+What is Cheops-ng?
+---------------
+Cheops-ng is a network "swiss army knife".  It's "network neighborhood" done right
+(or gone out of control, depending on your perspective).  It's a combination
+of a variety of network tools to provide system adminstrators and users with
+a simple interface to managing and accessing their networks.  Cheops-ng aims to
+do for the network what the file manager did for the filesystem.
+
+Additionally, cheops-ng has taken on the role of a network management system,
+in the same category as one might put HP Openview.
+
+Cheops was originally written by Mark Spencer, and was being sponsored
+greatly by Adtran, Inc. Cheops-ng is a full remake of cheops and is authored 
+by Brent Priddy, the current maintainer.
+
+Location:
+---------
+http://cheops-ng.sourceforge.net    (home page)
+
+But reports can be e-mailed to me (Brent Priddy) at toopriddy@mailcity.com, but
+any questions answered in the FAQ at the main cheops-ng page will not be
+answered.  Suggestions and ideas for improving it are welcomed.
+
+Supported OS's
+--------------
+(if you want to add to this list, just give me a patch for your changes, or
+ and account on your machine :)
+Linux
+FreeBSD
+
+
+Requirements:
+-------------
+locations are sited below
+
+ gnome
+ gnome-xml >= 1.8.0
+ glib >= 1.2.0
+ glib-devel >= 1.2.0
+ imlib >= 1.9.0
+ imlib-devel >= 1.9.0
+ nmap > 2.54BETA30
+ libpthread
+ libgnome-devel
+ gnome-libs-devel
+ libpng-devel
+ esound-devel
+ gnomecanvas-devel
+ libxml-devel
+
+For FreeBSD only (in addition)
+ linuxthreads
+ gmake
+
+Build:
+------
+
+./configure
+make
+make install # this is optional
+
+(for FreeBSD use gmake instead of make)
+
+You may wish to make the cheops-agent/-ng executable setuid root, but it may be 
+possible for users to obtain raw network sockets, should bugs exist in 
+gtk and/or gnome.
+
+Run: 
+----
+Run "cheops-agent -n" (or "./cheops-agent -n" if you did not do the "install" part).  
+The "agent" has command line options:
+(-l is  broken dont use it)     -l    use a local socket for the client to connect
+     -n    use a listener socket on the hostname
+
+If you do not have any command line options specified the agent will
+start up using the local AND network options. This "agent" is the heart of
+cheops-ng, it does the discovering, OS detection, port scanning...
+
+To run the gui type "cheops-ng" (or "./cheops-ng").  This is the actual client
+program. It will try the local port created on the server then, if no luck,
+it will ask you for the ip/hostname of the server.
+
+
+Virtually everything is configured via the graphical interface.  After
+discovering hosts, right clicking on them will give you a list of possible
+choices.
+
+Mechanics/Features:
+-------------------
+
+* Simple ICMP "ping" packets are used to initially search a network for
+  hosts that are alive.
+
+* Domain Name Transfers are used to list hosts in a domain (adns)
+
+* OS detection is done using invalid flags on TCP packets and the port
+  scanning is also used for OS detection (nmap)
+
+* Mapping is done using UDP (or optionally ICMP) packets with small
+  time-to-live values (traceroute and mtr, respectively)
+
+* Service Identification using "banner grabbing" and standard port
+  information
+
+Soon to come:
+* Monitoring is done using normal connect() sequences using sets of chained
+  stages centerd around the gtk_input_add routine.
+
+Notes:
+------
+
+This *IS NOT* designed to be a hacker tool, and you *MAY NOT* use it to
+explore domains you do not have authorization to access.  I do not take any
+responsibility for use of this tool on unauthorized domains!  Be aware that
+cheops is not stealthy and that using it on a remote network, it will be
+very obvious that you are doing so!
+
+Distribution is governed by the GPL, included in this archive.
+
+Credits/Acknowlagements:
+--------
+nmap:      http://www.insecure.org/nmap
+adns:      http://www.gnu.org/software/adns
+ethereal:  http://ethereal.zing.org
+

@@ -1,0 +1,44 @@
+--- Makefile.in
++++ Makefile.in
+@@ -13,9 +13,12 @@
+ exec_prefix = @exec_prefix@
+ datadir = @datadir@
+ bindir = @bindir@
++sbindir = @sbindir@
+ mandir = @mandir@
+ infodir = @infodir@
+ 
++DESTDIR=
++
+ # According to the comments in install-sh, this won't work for multiple files
+ # if ./install-sh is what is used.
+ INSTALL = @INSTALL@
+@@ -163,18 +166,16 @@
+ 
+ install: cheops-ng cheops-agent
+ ifdef DEFAULT_PATH
+-	mkdir -p $(DEFAULT_PATH)/pixmaps
+-	$(INSTALL) -d $(DEFAULT_PATH)
+-	$(INSTALL) -d $(bindir)
+-	$(INSTALL) -d $(prefix)/share/pixmaps
+-	$(INSTALL) -m 644 pixmaps/*.xpm $(DEFAULT_PATH)/pixmaps
+-	$(INSTALL) -m 644 pixmaps/cheops-ng.xpm $(prefix)/share/pixmaps
+-	$(INSTALL) -s -m 755 -o root -g root cheops-agent $(bindir)
+-	$(INSTALL) -s -m 755 -o root -g root cheops-ng $(bindir)
+-	$(INSTALL) -d $(prefix)/share/gnome/apps/Internet
+-	$(INSTALL) -d $(prefix)/share/gnome/ximian/Programs/Internet
+-	$(INSTALL) -m 644 cheops-ng.desktop $(prefix)/share/gnome/apps/Internet
+-	$(INSTALL) -m 644 cheops-ng.desktop $(prefix)/share/gnome/ximian/Programs/Internet
++	$(INSTALL) -d $(DESTDIR)$(DEFAULT_PATH)/pixmaps
++	$(INSTALL) -d $(DESTDIR)$(bindir)
++	$(INSTALL) -d $(DESTDIR)$(sbindir)
++	$(INSTALL) -d $(DESTDIR)$(datadir)/pixmaps
++	$(INSTALL) -m 644 pixmaps/*.xpm $(DESTDIR)$(DEFAULT_PATH)/pixmaps
++	$(INSTALL) -m 644 pixmaps/cheops-ng.xpm $(DESTDIR)$(datadir)/pixmaps
++	$(INSTALL) -m 755 cheops-agent $(DESTDIR)$(sbindir)
++	$(INSTALL) -m 755 cheops-ng $(DESTDIR)$(bindir)
++	$(INSTALL) -d $(DESTDIR)$(datadir)/gnome/apps/Internet
++	$(INSTALL) -m 644 cheops-ng.desktop $(DESTDIR)$(datadir)/gnome/apps/Internet
+ else
+ 	echo "No Default Path in Makefile"
+ 	if [ whoami = "root" ]; then echo "This program requires root privilege" ; fi

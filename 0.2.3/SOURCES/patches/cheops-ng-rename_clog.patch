@@ -1,0 +1,1296 @@
+--- agent-adns.c
++++ agent-adns.c
+@@ -160,7 +160,7 @@
+ 		
+ 		if (event_send(pp->a, eh) < 0)
+ 		{
+-			DEBUG( c_log(LOG_WARNING, "Unable to send discover reply\n") );
++			DEBUG( c_log(LOG_WARNING, "Unable to send discover reply\n") );
+ 			return(0);
+ 		}
+ 	}
+--- agent-discover.c
++++ agent-discover.c
+@@ -110,8 +110,8 @@
+ 	char	errorStr2[] = "Start is larger than Finish\n";
+ 	struct ping_q *pp=NULL;
+ 	
+-	DEBUG(c_log(LOG_DEBUG,"i got a discover request %s\n", ip2str(start)) );
+-	DEBUG(c_log(LOG_DEBUG,"to %s\n",ip2str(end)) );
++	DEBUG(c_log(LOG_DEBUG,"i got a discover request %s\n", ip2str(start)) );
++	DEBUG(c_log(LOG_DEBUG,"to %s\n",ip2str(end)) );
+ 
+ 	if(start==0 || end==0)
+ 	{
+@@ -134,7 +134,7 @@
+ 		strcpy( ((char *)ee + sizeof(error_r)) , errorPtr);
+ 
+ 		if (event_send(a, eh) < 0)
+-			c_log(LOG_WARNING, "Unable to send error reply\n");
++			c_log(LOG_WARNING, "Unable to send error reply\n");
+ 		else
+ 			ret = 0;
+ 		return(ret);
+@@ -142,7 +142,7 @@
+ 	
+ 	if((pp = malloc(sizeof(struct ping_q)))==NULL)
+ 	{
+-		c_log(LOG_DEBUG,"malloc returned NULL\n");
++		c_log(LOG_DEBUG,"malloc returned NULL\n");
+ 		exit(1);
+ 	}
+ 	pp->start = start;
+@@ -211,7 +211,7 @@
+ 
+ 	if (event_send(pp->a, eh) < 0)
+ 	{
+-		DEBUG( c_log(LOG_WARNING, "Unable to send discover reply\n") );
++		DEBUG( c_log(LOG_WARNING, "Unable to send discover reply\n") );
+ 		return(0);
+ 	}
+ 	return(1);
+@@ -237,7 +237,7 @@
+ 	hlen = ip->ip_hl << 2;
+ 
+ 	if(len < hlen + ICMP_MINLEN) {
+-		c_log(LOG_DEBUG,"handle_packet: too short (%d bytes) from %s\n",len, inet_ntoa(sin.sin_addr));
++		c_log(LOG_DEBUG,"handle_packet: too short (%d bytes) from %s\n",len, inet_ntoa(sin.sin_addr));
+ 		return(1);
+ 	}
+ 
+@@ -256,11 +256,11 @@
+ 		{
+ 			/* someone is being a bad little boy and sending us corrupt 
+ 			 * ping packets */
+-			DEBUG( c_log(LOG_WARNING,"%s sent us a ping out of the discovery range\n",inet_ntoa(sin.sin_addr)) );
++			DEBUG( c_log(LOG_WARNING,"%s sent us a ping out of the discovery range\n",inet_ntoa(sin.sin_addr)) );
+ 			return(1);
+ 		}
+ 	
+-		DEBUG( c_log(LOG_WARNING,"Recieved ping reply %s\n",inet_ntoa(sin.sin_addr)) );
++		DEBUG( c_log(LOG_WARNING,"Recieved ping reply %s\n",inet_ntoa(sin.sin_addr)) );
+ 	
+ 		add_to_cache((void *)sin.sin_addr.s_addr,NULL);
+ 		
+@@ -297,7 +297,7 @@
+ 		{
+ 			removed_queue = TRUE;
+ 			remove_ping_q(pp);
+-			DEBUG( c_log(LOG_NOTICE,"Removed schedule entry, and pingQ: retries expired\n") );
++			DEBUG( c_log(LOG_NOTICE,"Removed schedule entry, and pingQ: retries expired\n") );
+ 			return(0);
+ 		}
+ 		
+@@ -308,11 +308,11 @@
+ 			
+ 			if(pp->flags & FLAG_FORCE)
+ 			{
+-				DEBUG( c_log(LOG_NOTICE,"The FORCE FLAG is set\n") );
++				DEBUG( c_log(LOG_NOTICE,"The FORCE FLAG is set\n") );
+ 			}
+ 			else
+ 			{
+-				DEBUG( c_log(LOG_NOTICE,"The entry %s is not in the cache\n",ip2str(htonl(pp->current))) );
++				DEBUG( c_log(LOG_NOTICE,"The entry %s is not in the cache\n",ip2str(htonl(pp->current))) );
+ 			}
+ 			
+ 		
+@@ -323,13 +323,13 @@
+ 				DEBUG( printf("%s(): Initalizing the ping_socket\n", __FUNCTION__));
+ 				if(!(proto = getprotobyname("icmp")))
+ 				{
+-					c_log(LOG_DEBUG,"socket error\n");
++					c_log(LOG_DEBUG,"socket error\n");
+ 					exit(1);
+ 				}
+ 				
+ 				if((ping_socket = socket(AF_INET, SOCK_RAW, proto->p_proto)) < 0)
+ 				{
+-					c_log(LOG_DEBUG,"socket error\n");
++					c_log(LOG_DEBUG,"socket error\n");
+ 					exit(1);
+ 				}
+ 				hold = 48 * 1024;
+@@ -368,7 +368,7 @@
+ 				sent = sendto(ping_socket, buf, len, 0, (struct sockaddr *)&to, sizeof(to));
+ 				if (sent < 0 || sent != len)
+ 				{
+-					DEBUG( c_log(LOG_DEBUG,"wrote %s %d chars, ret = %d\n",inet_ntoa(to.sin_addr), len, sent) );
++					DEBUG( c_log(LOG_DEBUG,"wrote %s %d chars, ret = %d\n",inet_ntoa(to.sin_addr), len, sent) );
+ 					if (sent < 0)
+ 					{
+ 						if(negative_retry++ < 4)
+@@ -378,18 +378,18 @@
+ 						}
+ 						else
+ 						{
+-							c_log(LOG_DEBUG,"sendto error %s for %s\n",strerror(errno), inet_ntoa(to.sin_addr));
++							c_log(LOG_DEBUG,"sendto error %s for %s\n",strerror(errno), inet_ntoa(to.sin_addr));
+ 						}
+ 					}
+ 				}				
+-				DEBUG( c_log(LOG_DEBUG,"wrote %s %d chars, ret = %d\n",inet_ntoa(to.sin_addr), len, sent) );
++				DEBUG( c_log(LOG_DEBUG,"wrote %s %d chars, ret = %d\n",inet_ntoa(to.sin_addr), len, sent) );
+ 			}
+ 		}
+ 		else
+ 		{
+ 			/* The entry is in the cache and can be used in the discover reply */
+ 			
+-			DEBUG( c_log(LOG_NOTICE,"The entry %s is in the cache\n",ip2str(htonl(pp->current))) );
++			DEBUG( c_log(LOG_NOTICE,"The entry %s is in the cache\n",ip2str(htonl(pp->current))) );
+ 			if(pp->retry == 0)
+ 			{
+ 				/* 
+@@ -426,7 +426,7 @@
+ 		 *     PING_TIMEOUT_INTERVAL - (current_time - first_ping_send_time) 
+ 		 */
+ 	
+-		DEBUG( c_log(LOG_NOTICE,"Changed schedule entry\n") );
++		DEBUG( c_log(LOG_NOTICE,"Changed schedule entry\n") );
+ 		
+ 		if(pp->retry > ping_retries)
+ 		{
+@@ -475,7 +475,7 @@
+ 			 */	
+ 			gettimeofday(&tv,&tz);
+ 			pp->time = (int)tv.tv_sec*1000 + (int)tv.tv_usec/1000;
+-			DEBUG( c_log(LOG_NOTICE, "I set the pp->time to %u\n",pp->time) );
++			DEBUG( c_log(LOG_NOTICE, "I set the pp->time to %u\n",pp->time) );
+ 			
+ 			cheops_sched_add(PING_INTERVAL,CHEOPS_SCHED_CB(ping_send),pp);
+ 			ret=0;
+--- agent-map.c
++++ agent-map.c
+@@ -104,7 +104,7 @@
+ 	u32	   ip = ntohl(e->map_icmp_e.ip);
+ 	void  *np = e->map_icmp_e.np;
+ 	
+-	DEBUG( c_log(LOG_NOTICE, "recieved map icmp request for %s\n", inet_ntoa(*(struct in_addr *)&ip)) );	
++	DEBUG( c_log(LOG_NOTICE, "recieved map icmp request for %s\n", inet_ntoa(*(struct in_addr *)&ip)) );	
+ 
+ 	start_mapping(ip, a, np);
+ 
+@@ -125,7 +125,7 @@
+ 
+ 	if (event_send(a, eh) < 0)
+ 	{
+-		DEBUG( c_log(LOG_WARNING, "Unable to map icmp reply\n") );
++		DEBUG( c_log(LOG_WARNING, "Unable to map icmp reply\n") );
+ 	}
+ }
+ 
+@@ -135,7 +135,7 @@
+ 	
+ 	if( (map_socket = socket(AF_INET, SOCK_RAW, IPPROTO_RAW)) < 0 )
+ 	{
+-		c_log(LOG_ERROR, "opening raw send socket");
++		c_log(LOG_ERROR, "opening raw send socket");
+ 		exit(1);
+ 	}
+ 	
+@@ -143,7 +143,7 @@
+ 	
+ 	if( setsockopt(map_socket, IPPROTO_IP, IP_HDRINCL, (char *)&on, sizeof(on)) < 0 )
+ 	{
+-		c_log(LOG_ERROR, "setting option IP_HDRINCL");
++		c_log(LOG_ERROR, "setting option IP_HDRINCL");
+ 		exit(1);
+ 	}
+ }
+--- agent-osscan.c
++++ agent-osscan.c
+@@ -349,7 +349,7 @@
+ 		pthread_mutex_lock(&os_write_mutex);
+ 		if (event_send (agent_to_send, event_to_send) < 0)
+ 		{
+-			clog (LOG_WARNING, "Unable to send osscan reply\n");
++			c_log (LOG_WARNING, "Unable to send osscan reply\n");
+ 		}
+ 		pthread_mutex_unlock(&os_write_mutex);
+ 	}
+--- agent-probe.c
++++ agent-probe.c
+@@ -98,7 +98,7 @@
+ 		DEBUG(printf("port %d again\n", ntohs(ee->probe_r.port)));
+ 		if(event_send(ud->a, eh) < 0)
+ 		{
+-			DEBUG( c_log(LOG_WARNING, "Unable to send discover reply\n") );
++			DEBUG( c_log(LOG_WARNING, "Unable to send discover reply\n") );
+ 		}
+ 	}
+ 	else
+--- agent-settings.c
++++ agent-settings.c
+@@ -31,7 +31,7 @@
+ 	if(flags & SET_DISCOVER_RETRIES)
+ 	{
+ 		ping_retries = e->set_settings_e.discover_retries;
+-//		c_log(LOG_NOTICE, "I set the ping_retries to %d\n",ping_retries);
++//		c_log(LOG_NOTICE, "I set the ping_retries to %d\n",ping_retries);
+ 	}
+ 	return(0);
+ }
+--- cache.c
++++ cache.c
+@@ -46,7 +46,7 @@
+ 		
+ 	if(count >= MAX_PING_CACHE_ENTRIES)
+ 	{
+-		DEBUG( c_log(LOG_NOTICE, "Cache is at MAX, removing an entry\n") );
++		DEBUG( c_log(LOG_NOTICE, "Cache is at MAX, removing an entry\n") );
+ 		for(p=Cache,old=Cache;p;p = p->next)
+ 		{
+ 			if((old->tv.tv_sec*1000 + old->tv.tv_usec/1000) < (p->tv.tv_sec*1000 + p->tv.tv_usec/1000))
+@@ -60,7 +60,7 @@
+ 	{
+ 		if((p = malloc(sizeof(struct cache)))==NULL)
+ 		{
+-			DEBUG( c_log(LOG_ERROR,"malloc returned NULL\n") );
++			DEBUG( c_log(LOG_ERROR,"malloc returned NULL\n") );
+ 			exit(1);
+ 		}
+ 		count++;
+--- cerror.c
++++ cerror.c
+@@ -54,7 +54,7 @@
+ 	h->type = htons(REPLY_ERROR);
+ 	h->flags = htonl(FLAG_IGNORE);
+ 	if (event_send(a, h) < 0) 
+-		c_log(LOG_DEBUG, "Unable to send error '%s'\n", c);
++		c_log(LOG_DEBUG, "Unable to send error '%s'\n", c);
+ 	va_end(ap);
+ }
+ 
+--- cheops-agent.c
++++ cheops-agent.c
+@@ -66,7 +66,7 @@
+ 
+ static int handle_error(event_hdr *h, event *e, agent *a)
+ {
+-	DEBUG(c_log(LOG_ERROR,"\nClient reports: Error[%d] - %s", ntohs(e->error_r.error), ((char *)e) + sizeof(error_r)));
++	DEBUG(c_log(LOG_ERROR,"\nClient reports: Error[%d] - %s", ntohs(e->error_r.error), ((char *)e) + sizeof(error_r)));
+ 	return(0);
+ }
+ 
+@@ -112,7 +112,7 @@
+ 		/* Try to register each of our shell items, but don't replace an existing
+ 		   handler */
+ 		if (event_register_handler(h->id, h->cb, 0)) 
+-			c_log(LOG_WARNING, "Unable to register handler for '%s'\n", h->desc);
++			c_log(LOG_WARNING, "Unable to register handler for '%s'\n", h->desc);
+ 		h++;
+ 	}
+ }
+@@ -121,7 +121,7 @@
+ {
+ 	if( event_create_agent((int)type) )
+ 	{
+-		c_log(LOG_ERROR, "unable to listen.\n");
++		c_log(LOG_ERROR, "unable to listen.\n");
+ 		exit(1);
+ 	}
+ 	authenticate_clients(dopasswords);
+@@ -249,12 +249,12 @@
+ 			break;
+ 		case -1:
+ 			/* Error */
+-			c_log(LOG_ERROR, "fork() failed: %s\n", strerror(errno));
++			c_log(LOG_ERROR, "fork() failed: %s\n", strerror(errno));
+ 			exit(1);
+ 			break;
+ 		default:
+ 			/* Parent */
+-			DEBUG(c_log(LOG_NOTICE, "cheops-agent launched, pid %d\n", pid));
++			DEBUG(c_log(LOG_NOTICE, "cheops-agent launched, pid %d\n", pid));
+ 		}
+ 	}
+ 	else
+--- cheops-gui.c
++++ cheops-gui.c
+@@ -451,7 +451,7 @@
+ 					c2 = strdup(gtk_entry_get_text(GTK_ENTRY(gnome_entry_gtk_entry(GNOME_ENTRY(entry2)))) );
+ 					
+ 					DEBUG(
+-						c_log(LOG_DEBUG, "Discovering range %s to %s\n", c1, c2);
++						c_log(LOG_DEBUG, "Discovering range %s to %s\n", c1, c2);
+ 					);
+ 					
+ 					add_network_range(c1, c2); 
+--- cheops-sh-guts.c
++++ cheops-sh-guts.c
+@@ -170,7 +170,7 @@
+ 		ee->discover_ipv4_e.start = start;
+ 		ee->discover_ipv4_e.end = end;
+ 		if (event_send(a, eh) < 0) 
+-			c_log(LOG_WARNING, "Unable to send discover event\n");
++			c_log(LOG_WARNING, "Unable to send discover event\n");
+ 		else
+ 			done = 0;
+ 	}
+@@ -223,7 +223,7 @@
+ 	eh->type = htons(EVENT_OS_SCAN);
+ 	eh->flags = flags;
+ 	if (event_send(a, eh) < 0) 
+-		c_log(LOG_WARNING, "Unable to send OS-scan event\n");
++		c_log(LOG_WARNING, "Unable to send OS-scan event\n");
+ 	return(0);
+ }
+ 
+@@ -303,7 +303,7 @@
+ 	ee->set_settings_e.discover_retries = retries;
+ 	ee->set_settings_e.flags = SET_DISCOVER_RETRIES;
+ 	if (event_send(a, eh) < 0) 
+-		c_log(LOG_WARNING, "Unable to send set discover retries event\n");
++		c_log(LOG_WARNING, "Unable to send set discover retries event\n");
+ 
+ 	return(0);
+ }
+@@ -316,7 +316,7 @@
+ 	eh->flags = 0;
+ 
+ 	if (event_send(a, eh) < 0) 
+-		c_log(LOG_WARNING, "Unable to send login event\n");
++		c_log(LOG_WARNING, "Unable to send login event\n");
+ 
+ 	return(0);
+ }
+@@ -354,7 +354,7 @@
+ 	{
+ 		if(pipl->ip == ip)
+ 		{
+-			DEBUG( c_log(LOG_NOTICE,"add_to_discovered_list(): %s is already in the list",ip2str(htonl(ip))) );
++			DEBUG( c_log(LOG_NOTICE,"add_to_discovered_list(): %s is already in the list",ip2str(htonl(ip))) );
+ 			return(0);
+ 		}
+ 	}
+@@ -444,7 +444,7 @@
+ 	strcpy(ee->auth_request_e.password, password);
+ 	
+ 	if (event_send(a, eh) < 0) 
+-		c_log(LOG_WARNING, "Unable to send login event\n");
++		c_log(LOG_WARNING, "Unable to send login event\n");
+ 	
+ 	return(0);
+ }
+@@ -535,7 +535,7 @@
+ 		/* Try to register each of our shell items, but don't replace an existing
+ 		   handler */
+ 		if (event_register_handler(h->id, h->cb, 0)) 
+-			c_log(LOG_WARNING, "Unable to register handler for '%s'\n", h->desc);
++			c_log(LOG_WARNING, "Unable to register handler for '%s'\n", h->desc);
+ 		h++;
+ 	}
+ }
+--- cheops-sh.c
++++ cheops-sh.c
+@@ -135,7 +135,7 @@
+ 			cheops_io_add(STDIN_FILENO, handle_stdio, CHEOPS_IO_IN, NULL);
+ 			cheops_main();
+ 		} else {
+-			c_log(LOG_ERROR, "Unable to connect to local agent\n");
++			c_log(LOG_ERROR, "Unable to connect to local agent\n");
+ 			exit(1);
+ 		}
+ 	}
+@@ -155,7 +155,7 @@
+ 			cheops_io_add(STDIN_FILENO, handle_stdio, CHEOPS_IO_IN, NULL);
+ 			cheops_main();
+ 		} else {
+-			c_log(LOG_ERROR, "Unable to connect to local agent\n");
++			c_log(LOG_ERROR, "Unable to connect to local agent\n");
+ 			exit(1);
+ 		}
+ 	}
+--- event.c
++++ event.c
+@@ -208,12 +208,12 @@
+ 	char *c;
+ 	c = getenv("HOME");
+ 	if (!c) {
+-		c_log(LOG_ERROR, "No HOME environment variable.\n");
++		c_log(LOG_ERROR, "No HOME environment variable.\n");
+ 		return NULL;
+ 	}
+ 	snprintf(buf, sizeof(buf), "%s/.cheops/comsocket",c);
+ 	if (strlen(buf) > MAX_SUN_LEN) {
+-		c_log(LOG_ERROR, "Socket name '%s' too long (must be <= %d).\n", buf, MAX_SUN_LEN);
++		c_log(LOG_ERROR, "Socket name '%s' too long (must be <= %d).\n", buf, MAX_SUN_LEN);
+ 		return NULL;
+ 	}
+ 	return buf;
+@@ -274,12 +274,12 @@
+ 	a = (agent *)data;
+ 	if (!a) {
+ 		/* Something bad has happened, try not to repeat it */
+-		c_log(LOG_WARNING, "NULL data passed!\n");
++		c_log(LOG_WARNING, "NULL data passed!\n");
+ 		return 0;
+ 	}
+ 	if (a->s != fd) {
+ 		/* The agent and the descriptor we got this on don't match */
+-		c_log(LOG_WARNING, 
++		c_log(LOG_WARNING, 
+ 			"File descriptor mismatch (%d != %d)\n", a->s, fd);
+ 		return 0;
+ 	}
+@@ -287,7 +287,7 @@
+ 	 * Check for errors first 
+ 	 */
+ 	if (events & (CHEOPS_IO_ERR | CHEOPS_IO_HUP | CHEOPS_IO_NVAL)) {
+-		c_log(LOG_DEBUG, 
++		c_log(LOG_DEBUG, 
+ 		     "Agent destroyed %s %s %s %s\n",
+ 		     (events & CHEOPS_IO_ERR ? "CHEOPS_IO_ERR" : ""),
+ 		     (events & CHEOPS_IO_HUP ? "CHEOPS_IO_HUP" : ""),
+@@ -297,7 +297,7 @@
+ 		event_destroy_agent(a);
+ 		return 0;
+ 	}
+-	DEBUG(c_log(LOG_DEBUG, "Agent data on %d (%d)\n", fd, events));
++	DEBUG(c_log(LOG_DEBUG, "Agent data on %d (%d)\n", fd, events));
+ 
+ 	h = (event_hdr *)a->buffer;
+ 	res = AGENT_RECV_BUFFER_LENGTH - (a->write_ptr - a->buffer);
+@@ -317,14 +317,14 @@
+ 		res = agent_read(a, fd, (char *)&h->len, res);
+ 		if(res < 0)
+ 		{
+-			DEBUG(c_log(LOG_WARNING,
++			DEBUG(c_log(LOG_WARNING,
+ 				"Closing connection on read error\n"));
+ 			event_destroy_agent(a);
+ 			return 0;
+ 		}
+ 		if(res == 0)
+ 		{
+-			DEBUG(c_log(LOG_WARNING,
++			DEBUG(c_log(LOG_WARNING,
+ 				"Closing connection on NULL read (socket closed)\n"));
+ 			event_destroy_agent(a);
+ 			return 0;
+@@ -336,7 +336,7 @@
+ 		else
+ 		{
+ 			if (ntohl(h->len) > sizeof(a->buffer)) {
+-				c_log(LOG_WARNING,
++				c_log(LOG_WARNING,
+ 				        "event too large: %d bytes (max = %d)\n", ntohl(h->len), sizeof(a->buffer));
+ 				return 0;
+ 			}
+@@ -350,14 +350,14 @@
+ 		res = agent_read(a, fd, (char *)a->write_ptr, res);
+ 		if(res < 0)
+ 		{
+-			DEBUG(c_log(LOG_WARNING,
++			DEBUG(c_log(LOG_WARNING,
+ 				"Closing connection on read error\n"));
+ 			event_destroy_agent(a);
+ 			return 0;
+ 		}
+ 		if(res == 0)
+ 		{
+-			DEBUG(c_log(LOG_WARNING,
++			DEBUG(c_log(LOG_WARNING,
+ 				"Closing connection on NULL read (socket closed)\n"));
+ 			event_destroy_agent(a);
+ 			return 0;
+@@ -370,7 +370,7 @@
+ 		else
+ 		{
+ 			if (ntohl(h->len) > sizeof(a->buffer)) {
+-				c_log(LOG_WARNING,
++				c_log(LOG_WARNING,
+ 				        "event too large: %d bytes (max = %d)\n", ntohl(h->len), sizeof(a->buffer));
+ 				return 0;
+ 			}
+@@ -385,12 +385,12 @@
+ 	{
+ 		// we have a message sitting in our buffer, now do it
+ 		if (ntohs(h->type) >= MAX_EVENT){
+-			c_log(LOG_WARNING,
++			c_log(LOG_WARNING,
+ 				"Message type %d is too large\n", h->type);
+ 		} 
+ 		else if (ntohs(h->hlen) > ntohl(h->len)) 
+ 		{
+-			c_log(LOG_WARNING,
++			c_log(LOG_WARNING,
+ 				"Message header longer than message itself?\n", ntohs(h->type));
+ 		} 
+ 		else 
+@@ -398,14 +398,14 @@
+ 			if((a->flags & AGENT_FLAGS_LOGGED_IN) || !authenticating_clients())
+ 			{
+ 				e = (event *)(a->buffer + ntohs(h->hlen));
+-				DEBUG(c_log(LOG_DEBUG, "Event received of type %d\n", ntohs(h->type)));
++				DEBUG(c_log(LOG_DEBUG, "Event received of type %d\n", ntohs(h->type)));
+ 				if (handlers[ntohs(h->type)]) 
+ 				{
+ 					handlers[ntohs(h->type)](h, e, a);
+ 				}
+ 				else 
+ 				{
+-					c_log(LOG_DEBUG, "No handler for event type %d\n", ntohs(h->type));
++					c_log(LOG_DEBUG, "No handler for event type %d\n", ntohs(h->type));
+ 					if (!(htonl(h->flags) & FLAG_IGNORE)) 
+ 					{
+ 						cheops_error(a, ERROR_UNIMPL, "Unsupported message type %d\n", ntohs(h->type));
+@@ -426,7 +426,7 @@
+ 				}
+ 				else
+ 				{
+-					c_log(LOG_DEBUG, "No handler for event type %d when not logged in\n", ntohs(h->type));
++					c_log(LOG_DEBUG, "No handler for event type %d when not logged in\n", ntohs(h->type));
+ 					if (!(htonl(h->flags) & FLAG_IGNORE)) 
+ 					{
+ 						cheops_error(a, ERROR_UNIMPL, "Unsupported message type %d\n", ntohs(h->type));
+@@ -466,20 +466,20 @@
+ 	a = (agent *)data;
+ 	if (!a) {
+ 		/* Something bad has happened, try not to repeat it */
+-		c_log(LOG_WARNING, "NULL data passed!\n");
++		c_log(LOG_WARNING, "NULL data passed!\n");
+ 		return 0;
+ 	}
+ 	if (a->s != fd) {
+ 		/* The agent and the descriptor we got this on don't match */
+-		c_log(LOG_WARNING, 
++		c_log(LOG_WARNING, 
+ 			"File descriptor mismatch (%d != %d)\n", a->s, fd);
+ 		return 0;
+ 	}
+-	DEBUG(c_log(LOG_DEBUG, "Agent data on %d\n", fd));
++	DEBUG(c_log(LOG_DEBUG, "Agent data on %d\n", fd));
+ 	sunlen = sizeof(sun);
+ 	res = accept(fd, (void *)&sun, &sunlen);
+ 	if (res < 0) {
+-		c_log(LOG_WARNING,
++		c_log(LOG_WARNING,
+ 			"accept failed: %s\n", strerror(errno));
+ 	} else {
+ 		a = new_agent();
+@@ -510,12 +510,12 @@
+ 	if (our_local_agent)
+ 		return our_local_agent;
+ 	if (!(c = get_local_name())) {
+-		c_log(LOG_ERROR, "Unable to get local name\n");
++		c_log(LOG_ERROR, "Unable to get local name\n");
+ 		return NULL;
+ 	}
+ 	s = socket(PF_FILE, SOCK_STREAM, 0);
+ 	if (s < 0) 
+-		c_log(LOG_ERROR, "Unable to create UNIX socket: %s\n",strerror(errno));
++		c_log(LOG_ERROR, "Unable to create UNIX socket: %s\n",strerror(errno));
+ 	else {
+ 		memset(&sun, 0, sizeof(sun));
+ 		sun.sun_family = AF_UNIX;
+@@ -525,7 +525,7 @@
+ 			/* FIXME: We should fork() and exec cheops-agent to start it
+ 			   if we cannot connect */
+ 			DEBUG(
+-				c_log(LOG_ERROR, "Unable to connect to local agent (%s)\n", strerror(errno));
++				c_log(LOG_ERROR, "Unable to connect to local agent (%s)\n", strerror(errno));
+ 			);
+ 			return NULL;
+ 		}
+@@ -580,15 +580,15 @@
+ 
+ 	/* Try to set non-blocking mode */
+ 	if ((flags = fcntl(s, F_GETFL)) < 0)
+-		c_log(LOG_WARNING, "fcntl(F_GETFL) failed(%s)\n", strerror(errno));
++		c_log(LOG_WARNING, "fcntl(F_GETFL) failed(%s)\n", strerror(errno));
+ 	else
+ 		if (fcntl(s, F_SETFL, (flags | O_NONBLOCK)) < 0)
+-			c_log(LOG_WARNING, "fcntl(F_SETFL) failed(%s)\n", strerror(errno));
++			c_log(LOG_WARNING, "fcntl(F_SETFL) failed(%s)\n", strerror(errno));
+ 
+ 	setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (void *)&on, sizeof(on));
+ 
+ 	if (listen(s, AGENT_BACKLOG) < 0) {
+-		c_log(LOG_ERROR, "listen() failed (%s)\n", strerror(errno));
++		c_log(LOG_ERROR, "listen() failed (%s)\n", strerror(errno));
+ 		close(s);
+ 		s = -1;
+ 	}
+@@ -608,20 +608,20 @@
+ 	a = (agent *)data;
+ 	if (!a) {
+ 		/* Something bad has happened, try not to repeat it */
+-		c_log(LOG_WARNING, "NULL data passed!\n");
++		c_log(LOG_WARNING, "NULL data passed!\n");
+ 		return 0;
+ 	}
+ 	if (a->s != fd) {
+ 		/* The agent and the descriptor we got this on don't match */
+-		c_log(LOG_WARNING, 
++		c_log(LOG_WARNING, 
+ 			"File descriptor mismatch (%d != %d)\n", a->s, fd);
+ 		return 0;
+ 	}
+-	DEBUG(c_log(LOG_DEBUG, "Agent data on %d\n", fd));
++	DEBUG(c_log(LOG_DEBUG, "Agent data on %d\n", fd));
+ 	sinlen = sizeof(sin);
+ 	res = accept(fd, (void *)&sin, &sinlen);
+ 	if (res < 0) {
+-		c_log(LOG_WARNING,
++		c_log(LOG_WARNING,
+ 			"accept failed: %s\n", strerror(errno));
+ 	} else {
+ 		a = new_agent();
+@@ -643,7 +643,7 @@
+ 					SSL_library_init();
+ 
+ 					if( (ssl_ctx = SSL_CTX_new(SSLv2_server_method())) == NULL) {
+-						c_log(LOG_ERROR, "Unable to create the ssl ctx\n");
++						c_log(LOG_ERROR, "Unable to create the ssl ctx\n");
+ 					}
+ 					if (SSL_CTX_use_certificate_file(ssl_ctx, MY_CERT, SSL_FILETYPE_PEM) <= 0) {
+ 						ERR_print_errors_fp(stderr);
+@@ -659,19 +659,19 @@
+ 					}
+ 				}
+ 				if((a->ssl = SSL_new(ssl_ctx)) == NULL) {
+-					c_log(LOG_ERROR, "Unable to create the ssl\n");
++					c_log(LOG_ERROR, "Unable to create the ssl\n");
+ 				}
+ 				if(!SSL_set_fd(a->ssl, a->s)) {
+-					c_log(LOG_ERROR, "Unable to set the SSL_fd\n");
++					c_log(LOG_ERROR, "Unable to set the SSL_fd\n");
+ 				}
+ 				
+ 				if((ret = SSL_accept(a->ssl)))
+ 				{
+-					c_log(LOG_ERROR, "they are in\n");
++					c_log(LOG_ERROR, "they are in\n");
+ 				}
+ 				else
+ 				{
+-					c_log(LOG_ERROR, "they are not in\n");
++					c_log(LOG_ERROR, "they are not in\n");
+ 				}
+ 			}
+ 			else
+@@ -710,7 +710,7 @@
+ 
+ 	s = socket(PF_INET, SOCK_STREAM, 0);
+ 	if (s < 0) 
+-		c_log(LOG_ERROR, "Unable to create UDP socket: %s\n",strerror(errno));
++		c_log(LOG_ERROR, "Unable to create UDP socket: %s\n",strerror(errno));
+ 	else 
+ 	{
+ 		sin.sin_family = AF_INET;
+@@ -724,7 +724,7 @@
+ 		{
+ 			/* FIXME: We should fork() and exec cheops-agent to start it
+ 			   if we cannot connect */
+-			c_log(LOG_ERROR, "Unable to connect to ipv4 agent '%s' (%s)\n", ip_addr, strerror(errno));
++			c_log(LOG_ERROR, "Unable to connect to ipv4 agent '%s' (%s)\n", ip_addr, strerror(errno));
+ 			return NULL;
+ 		}
+ 
+@@ -746,16 +746,16 @@
+ 
+ 					if( (ssl_ctx = SSL_CTX_new(SSLv2_client_method())) == NULL) 
+ 					{
+-						c_log(LOG_ERROR, "Unable to create the ssl ctx\n");
++						c_log(LOG_ERROR, "Unable to create the ssl ctx\n");
+ 					}
+ 				}
+ 				if((a->ssl = SSL_new(ssl_ctx)) == NULL) 
+ 				{
+-					c_log(LOG_ERROR, "Unable to create the ssl\n");
++					c_log(LOG_ERROR, "Unable to create the ssl\n");
+ 				}
+ 				if(!SSL_set_fd(a->ssl, a->s)) 
+ 				{
+-					c_log(LOG_ERROR, "Unable to set the SSL_fd\n");
++					c_log(LOG_ERROR, "Unable to set the SSL_fd\n");
+ 				}
+ 				
+ 				a->id = cheops_io_add(a->s, handle_agent, CHEOPS_IO_IN, a);
+@@ -793,29 +793,29 @@
+ 		
+ 	if((s = socket(PF_INET, SOCK_STREAM, 0)) < 0)
+ 	{
+-		c_log(LOG_ERROR, "socket failed(%s)\n", strerror(errno));
++		c_log(LOG_ERROR, "socket failed(%s)\n", strerror(errno));
+ 		return -1;
+ 	}
+ 	if(bind(s, (struct sockaddr *)sin, sizeof(*sin)) < 0) {
+-		c_log(LOG_ERROR, "bind failed(%s)\n", strerror(errno));
++		c_log(LOG_ERROR, "bind failed(%s)\n", strerror(errno));
+ 		close(s);
+ 		return -1;
+ 	}
+ 
+ 	if(setsockopt(s, SOL_SOCKET, TCP_NODELAY, &optval,sizeof(optval)) < 0)
+ 	{
+-		c_log(LOG_ERROR, "Unable to set TCP_NODELAY");
++		c_log(LOG_ERROR, "Unable to set TCP_NODELAY");
+ 	}		
+ 	setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (void *)&optval, sizeof(optval));
+ 	
+ 	if((flags = fcntl(s, F_GETFL)) < 0)
+-		c_log(LOG_ERROR, "fcntl(F_GETFL) failed(%s)\n", strerror(errno));
++		c_log(LOG_ERROR, "fcntl(F_GETFL) failed(%s)\n", strerror(errno));
+ 	else
+ 		if(fcntl(s, F_SETFL, (flags | O_NONBLOCK)) < 0)
+-			c_log(LOG_ERROR, "fcntl(F_SETFL) failed(%s)\n", strerror(errno));
++			c_log(LOG_ERROR, "fcntl(F_SETFL) failed(%s)\n", strerror(errno));
+ 
+ 	if(listen(s, AGENT_BACKLOG) < 0) {
+-		c_log(LOG_ERROR, "listen() failed (%s)\n", strerror(errno));
++		c_log(LOG_ERROR, "listen() failed (%s)\n", strerror(errno));
+ 		close(s);
+ 		s = -1;
+ 	}
+@@ -852,14 +852,14 @@
+ 		   be some old, expired pointer, and as long as we don't 
+ 		   dereference it, everything will be fine.  But log a warning
+ 		   just in case */
+-		c_log(LOG_WARNING, "Asked to remove non-existant agent (%p)!\n", a);
++		c_log(LOG_WARNING, "Asked to remove non-existant agent (%p)!\n", a);
+ 		return;
+ 	}
+ 
+ 	if( shutdown(a->s, SHUT_WR) < 0)
+ 	{
+ 		DEBUG(
+-			c_log(LOG_WARNING, "shutdown(s,SHUT_WR) is not happy (%s)\n",strerror(errno));
++			c_log(LOG_WARNING, "shutdown(s,SHUT_WR) is not happy (%s)\n",strerror(errno));
+ 		);
+ 	}
+ 	close(a->s);
+@@ -912,7 +912,7 @@
+ 						res=-1;
+ 					}
+ 				} else
+-					c_log(LOG_ERROR, "Unable to create socket (%s).\n", strerror(errno));
++					c_log(LOG_ERROR, "Unable to create socket (%s).\n", strerror(errno));
+ 			}
+ 		}
+ 	}
+@@ -1040,12 +1040,12 @@
+ 		res = agent_write(a, (char *)h, ntohl(h->len));
+ 		
+ 		if (res < 0) {
+-			c_log(LOG_WARNING, "write failed: %s\n", strerror(errno));
++			c_log(LOG_WARNING, "write failed: %s\n", strerror(errno));
+ 		} else if (res != ntohl(h->len)) {
+-			c_log(LOG_WARNING, "only wrote %d of %d bytes\n", res, ntohl(h->len));
++			c_log(LOG_WARNING, "only wrote %d of %d bytes\n", res, ntohl(h->len));
+ 		}
+ 	} else
+-		c_log(LOG_DEBUG, "agent not valid\n");
++		c_log(LOG_DEBUG, "agent not valid\n");
+ 	
+ 	pthread_mutex_unlock(&mutex);
+ 		
+@@ -1087,7 +1087,7 @@
+ 		a = ipv4_agent((char *)addr, usessl, 1);
+ 		break;
+ 	default:
+-		c_log(LOG_ERROR, "unknown agent requested: %d\n", agent_type);
++		c_log(LOG_ERROR, "unknown agent requested: %d\n", agent_type);
+ 	}
+ 	return a;
+ }
+@@ -1105,7 +1105,7 @@
+ 			handlers[type] = h;
+ 		return 0;
+ 	} else {
+-		c_log(LOG_ERROR, "Attempt to register handler for event type %d, greater than max %d\n", type, MAX_EVENT);
++		c_log(LOG_ERROR, "Attempt to register handler for event type %d, greater than max %d\n", type, MAX_EVENT);
+ 	}
+ 	return -1;
+ }
+@@ -1127,7 +1127,7 @@
+ 
+ 	if (event_send(a, eh) < 0)
+ 	{
+-		DEBUG( c_log(LOG_WARNING, "Unable to send discover reply\n") );
++		DEBUG( c_log(LOG_WARNING, "Unable to send discover reply\n") );
+ 		return(0);
+ 	}
+ 	return(1);
+--- gui-canvas.c
++++ gui-canvas.c
+@@ -115,7 +115,7 @@
+ {
+ 	if(po == NULL || po->canvas == NULL)
+ 	{
+-		c_log(LOG_ERROR,"page_object was null\n");
++		c_log(LOG_ERROR,"page_object was null\n");
+ 		exit(1);
+ 	}
+ 		
+--- gui-handlers.c
++++ gui-handlers.c
+@@ -154,7 +154,7 @@
+ 
+ static int handle_error(event_hdr *h, event *e, agent *a)
+ {
+-	c_log(LOG_ERROR,"\nAgent reports: Error[%d] - %s", ntohs(e->error_r.error), ((char *)e) + sizeof(error_r));
++	c_log(LOG_ERROR,"\nAgent reports: Error[%d] - %s", ntohs(e->error_r.error), ((char *)e) + sizeof(error_r));
+ 	return(0);
+ }
+ 
+@@ -176,7 +176,7 @@
+ 		dd->cache = add_ip_cache(ntohl(dd->start_ip), dd->start);
+ 	
+ 	if (event_send(dd->a, eh) < 0) 
+-		c_log(LOG_WARNING, "Unable to send discover event\n");
++		c_log(LOG_WARNING, "Unable to send discover event\n");
+ 	else
+ 		done = 0;
+ 
+@@ -522,7 +522,7 @@
+ 	}
+ 	else
+ 	{
+-		DEBUG( c_log(LOG_NOTICE, "the net page does not exist anymore\n") );
++		DEBUG( c_log(LOG_NOTICE, "the net page does not exist anymore\n") );
+ 	}
+ 	
+ 	if(name)
+@@ -549,7 +549,7 @@
+ 	strcpy(END_OF_OPTION(&(ee->os_scan_e)), options_os_scan_ports);
+ 	
+ 	if (event_send(a, eh) < 0) 
+-		c_log(LOG_WARNING, "Unable to send OS-scan event\n");
++		c_log(LOG_WARNING, "Unable to send OS-scan event\n");
+ 	return(0);
+ }
+ 
+@@ -635,7 +635,7 @@
+ 					
+ 			default:
+ 				DEBUG( printf("unknown option\n") );
+-				c_log(LOG_ERROR,"\nWhat the h@#$ is this? handle_os_scan_reply\n");
++				c_log(LOG_ERROR,"\nWhat the h@#$ is this? handle_os_scan_reply\n");
+ 				break;
+ 		}
+ 		ptr += ntohl(opt->length);
+@@ -663,7 +663,7 @@
+ 	
+ 	DEBUG( printf("%s()\n", __FUNCTION__) );
+ 	if (event_send(a, eh) < 0) 
+-		c_log(LOG_WARNING, "Unable to send DNS Query event\n");
++		c_log(LOG_WARNING, "Unable to send DNS Query event\n");
+ 	return(0);
+ }
+ 
+@@ -671,7 +671,7 @@
+ int handle_dns_query_reply(event_hdr *h, event *e, agent *a)
+ {
+ 
+-	c_log(LOG_NOTICE, "i got a dns reply");		
++	c_log(LOG_NOTICE, "i got a dns reply");		
+ 
+ 	return(0);
+ }
+@@ -691,7 +691,7 @@
+ 	
+ 	DEBUG( printf("%s()\n", __FUNCTION__) );
+ 	if (event_send(a, eh) < 0) 
+-		c_log(LOG_WARNING, "Unable to send MAP ICMP event\n");
++		c_log(LOG_WARNING, "Unable to send MAP ICMP event\n");
+ 	return(0);
+ }
+ 
+@@ -705,10 +705,10 @@
+ 	page_object *po2;
+ 	
+ 	DEBUG(
+-		c_log(LOG_NOTICE, "i got a map icmp reply for %s\n", inet_ntoa(*(struct in_addr *)&dest) );		
+-		c_log(LOG_NOTICE, "  %s\tto %s\n", inet_ntoa( *(struct in_addr *)&ip1)
++		c_log(LOG_NOTICE, "i got a map icmp reply for %s\n", inet_ntoa(*(struct in_addr *)&dest) );		
++		c_log(LOG_NOTICE, "  %s\tto %s\n", inet_ntoa( *(struct in_addr *)&ip1)
+ 	                                , inet_ntoa( *(struct in_addr *)&ip2) );
+-		c_log(LOG_NOTICE, "  np = %p\n", np);
++		c_log(LOG_NOTICE, "  np = %p\n", np);
+ 	)
+ 
+ 	if(ip1 != ip2)
+@@ -732,13 +732,13 @@
+ 			
+ 		if( !(po1 = page_object_get_by_ip(np, ip1)) )
+ 		{
+-			c_log(LOG_NOTICE, "oops why did the po1 not get added?\n");
++			c_log(LOG_NOTICE, "oops why did the po1 not get added?\n");
+ 		}
+ 		else
+ 		{
+ 			if( !(po2 = page_object_get_by_ip(np, ip2)) )
+ 			{
+-				c_log(LOG_NOTICE, "oops why did the po2 not get added?\n");
++				c_log(LOG_NOTICE, "oops why did the po2 not get added?\n");
+ 			}
+ 			else
+ 			{
+@@ -768,7 +768,7 @@
+ 	
+ 	DEBUG( printf("%s()\n", __FUNCTION__) );
+ 	if (event_send(a, eh) < 0) 
+-		c_log(LOG_WARNING, "Unable to send PROBE event\n");
++		c_log(LOG_WARNING, "Unable to send PROBE event\n");
+ 	return(0);
+ }
+ 
+@@ -784,10 +784,10 @@
+ 	struct servent *service;
+ 	
+ 	DEBUG(
+-		c_log(LOG_NOTICE, "i got a probe reply for %s\n", inet_ntoa(*(struct in_addr *)&ip) );		
+-		c_log(LOG_NOTICE, "port %d\n", port);
+-		c_log(LOG_NOTICE, "np = %p\n", np);
+-		c_log(LOG_NOTICE, "version = '%s'\n", version);
++		c_log(LOG_NOTICE, "i got a probe reply for %s\n", inet_ntoa(*(struct in_addr *)&ip) );		
++		c_log(LOG_NOTICE, "port %d\n", port);
++		c_log(LOG_NOTICE, "np = %p\n", np);
++		c_log(LOG_NOTICE, "version = '%s'\n", version);
+ 	)
+ 
+ 	po = page_object_get_by_ip(np, ip);
+@@ -875,7 +875,7 @@
+ 	strcpy(ee->auth_request_e.password, password);
+ 	
+ 	if (event_send(a, eh) < 0) 
+-		c_log(LOG_WARNING, "Unable to send login event\n");
++		c_log(LOG_WARNING, "Unable to send login event\n");
+ 	
+ 	return(0);
+ }
+@@ -980,7 +980,7 @@
+ 		/* Try to register each of our shell items, but don't replace an existing
+ 		   handler */
+ 		if (event_register_handler(h->id, h->cb, 0)) 
+-			c_log(LOG_WARNING, "Unable to register handler for '%s'\n", h->desc);
++			c_log(LOG_WARNING, "Unable to register handler for '%s'\n", h->desc);
+ 		h++;
+ 	}
+ }
+--- gui-io.c
++++ gui-io.c
+@@ -53,7 +53,7 @@
+ 	
+ 	if(NULL == (l=malloc(sizeof(struct gtk_cheops_list))))
+ 	{
+-		c_log(LOG_ERROR,"NULL returned from a malloc");
++		c_log(LOG_ERROR,"NULL returned from a malloc");
+ 	}
+ 	l->fd = fd;
+ 	l->callback = callback;
+--- gui-pixmap.c
++++ gui-pixmap.c
+@@ -102,7 +102,7 @@
+ 	p = malloc(sizeof(os_pixmap_list_t));
+ 	if(!p)
+ 	{
+-		c_log(LOG_ERROR," we ran out of memory?");
++		c_log(LOG_ERROR," we ran out of memory?");
+ 		exit(1);
+ 	}
+ 	p->string = makestring(string);
+@@ -260,9 +260,9 @@
+ 		}
+ 	}
+ 
+-	c_log(LOG_ERROR, "Uh where are my images. looking for '%s'\n",filename);
++	c_log(LOG_ERROR, "Uh where are my images. looking for '%s'\n",filename);
+ 	for(c = &paths[0]; *c[0]; c++)
+-		c_log(LOG_ERROR, "   looked in '%s'\n",*c);
++		c_log(LOG_ERROR, "   looked in '%s'\n",*c);
+ 	return("");
+ }
+ 
+--- gui-service.c
++++ gui-service.c
+@@ -76,7 +76,7 @@
+ 	p = malloc(sizeof(service_list_t));
+ 	if(!p)
+ 	{
+-		c_log(LOG_ERROR," we ran out of memory?");
++		c_log(LOG_ERROR," we ran out of memory?");
+ 		exit(1);
+ 	}
+ 	p->name = makestring(name);
+--- gui-settings.c
++++ gui-settings.c
+@@ -165,7 +165,7 @@
+ 			ee->set_settings_e.flags = flags;
+ 			for(np = main_window->net_pages; np; np = np->next)
+ 				if (event_send(np->agent, eh) < 0) 
+-					c_log(LOG_WARNING, "Unable to send set settings event\n");
++					c_log(LOG_WARNING, "Unable to send set settings event\n");
+ 			break;
+ 			
+ 		case OPTIONS_USE_IP_FOR_LABEL:
+--- gui-viewspace.c
++++ gui-viewspace.c
+@@ -155,7 +155,7 @@
+ 	} 
+ 	else 
+ 	{
+-		c_log(LOG_ERROR, "Unable to connect to local agent\n");
++		c_log(LOG_ERROR, "Unable to connect to local agent\n");
+ 		return(0);
+ 	}
+ }
+--- io.c
++++ io.c
+@@ -72,7 +72,7 @@
+ 	 * -1 on failure
+ 	 */
+ 	void *tmp;
+-	DEBUG(c_log(LOG_DEBUG, "io_grow()\n"));
++	DEBUG(c_log(LOG_DEBUG, "io_grow()\n"));
+ 	maxfdcnt += GROW_SHRINK_SIZE;
+ 	tmp = realloc(ior, (maxfdcnt + 1) * sizeof(struct io_rec));
+ 	if (tmp) {
+@@ -108,7 +108,7 @@
+ 	 * with the given event mask, to call callback with
+ 	 * data as an argument.  Returns NULL on failure.
+ 	 */
+-	DEBUG(c_log(LOG_DEBUG, "cheops_io_add()\n"));
++	DEBUG(c_log(LOG_DEBUG, "cheops_io_add()\n"));
+ 	if (fdcnt < maxfdcnt) {
+ 		/* 
+ 		 * We don't have enough space for this entry.  We need to
+@@ -179,7 +179,7 @@
+ {
+ 	if (current_ioc == *id) 
+ 	{
+-		DEBUG(c_log(LOG_NOTICE, "Callback for %d tried to remove itself\n", *id));
++		DEBUG(c_log(LOG_NOTICE, "Callback for %d tried to remove itself\n", *id));
+ 		remove_current_ioc = 1;
+ 	} 
+ 	else
+@@ -190,7 +190,7 @@
+ 		}
+ 		else 
+ 		{
+-			DEBUG(c_log(LOG_NOTICE, "Unable to remove unknown id %d\n", *id));
++			DEBUG(c_log(LOG_NOTICE, "Unable to remove unknown id %d\n", *id));
+ 		}
+ 	}
+ 
+@@ -206,7 +206,7 @@
+ 	 */
+ 	int res;
+ 	int x;
+-	DEBUG(c_log(LOG_DEBUG, "cheops_io_wait()\n"));
++	DEBUG(c_log(LOG_DEBUG, "cheops_io_wait()\n"));
+ 	res = poll(fds, fdcnt, howlong); // if we are using pth this is a pth call
+ 	if (res > 0) {
+ 		/*
+@@ -238,18 +238,18 @@
+ 	 * the logger interface
+ 	 */
+ 	int x;
+-	c_log(LOG_DEBUG, "Cheops IO Dump: %d entries, %d max entries\n", fdcnt, maxfdcnt);
+-	c_log(LOG_DEBUG, "================================================\n");
+-	c_log(LOG_DEBUG, "| ID    FD     Callback    Data        Events  |\n");
+-	c_log(LOG_DEBUG, "+------+------+-----------+-----------+--------+\n");
++	c_log(LOG_DEBUG, "Cheops IO Dump: %d entries, %d max entries\n", fdcnt, maxfdcnt);
++	c_log(LOG_DEBUG, "================================================\n");
++	c_log(LOG_DEBUG, "| ID    FD     Callback    Data        Events  |\n");
++	c_log(LOG_DEBUG, "+------+------+-----------+-----------+--------+\n");
+ 	for (x=0;x<fdcnt;x++) {
+-		c_log(LOG_DEBUG, "| %.4d | %.4d | %p | %p | %.6x |\n", 
++		c_log(LOG_DEBUG, "| %.4d | %.4d | %p | %p | %.6x |\n", 
+ 				*ior[x].id,
+ 				fds[x].fd,
+ 				ior[x].callback,
+ 				ior[x].data,
+ 				fds[x].events);
+ 	}
+-	c_log(LOG_DEBUG, "================================================\n");
++	c_log(LOG_DEBUG, "================================================\n");
+ }
+ 
+--- logger.c
++++ logger.c
+@@ -32,7 +32,7 @@
+ 	"ERROR"
+ };
+ 
+-extern void c_log(int level, const char *file, int line, const char *function, const char *fmt, ...)
++extern void c_log(int level, const char *file, int line, const char *function, const char *fmt, ...)
+ {
+ 	va_list ap;
+ 	va_start(ap, fmt);
+--- logger.h
++++ logger.h
+@@ -23,13 +23,14 @@
+ 	a; \
+ }
+ 
+-extern void c_log(int level, const char *file, int line, const char *function, const char *fmt, ...);
++extern void c_log(int level, const char *file, int line,
++		  const char *function, const char *fmt, ...) __attribute__((format(printf,5,6)));
+ 
+ #define _A_ __FILE__, __LINE__, __PRETTY_FUNCTION__
+ 
+ #define LOG_DEBUG	0, _A_
+-#define LOG_NOTICE  1, _A_
+-#define LOG_WARNING 2, _A_
++#define LOG_NOTICE	1, _A_
++#define LOG_WARNING	2, _A_
+ #define LOG_ERROR	3, _A_
+ 
+ #endif
+--- misc.c
++++ misc.c
+@@ -38,7 +38,7 @@
+ 	c = getenv("HOME");
+ 	if (!c) {
+ 		/* This is extremely important to everything */
+-		c_log(LOG_ERROR, "No home directory!\n");
++		c_log(LOG_ERROR, "No home directory!\n");
+ 		exit(1);
+ 	}
+ 	snprintf(buf, sizeof(buf), "%s/.cheops", c);
+--- sched.c
++++ sched.c
+@@ -123,7 +123,7 @@
+ 	 */
+ 	struct timeval tv;
+ 	int ms;
+-	DEBUG(c_log(LOG_DEBUG, "cheops_sched_wait()\n"));
++	DEBUG(c_log(LOG_DEBUG, "cheops_sched_wait()\n"));
+ 	if (!schedq)
+ 		return -1;
+ 	if (gettimeofday(&tv, NULL) < 0) {
+@@ -170,7 +170,7 @@
+ {
+ 	if (gettimeofday(tv, NULL) < 0) {
+ 			/* This shouldn't ever happen, but let's be sure */
+-			c_log(LOG_NOTICE, "gettimeofday() failed!\n");
++			c_log(LOG_NOTICE, "gettimeofday() failed!\n");
+ 			return -1;
+ 	}
+ 	tv->tv_sec += when/1000;
+@@ -188,9 +188,9 @@
+ 	 * Schedule callback(data) to happen when ms into the future
+ 	 */
+ 	struct sched *tmp;
+-	DEBUG(c_log(LOG_DEBUG, "cheops_sched_add()\n"));
++	DEBUG(c_log(LOG_DEBUG, "cheops_sched_add()\n"));
+ 	if (!when) {
+-		c_log(LOG_NOTICE, "Scheduled event in 0 ms?");
++		c_log(LOG_NOTICE, "Scheduled event in 0 ms?");
+ 		return -1;
+ 	}
+ 	if ((tmp = sched_alloc())) {
+@@ -221,7 +221,7 @@
+ 	 * id.
+ 	 */
+ 	struct sched *last=NULL, *s;
+-	DEBUG(c_log(LOG_DEBUG, "cheops_sched_del()\n"));
++	DEBUG(c_log(LOG_DEBUG, "cheops_sched_del()\n"));
+ USE_PTHREAD(pthread_mutex_lock(&sched_mutex));
+ 	s = schedq;
+ 	while(s) {
+@@ -239,7 +239,7 @@
+ 	}
+ USE_PTHREAD(pthread_mutex_unlock(&sched_mutex));
+ 	
+-	c_log(LOG_NOTICE, "Attempted to delete non-existant schedule entry %d!\n", id);
++	c_log(LOG_NOTICE, "Attempted to delete non-existant schedule entry %d!\n", id);
+ 	return -1;
+ }
+ 
+@@ -253,11 +253,11 @@
+ 	struct timeval tv;
+ 	time_t s, ms;
+ 	gettimeofday(&tv, NULL);
+-	c_log(LOG_DEBUG, "Cheops Schedule Dump (%d in Q, %d Total, %d Cache)\n", 
++	c_log(LOG_DEBUG, "Cheops Schedule Dump (%d in Q, %d Total, %d Cache)\n", 
+ 							 schedcnt, eventcnt - 1, schedccnt);
+-	c_log(LOG_DEBUG, "=================================================\n");
+-	c_log(LOG_DEBUG, "|ID    Callback    Data        Time  (sec:ms)   |\n");
+-	c_log(LOG_DEBUG, "+-----+-----------+-----------+-----------------+\n");
++	c_log(LOG_DEBUG, "=================================================\n");
++	c_log(LOG_DEBUG, "|ID    Callback    Data        Time  (sec:ms)   |\n");
++	c_log(LOG_DEBUG, "+-----+-----------+-----------+-----------------+\n");
+ USE_PTHREAD(pthread_mutex_lock(&sched_mutex));
+ 	q = schedq;
+ 	while(q) {
+@@ -267,7 +267,7 @@
+ 			ms += 1000000;
+ 			s--;
+ 		}
+-		c_log(LOG_DEBUG, "|%.4d | %p | %p | %.6ld : %.6ld |\n", 
++		c_log(LOG_DEBUG, "|%.4d | %p | %p | %.6ld : %.6ld |\n", 
+ 				q->id,
+ 				q->callback,
+ 				q->data,
+@@ -276,7 +276,7 @@
+ 		q=q->next;
+ 	}
+ USE_PTHREAD(pthread_mutex_unlock(&sched_mutex));
+-	c_log(LOG_DEBUG, "=================================================\n");
++	c_log(LOG_DEBUG, "=================================================\n");
+ 	
+ }
+ 
+@@ -288,14 +288,14 @@
+ 	struct sched *current;
+ 	struct timeval tv;
+ 	int x=0;
+-	DEBUG(c_log(LOG_DEBUG, "cheops_sched_runq()\n"));
++	DEBUG(c_log(LOG_DEBUG, "cheops_sched_runq()\n"));
+ 		
+ 	for(;;) {
+ 		if (!schedq)
+ 			break;
+ 		if (gettimeofday(&tv, NULL)) {
+ 			/* This should never happen */
+-			c_log(LOG_NOTICE, "gettimeofday() failed!\n");
++			c_log(LOG_NOTICE, "gettimeofday() failed!\n");
+ 			return 0;
+ 		}
+ 		/* We only care about millisecond accuracy anyway, so this will
+--- script.c
++++ script.c
+@@ -58,7 +58,7 @@
+ 	s = malloc(sizeof(script_t));
+ 	if(!s)
+ 	{
+-		c_log(LOG_ERROR," we ran out of memory?");
++		c_log(LOG_ERROR," we ran out of memory?");
+ 		exit(1);
+ 	}
+ 	memset(s, 0, sizeof(*s));
+--- test-icmp.c
++++ test-icmp.c
+@@ -87,13 +87,13 @@
+ /* initalize the ping_socket */
+ 		if(!(proto = getprotobyname("icmp")))
+ 		{
+-			c_log(LOG_DEBUG,"socket error\n");
++			c_log(LOG_DEBUG,"socket error\n");
+ 			exit(1);
+ 		}
+ 		
+ 		if((ping_socket = socket(AF_INET, SOCK_RAW, proto->p_proto)) < 0)
+ 		{
+-			c_log(LOG_DEBUG,"socket error\n");
++			c_log(LOG_DEBUG,"socket error\n");
+ 			exit(1);
+ 		}
+ 		hold = 48 * 1024;
+@@ -118,9 +118,9 @@
+ 	sent = sendto(ping_socket, buf, len, 0, (struct sockaddr *)&to, sizeof(to));
+ 	if (sent < 0 || sent != len)
+ 	{
+-		DEBUG( c_log(LOG_DEBUG,"wrote %s %d chars, ret = %d\n",inet_ntoa(to.sin_addr), len, sent) );
++		DEBUG( c_log(LOG_DEBUG,"wrote %s %d chars, ret = %d\n",inet_ntoa(to.sin_addr), len, sent) );
+ 		if (sent < 0)
+-			c_log(LOG_DEBUG,"sendto error %s for %s\n",strerror(errno), inet_ntoa(to.sin_addr));
++			c_log(LOG_DEBUG,"sendto error %s for %s\n",strerror(errno), inet_ntoa(to.sin_addr));
+ 	}				
+ 
+ }

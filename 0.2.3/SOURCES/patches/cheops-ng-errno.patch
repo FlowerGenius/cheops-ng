@@ -1,0 +1,10 @@
+--- cheops-ng-0.1.10/agent-discover.c.orig	2003-02-11 21:52:06.000000000 +0100
++++ cheops-ng-0.1.10/agent-discover.c	2003-02-11 21:52:37.000000000 +0100
+@@ -47,6 +47,7 @@
+ #include "agent-discover.h"
+ #include "ip_utils.h"
+ #include "cache.h"
++#include <errno.h>
+ 
+ //#define DEBUG_DISCOVER
+ 

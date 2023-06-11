@@ -1,0 +1,50 @@
+--- agent-map.c
++++ agent-map.c
+@@ -45,6 +45,7 @@
+ #include <sys/sockio.h>
+ #include <errno.h>
+ #else 
++#include <time.h>
+ #include <sys/time.h>
+ #include <stdio.h>
+ #include <unistd.h>
+--- event.c
++++ event.c
+@@ -337,7 +337,8 @@
+ 		{
+ 			if (ntohl(h->len) > sizeof(a->buffer)) {
+ 				c_log(LOG_WARNING,
+-				        "event too large: %d bytes (max = %d)\n", ntohl(h->len), sizeof(a->buffer));
++				        "event too large: %d bytes (max = %lu)\n",
++				        ntohl(h->len), (unsigned long)sizeof(a->buffer));
+ 				return 0;
+ 			}
+ 			a->expected_length = ntohl(h->len);
+@@ -371,7 +372,8 @@
+ 		{
+ 			if (ntohl(h->len) > sizeof(a->buffer)) {
+ 				c_log(LOG_WARNING,
+-				        "event too large: %d bytes (max = %d)\n", ntohl(h->len), sizeof(a->buffer));
++				        "event too large: %d bytes (max = %ul)\n",
++				        ntohl(h->len), (unsigned long)sizeof(a->buffer));
+ 				return 0;
+ 			}
+ 			a->expected_length = ntohl(h->len);
+@@ -391,7 +393,7 @@
+ 		else if (ntohs(h->hlen) > ntohl(h->len)) 
+ 		{
+ 			c_log(LOG_WARNING,
+-				"Message header longer than message itself?\n", ntohs(h->type));
++				"Message header longer than message itself?\n");
+ 		} 
+ 		else 
+ 		{
+@@ -1012,7 +1014,7 @@
+ 	}
+ 	if(ret != length)
+ 	{
+-		fprintf(stderr, "agent_write(): did not write %d but %s\n", length, ret);
++		fprintf(stderr, "agent_write(): did not write %d but %d\n", length, ret);
+ 	}
+ 	return(ret);
+ }

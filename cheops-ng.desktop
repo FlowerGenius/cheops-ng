@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Cheops-ng
-Comment=A Gnome network mapper, OS/port scanner, and monitoring program
-Exec=cheops-ng 
-Icon=cheops-ng.xpm
-Info=Cheops-ng
-Terminal=0
-Type=Application

@@ -1,0 +1,11 @@
+--- gui-settings.c
++++ gui-settings.c
+@@ -665,7 +665,7 @@
+ 			ptrs[2] = gtk_entry_get_text(GTK_ENTRY(GTK_COMBO(shared_w)->entry));
+ 			flags = (strcmp(ptrs[2],"yes")==0 ? SCRIPT_FLAGS_VIEWABLE : 0);
+ 
+-			if( (ptrs[0] && strlen(ptrs[0])) && (ptrs[1] && strlen(ptrs[1])) && (ptrs[3] && strlen(ptrs[3])))
++			if( (ptrs[0] && strlen(ptrs[0])) && (ptrs[1] && strlen(ptrs[1])) && (ptrs[2] && strlen(ptrs[2])))
+ 			{
+ 				if(script)
+ 				{

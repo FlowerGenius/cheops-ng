@@ -1,0 +1,4 @@
+
+./configure
+gmake
+gmake install

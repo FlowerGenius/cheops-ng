@@ -1,0 +1,14 @@
+--- cheops-ng-0.2.3/configure.in~	2011-05-25 22:48:38.454218225 +0200
++++ cheops-ng-0.2.3/configure.in	2011-05-25 22:48:42.115172458 +0200
+@@ -301,11 +301,9 @@ dnl AC_C_BIGENDIAN
+ AC_MSG_CHECKING([if struct in_addr is a wacky huge structure (some Sun boxes)])
+ 
+ AC_TRY_COMPILE([#include <netinet/in.h>], struct in_addr i; i._S_un._S_addr;, \
+-              AC_DEFINE(IN_ADDR_DEEPSTRUCT) \
+               AC_MSG_RESULT(yes) , \
+               AC_TRY_COMPILE([#include <sys/types.h>
+ #include <netinet/in.h>], struct in_addr i; i.S_un.S_addr;, \
+-                             AC_DEFINE(IN_ADDR_DEEPSTRUCT) \
+                              AC_MSG_RESULT(yes) , \
+                              AC_MSG_RESULT(no);))
+ 

@@ -1,0 +1,23 @@
+--- configure.in
++++ configure.in
+@@ -1,8 +1,8 @@
+ dnl Process this file with autoconf to produce a configure script.
+-AC_INIT(cheops-gui.c)
+-
++AC_PREREQ(2.54)
++AC_INIT(cheops-ng, 0.2.3, toopriddy@mailcity.com)
+ AC_CONFIG_HEADER(config.h)
+-
++AC_CONFIG_FILES([Makefile cheops-ng.spec cheops-ng-static.spec])
+ AC_SITE_LOAD()
+ 
+ AH_TEMPLATE([BSD_NETWORKING], [Define if we have BSD style networking])
+@@ -407,7 +407,7 @@
+ AC_PATH_PROG(nmap_exists, nmap, no)
+ CHEOPS_DIR="$datadir/cheops-ng"
+ AC_DEFINE(CHEOPS_DIR)
+-AC_OUTPUT([Makefile cheops-ng.spec cheops-ng-static.spec])
++AC_OUTPUT()
+ 
+ if test "x$nmap_exists" = "xno"; then
+ 	echo "#################################################"

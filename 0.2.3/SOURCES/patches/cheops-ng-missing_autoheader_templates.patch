@@ -1,0 +1,49 @@
+--- configure.in
++++ configure.in
+@@ -5,6 +5,27 @@
+ 
+ AC_SITE_LOAD()
+ 
++AH_TEMPLATE([BSD_NETWORKING], [Define if we have BSD style networking])
++AH_TEMPLATE([CHEOPS_DIR], [Define the cheops-NG data directory])
++AH_TEMPLATE([CHEOPS_IP_CSUM], [Define if struct ip in netinet/ip.h has member ip_csum])
++AH_TEMPLATE([CHEOPS_IP_SUM], [Define if struct ip in netinet/ip.h has member ip_sum])
++AH_TEMPLATE([HAS_SSL], [Define if we have SSL])
++AH_TEMPLATE([HAVE_SOCKADDR_SA_LEN], [Define if struct suckaddr has a member sa_len])
++AH_TEMPLATE([HAVE_STRUCT_ICMP], [Define if struct icmp exists])
++AH_TEMPLATE([HAVE_STRUCT_IP], [Define if struct ip exists])
++AH_TEMPLATE([IN_ADDR_DEEPSTRUCT] ,[Define if struct in_addr is a wacky huge structure])
++AH_TEMPLATE([PCAP_TIMEOUT_IGNORED], [Define if libpcap ignores the timeout])
++AH_TEMPLATE([SPRINTF_RETURNS_STRING], [Define if sprintf returns a string])
++AH_TEMPLATE([STUPID_SOLARIS_CHECKSUM_BUG], [Define if the Solaris checksum bug is present])
++AH_TEMPLATE([BSDI], [Define if this is BSDI])
++AH_TEMPLATE([FREEBSD], [Define if this is a FreeBSD variant])
++AH_TEMPLATE([IRIX], [Define if this is Irix])
++AH_TEMPLATE([LINUX], [Define if this is Linux])
++AH_TEMPLATE([NETBSD], [Define if this is NetBSB])
++AH_TEMPLATE([OPENBSD], [Define if this is OpenBSD])
++AH_TEMPLATE([SOLARIS], [Define if this is Solaris])
++AH_TEMPLATE([SUNOS], [Define if this is SunOS])
++
+ dnl Checks for programs.
+ AC_PROG_CC
+  if test -n "$GCC"; then
+@@ -161,6 +182,7 @@
+ AC_HEADER_TIME
+ AC_STRUCT_TM
+ 
++
+ AC_MSG_CHECKING([for the openssl library])
+ AC_TRY_COMPILE([#include <openssl/ssl.h>
+ #include <openssl/err.h>
+--- m4/gnome-x-checks.m4
++++ m4/gnome-x-checks.m4
+@@ -66,7 +66,7 @@
+ 	fi
+ 
+ 	if test "$GNOME_HAVE_SM" = true; then
+-	   AC_DEFINE(HAVE_LIBSM)
++	   AC_DEFINE(HAVE_LIBSM, [], [Define if we have libSM])
+ 	fi
+ 
+ 	XPM_LIBS=""

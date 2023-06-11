@@ -1,0 +1,14 @@
+Discription of Event Management
+Last Updated by Mark Spencer, Jan 9, 1999
+===============================
+
+Events are the core method of communication within cheops, both between
+agents, and between GUI interfaces and their primary agent.
+
+An event begins with a length, reporting the size of the event, a header
+length, a type, and a flag.  It may optionally include a sockaddr
+structure if a proxy request is made by asserting the FLAG_PROXY in the
+flags section.
+
+The actual contents of the event are specific to the kind of event that is
+involved.  The contents of events are well described in "event.h".

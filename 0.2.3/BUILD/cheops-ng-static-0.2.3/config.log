@@ -1,0 +1,278 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:577: checking for gcc
+configure:690: checking whether the C compiler (gcc  ) works
+configure:706: gcc -o conftest    conftest.c  1>&5
+configure:732: checking whether the C compiler (gcc  ) is a cross-compiler
+configure:737: checking whether we are using GNU C
+configure:746: gcc -E conftest.c
+configure:765: checking whether gcc accepts -g
+configure:830: checking for a BSD compatible install
+configure:885: checking for ranlib
+configure:920: checking host system type
+configure:947: checking for flex
+configure:982: checking for lex
+configure:1023: checking for bison
+configure:1058: checking for yacc
+configure:1252: checking for adns_processany in -ladns
+configure:1271: gcc -o conftest -g -O2 -Wall    conftest.c -ladns   1>&5
+configure:1300: checking for initscr in -lncurses
+configure:1319: gcc -o conftest -g -O2 -Wall    conftest.c -lncurses  -ladns  1>&5
+/usr/bin/ld: cannot find -lncurses
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 1308 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char initscr();
+
+int main() {
+initscr()
+; return 0; }
+configure:1350: checking for pthread_create in -lpthread
+configure:1369: gcc -o conftest -g -O2 -Wall    conftest.c -lpthread  -ladns  1>&5
+configure:1496: checking for inet_ntoa in -lnsl
+configure:1515: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl  -lpthread -ladns  1>&5
+configure:1545: checking for socket in -lsocket
+configure:1564: gcc -o conftest -g -O2 -Wall    conftest.c -lsocket  -lnsl -lpthread -ladns  1>&5
+/usr/bin/ld: cannot find -lsocket
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 1553 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char socket();
+
+int main() {
+socket()
+; return 0; }
+configure:1594: checking how to run the C preprocessor
+configure:1615: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1674: checking for ANSI C header files
+configure:1687: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1754: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure: In function 'main':
+configure:1749:1: warning: implicit declaration of function 'exit'
+configure:1749:67: warning: incompatible implicit declaration of built-in function 'exit'
+configure:1781: checking for fcntl.h
+configure:1791: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1781: checking for malloc.h
+configure:1791: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1781: checking for strings.h
+configure:1791: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1781: checking for sys/ioctl.h
+configure:1791: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1781: checking for sys/time.h
+configure:1791: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1781: checking for unistd.h
+configure:1791: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1781: checking for adsf.h
+configure:1791: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1787:18: fatal error: adsf.h: No such file or directory
+compilation terminated.
+configure: failed program was:
+#line 1786 "configure"
+#include "confdefs.h"
+#include <adsf.h>
+configure:1819: checking for working const
+configure:1873: gcc -c -g -O2 -Wall   conftest.c 1>&5
+configure: In function 'main':
+configure:1847:15: warning: unused variable 's'
+configure:1867:13: warning: unused variable 'foo'
+configure:1835:27: warning: unused variable 'zero'
+configure:1829:39: warning: unused variable 'x'
+configure:1849:8: warning: 't' is used uninitialized in this function
+configure:1864:21: warning: 'b' is used uninitialized in this function
+configure:1894: checking for inline
+configure:1908: gcc -c -g -O2 -Wall   conftest.c 1>&5
+configure:1904:10: warning: return type defaults to 'int'
+configure: In function 'main':
+configure:1904:1: warning: control reaches end of non-void function
+configure:1934: checking for pid_t
+configure:1967: checking for size_t
+configure:2000: checking whether time.h and sys/time.h may both be included
+configure:2014: gcc -c -g -O2 -Wall   conftest.c 1>&5
+configure: In function 'main':
+configure:2010:12: warning: unused variable 'tp'
+configure:2035: checking whether struct tm is in sys/time.h or time.h
+configure:2048: gcc -c -g -O2 -Wall   conftest.c 1>&5
+configure: In function 'main':
+configure:2044:16: warning: statement with no effect
+configure:2070: checking for the openssl library
+configure:2081: gcc -c -g -O2 -Wall   conftest.c 1>&5
+configure:2073:25: fatal error: openssl/ssl.h: No such file or directory
+compilation terminated.
+configure: failed program was:
+#line 2072 "configure"
+#include "confdefs.h"
+#include <openssl/ssl.h>
+#include <openssl/err.h>
+#include <openssl/rand.h>
+int main() {
+SSL_CTX ctx;
+; return 0; }
+configure:2100: checking struct ip
+configure:2112: gcc -c -g -O2 -Wall   conftest.c 1>&5
+configure: In function 'main':
+configure:2108:11: warning: unused variable 'ip'
+configure:2129: checking ip_v in struct ip
+configure:2141: gcc -c -g -O2 -Wall   conftest.c 1>&5
+configure: In function 'main':
+configure:2137:15: warning: statement with no effect
+configure:2193: checking if struct ip has member ip_csum
+configure:2206: gcc -c -g -O2 -Wall   conftest.c 1>&5
+configure: In function 'main':
+configure:2202:3: error: 'struct ip' has no member named 'ip_csum'
+configure: failed program was:
+#line 2198 "configure"
+#include "confdefs.h"
+#include<netinet/ip.h>
+struct ip ip;
+int main() {
+ip.ip_csum=0;
+; return 0; }
+configure:2222: checking if struct ip has member ip_sum
+configure:2235: gcc -c -g -O2 -Wall   conftest.c 1>&5
+configure:2285: checking if sockaddr{} has sa_len member
+configure:2299: gcc -c -g -O2 -Wall   conftest.c 1>&5
+configure: In function 'main':
+configure:2295:47: error: 'struct sockaddr' has no member named 'sa_len'
+configure:2295:14: warning: unused variable 'i'
+configure: failed program was:
+#line 2290 "configure"
+#include "confdefs.h"
+
+#               include <sys/types.h>
+#               include <sys/socket.h>
+int main() {
+unsigned int i = sizeof(((struct sockaddr *)0)->sa_len)
+; return 0; }
+configure:2321: checking if struct in_addr is a wacky huge structure (some Sun boxes)
+configure:2331: gcc -c -g -O2 -Wall   conftest.c 1>&5
+configure: In function 'main':
+configure:2327:20: error: 'struct in_addr' has no member named '_S_un'
+configure: failed program was:
+#line 2324 "configure"
+#include "confdefs.h"
+#include <netinet/in.h>
+int main() {
+struct in_addr i; i._S_un._S_addr;
+; return 0; }
+configure:2353: gcc -c -g -O2 -Wall   conftest.c 1>&5
+configure: In function 'main':
+configure:2349:20: error: 'struct in_addr' has no member named 'S_un'
+configure: failed program was:
+#line 2345 "configure"
+#include "confdefs.h"
+#include <sys/types.h>
+#include <netinet/in.h>
+int main() {
+struct in_addr i; i.S_un.S_addr;
+; return 0; }
+configure:2373: checking if struct icmp exists
+configure:2394: gcc -c -g -O2 -Wall   conftest.c 1>&5
+configure:2384:0: warning: "__USE_BSD" redefined
+/usr/include/features.h:292:0: note: this is the location of the previous definition
+configure: In function 'main':
+configure:2390:14: warning: unused variable 'i'
+configure:2415: checking if struct ip exists
+configure:2435: gcc -c -g -O2 -Wall   conftest.c 1>&5
+configure:2426:0: warning: "__USE_BSD" redefined
+/usr/include/features.h:292:0: note: this is the location of the previous definition
+configure: In function 'main':
+configure:2431:14: warning: unused variable 'i'
+configure:2458: checking for bzero
+configure:2486: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2470:6: warning: conflicting types for built-in function 'bzero'
+configure:2458: checking for snprintf
+configure:2486: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2470:6: warning: conflicting types for built-in function 'snprintf'
+configure:2458: checking for memcpy
+configure:2486: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2470:6: warning: conflicting types for built-in function 'memcpy'
+configure:2458: checking for usleep
+configure:2486: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2458: checking for nanosleep
+configure:2486: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2458: checking for strerror
+configure:2486: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2512: checking for snprintf
+configure:2563: checking for inet_aton
+configure:2591: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2615: checking whether gcc needs -traditional
+configure:2661: checking return type of signal handlers
+configure:2683: gcc -c -g -O2 -Wall   conftest.c 1>&5
+configure: In function 'main':
+configure:2679:5: warning: unused variable 'i'
+configure:2702: checking for vprintf
+configure:2730: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2714:6: warning: conflicting types for built-in function 'vprintf'
+configure:2809: checking for getcwd
+configure:2837: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2809: checking for gethostname
+configure:2837: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2809: checking for gettimeofday
+configure:2837: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2809: checking for mkdir
+configure:2837: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2809: checking for select
+configure:2837: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2809: checking for socket
+configure:2837: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2809: checking for strdup
+configure:2837: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2821:6: warning: conflicting types for built-in function 'strdup'
+configure:2809: checking for strerror
+configure:2809: checking for strstr
+configure:2837: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2821:6: warning: conflicting types for built-in function 'strstr'
+configure:2809: checking for strtol
+configure:2837: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2809: checking for strtoul
+configure:2837: gcc -o conftest -g -O2 -Wall    conftest.c -lnsl -lpthread -ladns  1>&5
+configure:2917: checking for gnome-config
+configure:2954: checking if /usr/bin/gnome-config works
+configure:2962: checking for orbit-config
+configure:2998: checking for orbit-idl
+configure:3032: checking for working ORBit environment
+configure:3068: checking for gnorba libraries
+configure:3152: checking extra library gnome
+configure:3172: checking for pthread_create in -lpthread
+configure:3396: checking for gtk-config
+configure:3431: checking for GTK - version >= 1.2.0
+configure:3532: gcc -o conftest -g -O2 -Wall  -I/usr/include/gtk-1.2 -I/usr/include/glib-1.2 -I/usr/lib64/glib/include   conftest.c -L/usr/lib64 -lgtk -lgdk -rdynamic -lgmodule -ldl -lglib -lXi -lXext -lX11 -lm -lnsl -lpthread -ladns  1>&5
+configure:3635: checking for SmcSaveYourselfDone in -lSM
+configure:3654: gcc -o conftest -g -O2 -Wall   -I/usr/include/gtk-1.2 -I/usr/include/glib-1.2 -I/usr/lib64/glib/include  -L/usr/lib64 -lgtk -lgdk -rdynamic -lgmodule -ldl -lglib -lXi -lXext -lX11 -lm conftest.c -lSM  -lICE -lnsl -lpthread -ladns  1>&5
+configure:3683: checking for X11/SM/SMlib.h
+configure:3693: gcc -E  -I/usr/include/gtk-1.2 -I/usr/include/glib-1.2 -I/usr/lib64/glib/include conftest.c >/dev/null 2>conftest.out
+configure:3731: checking for XpmFreeXpmImage in -lXpm
+configure:3750: gcc -o conftest -g -O2 -Wall   -I/usr/include/gtk-1.2 -I/usr/include/glib-1.2 -I/usr/lib64/glib/include  -L/usr/lib64 -lgtk -lgdk -rdynamic -lgmodule -ldl -lglib -lXi -lXext -lX11 -lm conftest.c -lXpm  -lnsl -lpthread -ladns  1>&5
+/usr/bin/ld: cannot find -lXpm
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3739 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char XpmFreeXpmImage();
+
+int main() {
+XpmFreeXpmImage()
+; return 0; }
+configure:3830: checking for gtk-config
+configure:3865: checking for GTK - version >= 1.2.0
+configure:3966: gcc -o conftest -g -O2 -Wall  -I/usr/include/gnome-1.0 -DNEED_GNOMESUPPORT_H -I/usr/lib64/gnome-libs/include -I/usr/include/glib-1.2 -I/usr/lib64/glib/include -I/usr/include/orbit-1.0 -I/usr/include/gtk-1.2 -I/usr/include/gtk-1.2 -I/usr/include/glib-1.2 -I/usr/lib64/glib/include  -I/usr/include/gtk-1.2 -I/usr/include/glib-1.2 -I/usr/lib64/glib/include  conftest.c -L/usr/lib64 -lgtk -lgdk -rdynamic -lgmodule -ldl -lglib -lXi -lXext -lX11 -lm -lnsl -lpthread -ladns  -lSM -lICE -L/usr/lib64 -lgtk -lgdk -rdynamic -lgmodule -ldl -lglib -lXi -lXext -lX11 -lm -rdynamic  -rdynamic -lgnomeui -lart_lgpl -lgdk_imlib -lSM -lICE -lgtk -lgdk -lgmodule -ldl -lXi -lXext -lX11 -lgnome -lgnomesupport -lesd -laudiofile -lm -lglib 1>&5
+configure:4102: checking for glib-config
+configure:4137: checking for GLIB - version >= 1.2.0
+configure:4236: gcc -o conftest -g -O2 -Wall  -I/usr/include/gnome-1.0 -DNEED_GNOMESUPPORT_H -I/usr/lib64/gnome-libs/include -I/usr/include/glib-1.2 -I/usr/lib64/glib/include -I/usr/include/orbit-1.0 -I/usr/include/gtk-1.2 -I/usr/include/gtk-1.2 -I/usr/include/glib-1.2 -I/usr/lib64/glib/include -I/usr/include/glib-1.2 -I/usr/lib64/glib/include  -I/usr/include/gtk-1.2 -I/usr/include/glib-1.2 -I/usr/lib64/glib/include  conftest.c -L/usr/lib64 -lglib -lnsl -lpthread -ladns  -lSM -lICE -L/usr/lib64 -lgtk -lgdk -rdynamic -lgmodule -ldl -lglib -lXi -lXext -lX11 -lm -rdynamic  -rdynamic -lgnomeui -lart_lgpl -lgdk_imlib -lSM -lICE -lgtk -lgdk -lgmodule -ldl -lXi -lXext -lX11 -lgnome -lgnomesupport -lesd -laudiofile -lm -lglib -L/usr/lib64 -lgtk -lgdk -rdynamic -lgmodule -ldl -lglib -lXi -lXext -lX11 -lm 1>&5
+configure:4360: checking for imlib-config
+configure:4395: checking for IMLIB - version >= 1.9.0
+configure:4478: gcc -o conftest -g -O2 -Wall  -I/usr/include/gnome-1.0 -DNEED_GNOMESUPPORT_H -I/usr/lib64/gnome-libs/include -I/usr/include/glib-1.2 -I/usr/lib64/glib/include -I/usr/include/orbit-1.0 -I/usr/include/gtk-1.2 -I/usr/include/gtk-1.2 -I/usr/include/glib-1.2 -I/usr/lib64/glib/include -I/usr/include/glib-1.2 -I/usr/lib64/glib/include   -I/usr/include/gtk-1.2 -I/usr/include/glib-1.2 -I/usr/lib64/glib/include  conftest.c -lnsl -lpthread -ladns  -lSM -lICE -L/usr/lib64 -lgtk -lgdk -rdynamic -lgmodule -ldl -lglib -lXi -lXext -lX11 -lm -rdynamic  -rdynamic -lgnomeui -lart_lgpl -lgdk_imlib -lSM -lICE -lgtk -lgdk -lgmodule -ldl -lXi -lXext -lX11 -lgnome -lgnomesupport -lesd -laudiofile -lm -lglib -L/usr/lib64 -lgtk -lgdk -rdynamic -lgmodule -ldl -lglib -lXi -lXext -lX11 -lm -L/usr/lib64 -lglib -lImlib -ljpeg -ltiff -lgif -lpng -lm -lXext -lSM -lICE -lXext -lX11 1>&5
+configure:4570: checking for xml-config
+configure:4617: checking for nmap

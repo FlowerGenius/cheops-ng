@@ -1,0 +1,115 @@
+
+#include "cheops-config.h"
+
+#undef HAVE_STRUCT_IP
+
+#undef HAVE_USLEEP
+
+#undef HAVE_NANOSLEEP
+
+#undef HAVE_STRUCT_ICMP
+
+#undef inline
+
+#undef STDC_HEADERS
+
+#undef HAVE_STRING_H
+
+#undef HAVE_STRINGS_H
+
+#undef HAVE_BSTRING_H
+
+#undef WORDS_BIGENDIAN
+
+#undef HAVE_MEMORY_H
+
+/* both bzero() and memcpy() are used in the source */
+#undef HAVE_BZERO
+#undef HAVE_MEMCPY
+#undef HAVE_STRERROR
+
+#undef HAVE_SYS_PARAM_H
+
+#undef HAVE_SYS_SOCKIO_H
+
+#undef BSD_NETWORKING
+
+#undef HAVE_SNPRINTF
+
+#undef IN_ADDR_DEEPSTRUCT
+
+#undef HAVE_NETINET_IN_SYSTEM_H
+
+#undef HAVE_SOCKADDR_SA_LEN
+
+#undef HAVE_NETINET_IF_ETHER_H
+
+#undef STUPID_SOLARIS_CHECKSUM_BUG
+
+#undef SPRINTF_RETURNS_STRING
+
+/* Define to empty if the keyword does not work.  */
+#undef const
+
+/* Define to `unsigned' if <sys/types.h> doesn't define.  */
+#undef size_t
+
+/* Define if you have the ANSI C header files.  */
+#undef STDC_HEADERS
+
+/* Define if you can safely include both <sys/time.h> and <time.h>.  */
+#undef TIME_WITH_SYS_TIME
+
+/* Define if you have the gethostname function.  */
+#undef HAVE_GETHOSTNAME
+
+/* Define if you have the select function.  */
+#undef HAVE_SELECT
+
+/* Define if you have the socket function.  */
+#undef HAVE_SOCKET
+
+/* Define if you have the strcspn function.  */
+#undef HAVE_STRCSPN
+
+/* Define if you have the strdup function.  */
+#undef HAVE_STRDUP
+
+/* Define if you have the strstr function.  */
+#undef HAVE_STRSTR
+
+/* Define if you have the strtol function.  */
+#undef HAVE_STRTOL
+
+/* Define if you have the strtoul function.  */
+#undef HAVE_STRTOUL
+
+/* Define if you have the <fcntl.h> header file.  */
+#undef HAVE_FCNTL_H
+
+/* Define if you have the <sys/ioctl.h> header file.  */
+#undef HAVE_SYS_IOCTL_H
+
+/* Define if you have the <sys/time.h> header file.  */
+#undef HAVE_SYS_TIME_H
+
+/* Define if you have the <unistd.h> header file.  */
+#undef HAVE_UNISTD_H
+
+#undef CHEOPS_IP_SUM
+
+#undef CHEOPS_IP_CSUM
+
+#undef LINUX
+#undef FREEBSD
+#undef OPENBSD
+#undef SOLARIS
+#undef SUNOS
+#undef BSDI
+#undef IRIX
+#undef NETBSD
+
+#undef HAS_SSL
+
+
+

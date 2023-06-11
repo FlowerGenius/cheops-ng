@@ -51,7 +51,7 @@ make DESTDIR=$RPM_BUILD_ROOT prefix=%{prefix} sysconfdir=%{sysconfdir} install
 %files
 %defattr(-,root,root)
 %{prefix}/bin/cheops-ng
-%{prefix}/bin/cheops-agent
+%{prefix}/sbin/cheops-agent
 %{prefix}/share/pixmaps/cheops-ng.xpm
 %{prefix}/share/cheops-ng/pixmaps/*
 %{prefix}/share/applications/cheops-ng.desktop

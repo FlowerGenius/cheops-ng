@@ -1,7 +1,7 @@
 %define name       cheops-ng
-%define version    0.2.2
+%define version    0.2.3
 %define release    1
-%define serial     1
+#%define serial     1
 %define prefix     /usr
 %define sysconfdir /etc
 
@@ -9,8 +9,8 @@ Summary:	A Gnome network mapper, OS/port scanner, and monitoring program
 Name:		%{name}-static
 Version:	%{version}
 Release:	%{release}
-Serial:		%{serial}
-Copyright:	GPL
+#Serial:		%{serial}
+License:	GPL
 Group:		Applications/Internet
 Vendor:		Priddy Good Software
 Url:		http://cheops-ng.sourceforge.net/
@@ -48,11 +48,10 @@ make DESTDIR=$RPM_BUILD_ROOT prefix=%{prefix} sysconfdir=%{sysconfdir} install
 %files
 %defattr(-,root,root)
 %{prefix}/bin/cheops-ng
-%{prefix}/bin/cheops-agent
+%{prefix}/sbin/cheops-agent
 %{prefix}/share/pixmaps/cheops-ng.xpm
 %{prefix}/share/cheops-ng/pixmaps/*
-%{prefix}/share/gnome/apps/Internet/cheops-ng.desktop
-%{prefix}/share/gnome/ximian/Programs/Internet/cheops-ng.desktop
+%{prefix}/share/applications/cheops-ng.desktop
 
 %clean
 rm -r $RPM_BUILD_ROOT

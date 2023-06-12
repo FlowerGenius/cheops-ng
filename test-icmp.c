@@ -87,13 +87,13 @@ void send_pkt(void)
 /* initalize the ping_socket */
 		if(!(proto = getprotobyname("icmp")))
 		{
-			clog(LOG_DEBUG,"socket error\n");
+			c_log(LOG_DEBUG,"socket error\n");
 			exit(1);
 		}
 		
 		if((ping_socket = socket(AF_INET, SOCK_RAW, proto->p_proto)) < 0)
 		{
-			clog(LOG_DEBUG,"socket error\n");
+			c_log(LOG_DEBUG,"socket error\n");
 			exit(1);
 		}
 		hold = 48 * 1024;
@@ -118,9 +118,9 @@ void send_pkt(void)
 	sent = sendto(ping_socket, buf, len, 0, (struct sockaddr *)&to, sizeof(to));
 	if (sent < 0 || sent != len)
 	{
-		DEBUG( clog(LOG_DEBUG,"wrote %s %d chars, ret = %d\n",inet_ntoa(to.sin_addr), len, sent) );
+		DEBUG( c_log(LOG_DEBUG,"wrote %s %d chars, ret = %d\n",inet_ntoa(to.sin_addr), len, sent) );
 		if (sent < 0)
-			clog(LOG_DEBUG,"sendto error %s for %s\n",strerror(errno), inet_ntoa(to.sin_addr));
+			c_log(LOG_DEBUG,"sendto error %s for %s\n",strerror(errno), inet_ntoa(to.sin_addr));
 	}				
 
 }

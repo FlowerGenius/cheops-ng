@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
 			cheops_io_add(STDIN_FILENO, handle_stdio, CHEOPS_IO_IN, NULL);
 			cheops_main();
 		} else {
-			clog(LOG_ERROR, "Unable to connect to local agent\n");
+			c_log(LOG_ERROR, "Unable to connect to local agent\n");
 			exit(1);
 		}
 	}
@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
 			cheops_io_add(STDIN_FILENO, handle_stdio, CHEOPS_IO_IN, NULL);
 			cheops_main();
 		} else {
-			clog(LOG_ERROR, "Unable to connect to local agent\n");
+			c_log(LOG_ERROR, "Unable to connect to local agent\n");
 			exit(1);
 		}
 	}

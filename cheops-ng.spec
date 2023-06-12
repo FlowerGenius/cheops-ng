@@ -54,8 +54,7 @@ make DESTDIR=$RPM_BUILD_ROOT prefix=%{prefix} sysconfdir=%{sysconfdir} install
 %{prefix}/bin/cheops-agent
 %{prefix}/share/pixmaps/cheops-ng.xpm
 %{prefix}/share/cheops-ng/pixmaps/*
-%{prefix}/share/gnome/apps/Internet/cheops-ng.desktop
-%{prefix}/share/gnome/ximian/Programs/Internet/cheops-ng.desktop
+%{prefix}/share/applications/cheops-ng.desktop
 
 %clean
 rm -r $RPM_BUILD_ROOT

@@ -208,12 +208,12 @@ static char *get_local_name()
 	char *c;
 	c = getenv("HOME");
 	if (!c) {
-		clog(LOG_ERROR, "No HOME environment variable.\n");
+		c_log(LOG_ERROR, "No HOME environment variable.\n");
 		return NULL;
 	}
 	snprintf(buf, sizeof(buf), "%s/.cheops/comsocket",c);
 	if (strlen(buf) > MAX_SUN_LEN) {
-		clog(LOG_ERROR, "Socket name '%s' too long (must be <= %d).\n", buf, MAX_SUN_LEN);
+		c_log(LOG_ERROR, "Socket name '%s' too long (must be <= %d).\n", buf, MAX_SUN_LEN);
 		return NULL;
 	}
 	return buf;
@@ -274,12 +274,12 @@ static int handle_agent(int *id, int fd, short events, void *data)
 	a = (agent *)data;
 	if (!a) {
 		/* Something bad has happened, try not to repeat it */
-		clog(LOG_WARNING, "NULL data passed!\n");
+		c_log(LOG_WARNING, "NULL data passed!\n");
 		return 0;
 	}
 	if (a->s != fd) {
 		/* The agent and the descriptor we got this on don't match */
-		clog(LOG_WARNING, 
+		c_log(LOG_WARNING, 
 			"File descriptor mismatch (%d != %d)\n", a->s, fd);
 		return 0;
 	}
@@ -287,7 +287,7 @@ static int handle_agent(int *id, int fd, short events, void *data)
 	 * Check for errors first 
 	 */
 	if (events & (CHEOPS_IO_ERR | CHEOPS_IO_HUP | CHEOPS_IO_NVAL)) {
-		clog(LOG_DEBUG, 
+		c_log(LOG_DEBUG, 
 		     "Agent destroyed %s %s %s %s\n",
 		     (events & CHEOPS_IO_ERR ? "CHEOPS_IO_ERR" : ""),
 		     (events & CHEOPS_IO_HUP ? "CHEOPS_IO_HUP" : ""),
@@ -297,7 +297,7 @@ static int handle_agent(int *id, int fd, short events, void *data)
 		event_destroy_agent(a);
 		return 0;
 	}
-	DEBUG(clog(LOG_DEBUG, "Agent data on %d (%d)\n", fd, events));
+	DEBUG(c_log(LOG_DEBUG, "Agent data on %d (%d)\n", fd, events));
 
 	h = (event_hdr *)a->buffer;
 	res = AGENT_RECV_BUFFER_LENGTH - (a->write_ptr - a->buffer);
@@ -317,14 +317,14 @@ static int handle_agent(int *id, int fd, short events, void *data)
 		res = agent_read(a, fd, (char *)&h->len, res);
 		if(res < 0)
 		{
-			DEBUG(clog(LOG_WARNING,
+			DEBUG(c_log(LOG_WARNING,
 				"Closing connection on read error\n"));
 			event_destroy_agent(a);
 			return 0;
 		}
 		if(res == 0)
 		{
-			DEBUG(clog(LOG_WARNING,
+			DEBUG(c_log(LOG_WARNING,
 				"Closing connection on NULL read (socket closed)\n"));
 			event_destroy_agent(a);
 			return 0;
@@ -336,8 +336,8 @@ static int handle_agent(int *id, int fd, short events, void *data)
 		else
 		{
 			if (ntohl(h->len) > sizeof(a->buffer)) {
-				clog(LOG_WARNING,
-				        "event too large: %d bytes (max = %d)\n", ntohl(h->len), sizeof(a->buffer));
+				c_log(LOG_WARNING,
+				       "event too large: %d bytes (max = %lu)\n", ntohl(h->len), (unsigned long)sizeof(a->buffer));
 				return 0;
 			}
 			a->expected_length = ntohl(h->len);
@@ -350,14 +350,14 @@ static int handle_agent(int *id, int fd, short events, void *data)
 		res = agent_read(a, fd, (char *)a->write_ptr, res);
 		if(res < 0)
 		{
-			DEBUG(clog(LOG_WARNING,
+			DEBUG(c_log(LOG_WARNING,
 				"Closing connection on read error\n"));
 			event_destroy_agent(a);
 			return 0;
 		}
 		if(res == 0)
 		{
-			DEBUG(clog(LOG_WARNING,
+			DEBUG(c_log(LOG_WARNING,
 				"Closing connection on NULL read (socket closed)\n"));
 			event_destroy_agent(a);
 			return 0;
@@ -370,8 +370,8 @@ again:
 		else
 		{
 			if (ntohl(h->len) > sizeof(a->buffer)) {
-				clog(LOG_WARNING,
-				        "event too large: %d bytes (max = %d)\n", ntohl(h->len), sizeof(a->buffer));
+				c_log(LOG_WARNING,
+				        "event too large: %d bytes (max = %ul)\n", ntohl(h->len), (unsigned long)sizeof(a->buffer));
 				return 0;
 			}
 			a->expected_length = ntohl(h->len);
@@ -385,27 +385,27 @@ again:
 	{
 		// we have a message sitting in our buffer, now do it
 		if (ntohs(h->type) >= MAX_EVENT){
-			clog(LOG_WARNING,
+			c_log(LOG_WARNING,
 				"Message type %d is too large\n", h->type);
 		} 
 		else if (ntohs(h->hlen) > ntohl(h->len)) 
 		{
-			clog(LOG_WARNING,
-				"Message header longer than message itself?\n", ntohs(h->type));
+			c_log(LOG_WARNING,
+				"Message header longer than message itself?\n");
 		} 
 		else 
 		{
 			if((a->flags & AGENT_FLAGS_LOGGED_IN) || !authenticating_clients())
 			{
 				e = (event *)(a->buffer + ntohs(h->hlen));
-				DEBUG(clog(LOG_DEBUG, "Event received of type %d\n", ntohs(h->type)));
+				DEBUG(c_log(LOG_DEBUG, "Event received of type %d\n", ntohs(h->type)));
 				if (handlers[ntohs(h->type)]) 
 				{
 					handlers[ntohs(h->type)](h, e, a);
 				}
 				else 
 				{
-					clog(LOG_DEBUG, "No handler for event type %d\n", ntohs(h->type));
+					c_log(LOG_DEBUG, "No handler for event type %d\n", ntohs(h->type));
 					if (!(htonl(h->flags) & FLAG_IGNORE)) 
 					{
 						cheops_error(a, ERROR_UNIMPL, "Unsupported message type %d\n", ntohs(h->type));
@@ -426,7 +426,7 @@ again:
 				}
 				else
 				{
-					clog(LOG_DEBUG, "No handler for event type %d when not logged in\n", ntohs(h->type));
+					c_log(LOG_DEBUG, "No handler for event type %d when not logged in\n", ntohs(h->type));
 					if (!(htonl(h->flags) & FLAG_IGNORE)) 
 					{
 						cheops_error(a, ERROR_UNIMPL, "Unsupported message type %d\n", ntohs(h->type));
@@ -466,20 +466,20 @@ static int handle_unix_connect(int *id, int fd, short events, void *data)
 	a = (agent *)data;
 	if (!a) {
 		/* Something bad has happened, try not to repeat it */
-		clog(LOG_WARNING, "NULL data passed!\n");
+		c_log(LOG_WARNING, "NULL data passed!\n");
 		return 0;
 	}
 	if (a->s != fd) {
 		/* The agent and the descriptor we got this on don't match */
-		clog(LOG_WARNING, 
+		c_log(LOG_WARNING, 
 			"File descriptor mismatch (%d != %d)\n", a->s, fd);
 		return 0;
 	}
-	DEBUG(clog(LOG_DEBUG, "Agent data on %d\n", fd));
+	DEBUG(c_log(LOG_DEBUG, "Agent data on %d\n", fd));
 	sunlen = sizeof(sun);
 	res = accept(fd, (void *)&sun, &sunlen);
 	if (res < 0) {
-		clog(LOG_WARNING,
+		c_log(LOG_WARNING,
 			"accept failed: %s\n", strerror(errno));
 	} else {
 		a = new_agent();
@@ -510,12 +510,12 @@ static agent *local_agent()
 	if (our_local_agent)
 		return our_local_agent;
 	if (!(c = get_local_name())) {
-		clog(LOG_ERROR, "Unable to get local name\n");
+		c_log(LOG_ERROR, "Unable to get local name\n");
 		return NULL;
 	}
 	s = socket(PF_FILE, SOCK_STREAM, 0);
 	if (s < 0) 
-		clog(LOG_ERROR, "Unable to create UNIX socket: %s\n",strerror(errno));
+		c_log(LOG_ERROR, "Unable to create UNIX socket: %s\n",strerror(errno));
 	else {
 		memset(&sun, 0, sizeof(sun));
 		sun.sun_family = AF_UNIX;
@@ -525,7 +525,7 @@ static agent *local_agent()
 			/* FIXME: We should fork() and exec cheops-agent to start it
 			   if we cannot connect */
 			DEBUG(
-				clog(LOG_ERROR, "Unable to connect to local agent (%s)\n", strerror(errno));
+				c_log(LOG_ERROR, "Unable to connect to local agent (%s)\n", strerror(errno));
 			);
 			return NULL;
 		}
@@ -580,15 +580,15 @@ tryagain:
 
 	/* Try to set non-blocking mode */
 	if ((flags = fcntl(s, F_GETFL)) < 0)
-		clog(LOG_WARNING, "fcntl(F_GETFL) failed(%s)\n", strerror(errno));
+		c_log(LOG_WARNING, "fcntl(F_GETFL) failed(%s)\n", strerror(errno));
 	else
 		if (fcntl(s, F_SETFL, (flags | O_NONBLOCK)) < 0)
-			clog(LOG_WARNING, "fcntl(F_SETFL) failed(%s)\n", strerror(errno));
+			c_log(LOG_WARNING, "fcntl(F_SETFL) failed(%s)\n", strerror(errno));
 
 	setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (void *)&on, sizeof(on));
 
 	if (listen(s, AGENT_BACKLOG) < 0) {
-		clog(LOG_ERROR, "listen() failed (%s)\n", strerror(errno));
+		c_log(LOG_ERROR, "listen() failed (%s)\n", strerror(errno));
 		close(s);
 		s = -1;
 	}
@@ -608,20 +608,20 @@ static int handle_ipv4_connect(int *id, int fd, short events, void *data)
 	a = (agent *)data;
 	if (!a) {
 		/* Something bad has happened, try not to repeat it */
-		clog(LOG_WARNING, "NULL data passed!\n");
+		c_log(LOG_WARNING, "NULL data passed!\n");
 		return 0;
 	}
 	if (a->s != fd) {
 		/* The agent and the descriptor we got this on don't match */
-		clog(LOG_WARNING, 
+		c_log(LOG_WARNING, 
 			"File descriptor mismatch (%d != %d)\n", a->s, fd);
 		return 0;
 	}
-	DEBUG(clog(LOG_DEBUG, "Agent data on %d\n", fd));
+	DEBUG(c_log(LOG_DEBUG, "Agent data on %d\n", fd));
 	sinlen = sizeof(sin);
 	res = accept(fd, (void *)&sin, &sinlen);
 	if (res < 0) {
-		clog(LOG_WARNING,
+		c_log(LOG_WARNING,
 			"accept failed: %s\n", strerror(errno));
 	} else {
 		a = new_agent();
@@ -643,7 +643,7 @@ static int handle_ipv4_connect(int *id, int fd, short events, void *data)
 					SSL_library_init();
 
 					if( (ssl_ctx = SSL_CTX_new(SSLv2_server_method())) == NULL) {
-						clog(LOG_ERROR, "Unable to create the ssl ctx\n");
+						c_log(LOG_ERROR, "Unable to create the ssl ctx\n");
 					}
 					if (SSL_CTX_use_certificate_file(ssl_ctx, MY_CERT, SSL_FILETYPE_PEM) <= 0) {
 						ERR_print_errors_fp(stderr);
@@ -659,19 +659,19 @@ static int handle_ipv4_connect(int *id, int fd, short events, void *data)
 					}
 				}
 				if((a->ssl = SSL_new(ssl_ctx)) == NULL) {
-					clog(LOG_ERROR, "Unable to create the ssl\n");
+					c_log(LOG_ERROR, "Unable to create the ssl\n");
 				}
 				if(!SSL_set_fd(a->ssl, a->s)) {
-					clog(LOG_ERROR, "Unable to set the SSL_fd\n");
+					c_log(LOG_ERROR, "Unable to set the SSL_fd\n");
 				}
 				
 				if((ret = SSL_accept(a->ssl)))
 				{
-					clog(LOG_ERROR, "they are in\n");
+					c_log(LOG_ERROR, "they are in\n");
 				}
 				else
 				{
-					clog(LOG_ERROR, "they are not in\n");
+					c_log(LOG_ERROR, "they are not in\n");
 				}
 			}
 			else
@@ -710,7 +710,7 @@ static agent *ipv4_agent(char *ip_addr, int usessl, int is_client)
 
 	s = socket(PF_INET, SOCK_STREAM, 0);
 	if (s < 0) 
-		clog(LOG_ERROR, "Unable to create UDP socket: %s\n",strerror(errno));
+		c_log(LOG_ERROR, "Unable to create UDP socket: %s\n",strerror(errno));
 	else 
 	{
 		sin.sin_family = AF_INET;
@@ -724,7 +724,7 @@ static agent *ipv4_agent(char *ip_addr, int usessl, int is_client)
 		{
 			/* FIXME: We should fork() and exec cheops-agent to start it
 			   if we cannot connect */
-			clog(LOG_ERROR, "Unable to connect to ipv4 agent '%s' (%s)\n", ip_addr, strerror(errno));
+			c_log(LOG_ERROR, "Unable to connect to ipv4 agent '%s' (%s)\n", ip_addr, strerror(errno));
 			return NULL;
 		}
 
@@ -746,16 +746,16 @@ static agent *ipv4_agent(char *ip_addr, int usessl, int is_client)
 
 					if( (ssl_ctx = SSL_CTX_new(SSLv2_client_method())) == NULL) 
 					{
-						clog(LOG_ERROR, "Unable to create the ssl ctx\n");
+						c_log(LOG_ERROR, "Unable to create the ssl ctx\n");
 					}
 				}
 				if((a->ssl = SSL_new(ssl_ctx)) == NULL) 
 				{
-					clog(LOG_ERROR, "Unable to create the ssl\n");
+					c_log(LOG_ERROR, "Unable to create the ssl\n");
 				}
 				if(!SSL_set_fd(a->ssl, a->s)) 
 				{
-					clog(LOG_ERROR, "Unable to set the SSL_fd\n");
+					c_log(LOG_ERROR, "Unable to set the SSL_fd\n");
 				}
 				
 				a->id = cheops_io_add(a->s, handle_agent, CHEOPS_IO_IN, a);
@@ -793,29 +793,29 @@ static int make_ipv4_socket(struct sockaddr_in *sin)
 		
 	if((s = socket(PF_INET, SOCK_STREAM, 0)) < 0)
 	{
-		clog(LOG_ERROR, "socket failed(%s)\n", strerror(errno));
+		c_log(LOG_ERROR, "socket failed(%s)\n", strerror(errno));
 		return -1;
 	}
 	if(bind(s, (struct sockaddr *)sin, sizeof(*sin)) < 0) {
-		clog(LOG_ERROR, "bind failed(%s)\n", strerror(errno));
+		c_log(LOG_ERROR, "bind failed(%s)\n", strerror(errno));
 		close(s);
 		return -1;
 	}
 
 	if(setsockopt(s, SOL_SOCKET, TCP_NODELAY, &optval,sizeof(optval)) < 0)
 	{
-		clog(LOG_ERROR, "Unable to set TCP_NODELAY");
+		c_log(LOG_ERROR, "Unable to set TCP_NODELAY");
 	}		
 	setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (void *)&optval, sizeof(optval));
 	
 	if((flags = fcntl(s, F_GETFL)) < 0)
-		clog(LOG_ERROR, "fcntl(F_GETFL) failed(%s)\n", strerror(errno));
+		c_log(LOG_ERROR, "fcntl(F_GETFL) failed(%s)\n", strerror(errno));
 	else
 		if(fcntl(s, F_SETFL, (flags | O_NONBLOCK)) < 0)
-			clog(LOG_ERROR, "fcntl(F_SETFL) failed(%s)\n", strerror(errno));
+			c_log(LOG_ERROR, "fcntl(F_SETFL) failed(%s)\n", strerror(errno));
 
 	if(listen(s, AGENT_BACKLOG) < 0) {
-		clog(LOG_ERROR, "listen() failed (%s)\n", strerror(errno));
+		c_log(LOG_ERROR, "listen() failed (%s)\n", strerror(errno));
 		close(s);
 		s = -1;
 	}
@@ -852,14 +852,14 @@ void event_destroy_agent(agent *a)
 		   be some old, expired pointer, and as long as we don't 
 		   dereference it, everything will be fine.  But log a warning
 		   just in case */
-		clog(LOG_WARNING, "Asked to remove non-existant agent (%p)!\n", a);
+		c_log(LOG_WARNING, "Asked to remove non-existant agent (%p)!\n", a);
 		return;
 	}
 
 	if( shutdown(a->s, SHUT_WR) < 0)
 	{
 		DEBUG(
-			clog(LOG_WARNING, "shutdown(s,SHUT_WR) is not happy (%s)\n",strerror(errno));
+			c_log(LOG_WARNING, "shutdown(s,SHUT_WR) is not happy (%s)\n",strerror(errno));
 		);
 	}
 	close(a->s);
@@ -912,7 +912,7 @@ int event_create_agent(int agent_type)
 						res=-1;
 					}
 				} else
-					clog(LOG_ERROR, "Unable to create socket (%s).\n", strerror(errno));
+					c_log(LOG_ERROR, "Unable to create socket (%s).\n", strerror(errno));
 			}
 		}
 	}
@@ -1012,7 +1012,7 @@ int agent_write(agent *a, char *buffer, int length)
 	}
 	if(ret != length)
 	{
-		fprintf(stderr, "agent_write(): did not write %d but %s\n", length, ret);
+		fprintf(stderr, "agent_write(): did not write %d but %d\n", length, ret);
 	}
 	return(ret);
 }
@@ -1040,12 +1040,12 @@ int event_send(agent *a, event_hdr *h)
 		res = agent_write(a, (char *)h, ntohl(h->len));
 		
 		if (res < 0) {
-			clog(LOG_WARNING, "write failed: %s\n", strerror(errno));
+			c_log(LOG_WARNING, "write failed: %s\n", strerror(errno));
 		} else if (res != ntohl(h->len)) {
-			clog(LOG_WARNING, "only wrote %d of %d bytes\n", res, ntohl(h->len));
+			c_log(LOG_WARNING, "only wrote %d of %d bytes\n", res, ntohl(h->len));
 		}
 	} else
-		clog(LOG_DEBUG, "agent not valid\n");
+		c_log(LOG_DEBUG, "agent not valid\n");
 	
 	pthread_mutex_unlock(&mutex);
 		
@@ -1087,7 +1087,7 @@ agent *event_request_agent(int agent_type, void *addr, int usessl)
 		a = ipv4_agent((char *)addr, usessl, 1);
 		break;
 	default:
-		clog(LOG_ERROR, "unknown agent requested: %d\n", agent_type);
+		c_log(LOG_ERROR, "unknown agent requested: %d\n", agent_type);
 	}
 	return a;
 }
@@ -1105,7 +1105,7 @@ extern int event_register_handler(short type, cheops_event_handler h, int replac
 			handlers[type] = h;
 		return 0;
 	} else {
-		clog(LOG_ERROR, "Attempt to register handler for event type %d, greater than max %d\n", type, MAX_EVENT);
+		c_log(LOG_ERROR, "Attempt to register handler for event type %d, greater than max %d\n", type, MAX_EVENT);
 	}
 	return -1;
 }
@@ -1127,7 +1127,7 @@ int send_auth_request_reply(agent *a, int authenticated)
 
 	if (event_send(a, eh) < 0)
 	{
-		DEBUG( clog(LOG_WARNING, "Unable to send discover reply\n") );
+		DEBUG( c_log(LOG_WARNING, "Unable to send discover reply\n") );
 		return(0);
 	}
 	return(1);

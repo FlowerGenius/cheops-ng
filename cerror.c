@@ -54,7 +54,7 @@ void cheops_error(agent *a, u16 error, char *fmt, ...)
 	h->type = htons(REPLY_ERROR);
 	h->flags = htonl(FLAG_IGNORE);
 	if (event_send(a, h) < 0) 
-		clog(LOG_DEBUG, "Unable to send error '%s'\n", c);
+		c_log(LOG_DEBUG, "Unable to send error '%s'\n", c);
 	va_end(ap);
 }
 

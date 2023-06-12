@@ -1,5 +1,5 @@
 The logger is fairly straightforward.  Just include logger.h and then you
-can start logging events with clog(LOG_x, ...)  Your choice for LOG_x is
+can start logging events with c_log(LOG_x, ...)  Your choice for LOG_x is
 one of:
 
 	LOG_DEBUG:	Purely debugging information

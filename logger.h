@@ -23,7 +23,7 @@
 	a; \
 }
 
-extern void clog(int level, const char *file, int line, const char *function, const char *fmt, ...);
+extern void c_log(int level, const char *file, int line, const char *function, const char *fmt, ...);
 
 #define _A_ __FILE__, __LINE__, __PRETTY_FUNCTION__
 

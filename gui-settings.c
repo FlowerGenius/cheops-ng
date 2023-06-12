@@ -165,7 +165,7 @@ void apply_the_setting(int flags)
 			ee->set_settings_e.flags = flags;
 			for(np = main_window->net_pages; np; np = np->next)
 				if (event_send(np->agent, eh) < 0) 
-					clog(LOG_WARNING, "Unable to send set settings event\n");
+					c_log(LOG_WARNING, "Unable to send set settings event\n");
 			break;
 			
 		case OPTIONS_USE_IP_FOR_LABEL:
@@ -665,7 +665,7 @@ script_t *scripts_make_dialog(script_t *script, char *name, char *str, unsigned 
 			ptrs[2] = gtk_entry_get_text(GTK_ENTRY(GTK_COMBO(shared_w)->entry));
 			flags = (strcmp(ptrs[2],"yes")==0 ? SCRIPT_FLAGS_VIEWABLE : 0);
 
-			if( (ptrs[0] && strlen(ptrs[0])) && (ptrs[1] && strlen(ptrs[1])) && (ptrs[3] && strlen(ptrs[3])))
+			if( (ptrs[0] && strlen(ptrs[0])) && (ptrs[1] && strlen(ptrs[1])) && (ptrs[2] && strlen(ptrs[2])))
 			{
 				if(script)
 				{

@@ -66,7 +66,7 @@ int dopasswords = FALSE;
 
 static int handle_error(event_hdr *h, event *e, agent *a)
 {
-	DEBUG(clog(LOG_ERROR,"\nClient reports: Error[%d] - %s", ntohs(e->error_r.error), ((char *)e) + sizeof(error_r)));
+	DEBUG(c_log(LOG_ERROR,"\nClient reports: Error[%d] - %s", ntohs(e->error_r.error), ((char *)e) + sizeof(error_r)));
 	return(0);
 }
 
@@ -112,16 +112,16 @@ void register_agent_handlers()
 		/* Try to register each of our shell items, but don't replace an existing
 		   handler */
 		if (event_register_handler(h->id, h->cb, 0)) 
-			clog(LOG_WARNING, "Unable to register handler for '%s'\n", h->desc);
+			c_log(LOG_WARNING, "Unable to register handler for '%s'\n", h->desc);
 		h++;
 	}
 }
 
 void *do_it(void *type)
 {
-	if( event_create_agent((int)type) )
+	if( event_create_agent((int)(unsigned long)type) )
 	{
-		clog(LOG_ERROR, "unable to listen.\n");
+		c_log(LOG_ERROR, "unable to listen.\n");
 		exit(1);
 	}
 	authenticate_clients(dopasswords);
@@ -142,7 +142,7 @@ static void myexit(int sig)
 
 void do_tasks(int type)
 {
-	do_it((void *)type);
+	do_it((void *)(unsigned long)type);
 }
 
 int main(int argc, char *argv[])
@@ -249,12 +249,12 @@ int main(int argc, char *argv[])
 			break;
 		case -1:
 			/* Error */
-			clog(LOG_ERROR, "fork() failed: %s\n", strerror(errno));
+			c_log(LOG_ERROR, "fork() failed: %s\n", strerror(errno));
 			exit(1);
 			break;
 		default:
 			/* Parent */
-			DEBUG(clog(LOG_NOTICE, "cheops-agent launched, pid %d\n", pid));
+			DEBUG(c_log(LOG_NOTICE, "cheops-agent launched, pid %d\n", pid));
 		}
 	}
 	else

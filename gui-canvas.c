@@ -115,7 +115,7 @@ void page_object_create_group(page_object *po)
 {
 	if(po == NULL || po->canvas == NULL)
 	{
-		clog(LOG_ERROR,"page_object was null\n");
+		c_log(LOG_ERROR,"page_object was null\n");
 		exit(1);
 	}
 		
@@ -1876,8 +1876,8 @@ void page_object_show_properties(GtkWidget *w, gpointer data)
 
 void page_object_service_callback(GtkWidget *widget, gpointer data)
 {
-	int port = (u32)data >> 8;
-	int protocol = (u32)data & 0xFF;
+	int port = (u32)(unsigned long)data >> 8;
+	int protocol = (u32)(unsigned long)data & 0xFF;
 
 	// there can only be one page_object selected that can show the service list,
 	// so i use this quick and dirty way to get at the page object :)
@@ -2259,7 +2259,7 @@ void page_object_show_option_list(net_page *np, page_object *po, GdkEventButton 
 						item = gtk_menu_item_new_with_label(buf);
 						gtk_signal_connect(GTK_OBJECT(item), "activate",
 						                   GTK_SIGNAL_FUNC(page_object_service_callback),
-						                   (gpointer)(port->port << 8) + port->protocol);
+						                   GINT_TO_POINTER(port->port << 8) + port->protocol);
 						
 						gtk_menu_append(GTK_MENU(submenu), item);
 						gtk_widget_show(item);
@@ -2314,7 +2314,7 @@ void page_object_show_option_list(net_page *np, page_object *po, GdkEventButton 
 					item = gtk_menu_item_new_with_label(buf);
 					gtk_signal_connect(GTK_OBJECT(item), "activate",
 					                   GTK_SIGNAL_FUNC(page_object_service_callback),
-					                   (gpointer)(port->port << 8) + port->protocol);
+					                   GINT_TO_POINTER(port->port << 8) + port->protocol);
 					
 					gtk_menu_append(GTK_MENU(pagemenu), item);
 					gtk_widget_show(item);

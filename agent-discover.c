@@ -109,8 +109,8 @@ int handle_discover_request(event_hdr *h, event *e, agent *a)
 	char	errorStr2[] = "Start is larger than Finish\n";
 	struct ping_q *pp=NULL;
 	
-	DEBUG(clog(LOG_DEBUG,"i got a discover request %s\n", ip2str(start)) );
-	DEBUG(clog(LOG_DEBUG,"to %s\n",ip2str(end)) );
+	DEBUG(c_log(LOG_DEBUG,"i got a discover request %s\n", ip2str(start)) );
+	DEBUG(c_log(LOG_DEBUG,"to %s\n",ip2str(end)) );
 
 	if(start==0 || end==0)
 	{
@@ -133,7 +133,7 @@ int handle_discover_request(event_hdr *h, event *e, agent *a)
 		strcpy( ((char *)ee + sizeof(error_r)) , errorPtr);
 
 		if (event_send(a, eh) < 0)
-			clog(LOG_WARNING, "Unable to send error reply\n");
+			c_log(LOG_WARNING, "Unable to send error reply\n");
 		else
 			ret = 0;
 		return(ret);
@@ -141,7 +141,7 @@ int handle_discover_request(event_hdr *h, event *e, agent *a)
 	
 	if((pp = malloc(sizeof(struct ping_q)))==NULL)
 	{
-		clog(LOG_DEBUG,"malloc returned NULL\n");
+		c_log(LOG_DEBUG,"malloc returned NULL\n");
 		exit(1);
 	}
 	pp->start = start;
@@ -210,7 +210,7 @@ int send_discover_reply(int ip, struct ping_q *pp)
 
 	if (event_send(pp->a, eh) < 0)
 	{
-		DEBUG( clog(LOG_WARNING, "Unable to send discover reply\n") );
+		DEBUG( c_log(LOG_WARNING, "Unable to send discover reply\n") );
 		return(0);
 	}
 	return(1);
@@ -236,7 +236,7 @@ int handle_ping_recieve(int *id, int fd, short e, void *data)
 	hlen = ip->ip_hl << 2;
 
 	if(len < hlen + ICMP_MINLEN) {
-		clog(LOG_DEBUG,"handle_packet: too short (%d bytes) from %s\n",len, inet_ntoa(sin.sin_addr));
+		c_log(LOG_DEBUG,"handle_packet: too short (%d bytes) from %s\n",len, inet_ntoa(sin.sin_addr));
 		return(1);
 	}
 
@@ -255,15 +255,15 @@ int handle_ping_recieve(int *id, int fd, short e, void *data)
 		{
 			/* someone is being a bad little boy and sending us corrupt 
 			 * ping packets */
-			DEBUG( clog(LOG_WARNING,"%s sent us a ping out of the discovery range\n",inet_ntoa(sin.sin_addr)) );
+			DEBUG( c_log(LOG_WARNING,"%s sent us a ping out of the discovery range\n",inet_ntoa(sin.sin_addr)) );
 			return(1);
 		}
 	
-		DEBUG( clog(LOG_WARNING,"Recieved ping reply %s\n",inet_ntoa(sin.sin_addr)) );
+	   DEBUG( c_log(LOG_WARNING,"Recieved ping reply %s\n",inet_ntoa(sin.sin_addr)) );
 	
-		add_to_cache((void *)sin.sin_addr.s_addr,NULL);
+	   add_to_cache((void *)(unsigned long)sin.sin_addr.s_addr,NULL);
 		
-		send_discover_reply(sin.sin_addr.s_addr,pp);
+	   send_discover_reply(sin.sin_addr.s_addr,pp);
 	}
 		
 	return(1);
@@ -296,22 +296,22 @@ int ping_send(struct ping_q *pp)
 		{
 			removed_queue = TRUE;
 			remove_ping_q(pp);
-			DEBUG( clog(LOG_NOTICE,"Removed schedule entry, and pingQ: retries expired\n") );
+			DEBUG( c_log(LOG_NOTICE,"Removed schedule entry, and pingQ: retries expired\n") );
 			return(0);
-		}
+	   }
 		
 
-		if((pp->flags & FLAG_FORCE) || !in_cache((void *)ntohl(pp->current)))
-		{
+	   if((pp->flags & FLAG_FORCE) || !in_cache((void *)(long)ntohl(pp->current)))
+	   {
 			/* Have to send a ping packet */
 			
 			if(pp->flags & FLAG_FORCE)
 			{
-				DEBUG( clog(LOG_NOTICE,"The FORCE FLAG is set\n") );
+				DEBUG( c_log(LOG_NOTICE,"The FORCE FLAG is set\n") );
 			}
 			else
 			{
-				DEBUG( clog(LOG_NOTICE,"The entry %s is not in the cache\n",ip2str(htonl(pp->current))) );
+				DEBUG( c_log(LOG_NOTICE,"The entry %s is not in the cache\n",ip2str(htonl(pp->current))) );
 			}
 			
 		
@@ -322,13 +322,13 @@ int ping_send(struct ping_q *pp)
 				DEBUG( printf("%s(): Initalizing the ping_socket\n", __FUNCTION__));
 				if(!(proto = getprotobyname("icmp")))
 				{
-					clog(LOG_DEBUG,"socket error\n");
+					c_log(LOG_DEBUG,"socket error\n");
 					exit(1);
 				}
 				
 				if((ping_socket = socket(AF_INET, SOCK_RAW, proto->p_proto)) < 0)
 				{
-					clog(LOG_DEBUG,"socket error\n");
+					c_log(LOG_DEBUG,"socket error\n");
 					exit(1);
 				}
 				hold = 48 * 1024;
@@ -367,7 +367,7 @@ int ping_send(struct ping_q *pp)
 				sent = sendto(ping_socket, buf, len, 0, (struct sockaddr *)&to, sizeof(to));
 				if (sent < 0 || sent != len)
 				{
-					DEBUG( clog(LOG_DEBUG,"wrote %s %d chars, ret = %d\n",inet_ntoa(to.sin_addr), len, sent) );
+					DEBUG( c_log(LOG_DEBUG,"wrote %s %d chars, ret = %d\n",inet_ntoa(to.sin_addr), len, sent) );
 					if (sent < 0)
 					{
 						if(negative_retry++ < 4)
@@ -377,18 +377,18 @@ int ping_send(struct ping_q *pp)
 						}
 						else
 						{
-							clog(LOG_DEBUG,"sendto error %s for %s\n",strerror(errno), inet_ntoa(to.sin_addr));
+							c_log(LOG_DEBUG,"sendto error %s for %s\n",strerror(errno), inet_ntoa(to.sin_addr));
 						}
 					}
 				}				
-				DEBUG( clog(LOG_DEBUG,"wrote %s %d chars, ret = %d\n",inet_ntoa(to.sin_addr), len, sent) );
+				DEBUG( c_log(LOG_DEBUG,"wrote %s %d chars, ret = %d\n",inet_ntoa(to.sin_addr), len, sent) );
 			}
 		}
 		else
 		{
 			/* The entry is in the cache and can be used in the discover reply */
 			
-			DEBUG( clog(LOG_NOTICE,"The entry %s is in the cache\n",ip2str(htonl(pp->current))) );
+			DEBUG( c_log(LOG_NOTICE,"The entry %s is in the cache\n",ip2str(htonl(pp->current))) );
 			if(pp->retry == 0)
 			{
 				/* 
@@ -425,7 +425,7 @@ int ping_send(struct ping_q *pp)
 		 *     PING_TIMEOUT_INTERVAL - (current_time - first_ping_send_time) 
 		 */
 	
-		DEBUG( clog(LOG_NOTICE,"Changed schedule entry\n") );
+		DEBUG( c_log(LOG_NOTICE,"Changed schedule entry\n") );
 		
 		if(pp->retry > ping_retries)
 		{
@@ -474,7 +474,7 @@ int ping_send(struct ping_q *pp)
 			 */	
 			gettimeofday(&tv,&tz);
 			pp->time = (int)tv.tv_sec*1000 + (int)tv.tv_usec/1000;
-			DEBUG( clog(LOG_NOTICE, "I set the pp->time to %u\n",pp->time) );
+			DEBUG( c_log(LOG_NOTICE, "I set the pp->time to %u\n",pp->time) );
 			
 			cheops_sched_add(PING_INTERVAL,CHEOPS_SCHED_CB(ping_send),pp);
 			ret=0;

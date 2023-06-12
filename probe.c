@@ -92,8 +92,8 @@ static int probe_cnt = sizeof(probesa) / sizeof(struct probe);
 
 void get_probe_each(gpointer data, gpointer user_data)
 {
-	u32 *args = (u32 *)user_data;
-	u32 port = args[0];
+	uintptr_t *args = (uintptr_t *)user_data;
+	uintptr_t port = args[0];
 	struct probe *p = (struct probe *)data;
 	struct probe **pp = (struct probe **)args[1];
 	
@@ -107,12 +107,12 @@ void get_probe_each(gpointer data, gpointer user_data)
 
 struct probe *get_probe(unsigned short port)
 {
-	u32 args[2];
+	uintptr_t args[2];
 	struct probe *p = NULL;
 	
 	DEBUG(printf("%s()\n", __FUNCTION__));
 	args[0] = port;
-	args[1] = (u32)&p;
+	args[1] = (uintptr_t)&p;
 	
 	g_list_foreach(probes, get_probe_each, args);
 	
@@ -229,7 +229,7 @@ char *get_text(int fd, void *arg, void *user_data)
 char *strip_version(int fd, void *arg, void *user_data)
 {
 	char *c, *d;
-	int count = (int)arg;
+	long count = (long)arg;
 	DEBUG(printf("%s()\n", __FUNCTION__));
 	
 	c = get_text(fd, arg, user_data);
@@ -255,7 +255,7 @@ char *strip_version(int fd, void *arg, void *user_data)
 char *strip_newline(int fd, void *arg, void *user_data)
 {
 	char *c, *d;
-	int count = (int)arg;
+	long count = (long)arg;
 	DEBUG(printf("%s()\n", __FUNCTION__));
 	
 	c = get_text(fd, arg, user_data);

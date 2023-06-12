@@ -160,7 +160,7 @@ int dns_query_callback(int *id, int fd, short events, void *cbdata)
 		
 		if (event_send(pp->a, eh) < 0)
 		{
-			DEBUG( clog(LOG_WARNING, "Unable to send discover reply\n") );
+			DEBUG( c_log(LOG_WARNING, "Unable to send discover reply\n") );
 			return(0);
 		}
 	}

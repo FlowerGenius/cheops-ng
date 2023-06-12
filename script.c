@@ -45,7 +45,7 @@ void script_default(void)
 	script_list = NULL;
 	
 	for(c = &default_list[0]; c[0]; c += 3)
-		script_add(*c, *(c + 1), (unsigned int)*(c + 2));
+		script_add(*c, *(c + 1), (unsigned long)*(c + 2));
 }	
 
 script_t *script_add(char *name, char *script, unsigned int flags)
@@ -58,7 +58,7 @@ script_t *script_add(char *name, char *script, unsigned int flags)
 	s = malloc(sizeof(script_t));
 	if(!s)
 	{
-		clog(LOG_ERROR," we ran out of memory?");
+		c_log(LOG_ERROR," we ran out of memory?");
 		exit(1);
 	}
 	memset(s, 0, sizeof(*s));

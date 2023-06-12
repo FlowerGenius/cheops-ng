@@ -72,7 +72,7 @@ static int io_grow()
 	 * -1 on failure
 	 */
 	void *tmp;
-	DEBUG(clog(LOG_DEBUG, "io_grow()\n"));
+	DEBUG(c_log(LOG_DEBUG, "io_grow()\n"));
 	maxfdcnt += GROW_SHRINK_SIZE;
 	tmp = realloc(ior, (maxfdcnt + 1) * sizeof(struct io_rec));
 	if (tmp) {
@@ -108,7 +108,7 @@ int *cheops_io_add(int fd, cheops_io_cb callback, short events, void *data)
 	 * with the given event mask, to call callback with
 	 * data as an argument.  Returns NULL on failure.
 	 */
-	DEBUG(clog(LOG_DEBUG, "cheops_io_add()\n"));
+	DEBUG(c_log(LOG_DEBUG, "cheops_io_add()\n"));
 	if (fdcnt < maxfdcnt) {
 		/* 
 		 * We don't have enough space for this entry.  We need to
@@ -179,7 +179,7 @@ int cheops_io_remove(int *id)
 {
 	if (current_ioc == *id) 
 	{
-		DEBUG(clog(LOG_NOTICE, "Callback for %d tried to remove itself\n", *id));
+		DEBUG(c_log(LOG_NOTICE, "Callback for %d tried to remove itself\n", *id));
 		remove_current_ioc = 1;
 	} 
 	else
@@ -190,7 +190,7 @@ int cheops_io_remove(int *id)
 		}
 		else 
 		{
-			DEBUG(clog(LOG_NOTICE, "Unable to remove unknown id %d\n", *id));
+			DEBUG(c_log(LOG_NOTICE, "Unable to remove unknown id %d\n", *id));
 		}
 	}
 
@@ -206,7 +206,7 @@ int cheops_io_wait(int howlong)
 	 */
 	int res;
 	int x;
-	DEBUG(clog(LOG_DEBUG, "cheops_io_wait()\n"));
+	DEBUG(c_log(LOG_DEBUG, "cheops_io_wait()\n"));
 	res = poll(fds, fdcnt, howlong); // if we are using pth this is a pth call
 	if (res > 0) {
 		/*
@@ -238,18 +238,18 @@ void cheops_io_dump()
 	 * the logger interface
 	 */
 	int x;
-	clog(LOG_DEBUG, "Cheops IO Dump: %d entries, %d max entries\n", fdcnt, maxfdcnt);
-	clog(LOG_DEBUG, "================================================\n");
-	clog(LOG_DEBUG, "| ID    FD     Callback    Data        Events  |\n");
-	clog(LOG_DEBUG, "+------+------+-----------+-----------+--------+\n");
+	c_log(LOG_DEBUG, "Cheops IO Dump: %d entries, %d max entries\n", fdcnt, maxfdcnt);
+	c_log(LOG_DEBUG, "================================================\n");
+	c_log(LOG_DEBUG, "| ID    FD     Callback    Data        Events  |\n");
+	c_log(LOG_DEBUG, "+------+------+-----------+-----------+--------+\n");
 	for (x=0;x<fdcnt;x++) {
-		clog(LOG_DEBUG, "| %.4d | %.4d | %p | %p | %.6x |\n", 
+		c_log(LOG_DEBUG, "| %.4d | %.4d | %p | %p | %.6x |\n", 
 				*ior[x].id,
 				fds[x].fd,
 				ior[x].callback,
 				ior[x].data,
 				fds[x].events);
 	}
-	clog(LOG_DEBUG, "================================================\n");
+	c_log(LOG_DEBUG, "================================================\n");
 }
 

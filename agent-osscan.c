@@ -349,7 +349,7 @@ int osscan_timer(void *data)
 		pthread_mutex_lock(&os_write_mutex);
 		if (event_send (agent_to_send, event_to_send) < 0)
 		{
-			clog (LOG_WARNING, "Unable to send osscan reply\n");
+			c_log (LOG_WARNING, "Unable to send osscan reply\n");
 		}
 		pthread_mutex_unlock(&os_write_mutex);
 	}

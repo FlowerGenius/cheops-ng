@@ -170,7 +170,7 @@ static int do_discover(agent *a, int argc, char *argv[])
 		ee->discover_ipv4_e.start = start;
 		ee->discover_ipv4_e.end = end;
 		if (event_send(a, eh) < 0) 
-			clog(LOG_WARNING, "Unable to send discover event\n");
+			c_log(LOG_WARNING, "Unable to send discover event\n");
 		else
 			done = 0;
 	}
@@ -223,7 +223,7 @@ static int do_os_scan_command(agent *a, int argc, char *argv[])
 	eh->type = htons(EVENT_OS_SCAN);
 	eh->flags = flags;
 	if (event_send(a, eh) < 0) 
-		clog(LOG_WARNING, "Unable to send OS-scan event\n");
+		c_log(LOG_WARNING, "Unable to send OS-scan event\n");
 	return(0);
 }
 
@@ -303,7 +303,7 @@ int do_set_discover_retries(agent *a, int argc, char *argv[])
 	ee->set_settings_e.discover_retries = retries;
 	ee->set_settings_e.flags = SET_DISCOVER_RETRIES;
 	if (event_send(a, eh) < 0) 
-		clog(LOG_WARNING, "Unable to send set discover retries event\n");
+		c_log(LOG_WARNING, "Unable to send set discover retries event\n");
 
 	return(0);
 }
@@ -316,7 +316,7 @@ int do_auth_request_command(agent *a, int argc, char *argv[])
 	eh->flags = 0;
 
 	if (event_send(a, eh) < 0) 
-		clog(LOG_WARNING, "Unable to send login event\n");
+		c_log(LOG_WARNING, "Unable to send login event\n");
 
 	return(0);
 }
@@ -354,7 +354,7 @@ int add_to_discovered_list(u32 ip)
 	{
 		if(pipl->ip == ip)
 		{
-			DEBUG( clog(LOG_NOTICE,"add_to_discovered_list(): %s is already in the list",ip2str(htonl(ip))) );
+			DEBUG( c_log(LOG_NOTICE,"add_to_discovered_list(): %s is already in the list",ip2str(htonl(ip))) );
 			return(0);
 		}
 	}
@@ -444,7 +444,7 @@ int send_auth_request(agent *a, char *username, char *password)
 	strcpy(ee->auth_request_e.password, password);
 	
 	if (event_send(a, eh) < 0) 
-		clog(LOG_WARNING, "Unable to send login event\n");
+		c_log(LOG_WARNING, "Unable to send login event\n");
 	
 	return(0);
 }
@@ -535,7 +535,7 @@ void register_shell_handlers()
 		/* Try to register each of our shell items, but don't replace an existing
 		   handler */
 		if (event_register_handler(h->id, h->cb, 0)) 
-			clog(LOG_WARNING, "Unable to register handler for '%s'\n", h->desc);
+			c_log(LOG_WARNING, "Unable to register handler for '%s'\n", h->desc);
 		h++;
 	}
 }

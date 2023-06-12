@@ -5,6 +5,7 @@
 DEBUG_FLAGS=# -DDEBUG_DISCOVER -DDEBUG_EVENT -DDEBUG_IO -DDEBUG_SCHEDULER
 
 CFLAGS = @CFLAGS@ -Iadns-1.0/src
+LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 
 CC=@CC@
@@ -13,8 +14,11 @@ prefix = @prefix@
 exec_prefix = @exec_prefix@
 datadir = @datadir@
 bindir = @bindir@
+sbindir = @sbindir@
 mandir = @mandir@
 infodir = @infodir@
+
+DESTDIR=
 
 # According to the comments in install-sh, this won't work for multiple files
 # if ./install-sh is what is used.
@@ -72,7 +76,6 @@ TEST_OBJS = $(NORMOBJS) agent-io.o logger.o misc.o
 
 TESTS = test-sched test-socket test-probe
 COMLIBS = #@COMLIBS@
-CC_LIBS = 
 CFLAGS += -Wall -g -Iadns-1.0/src $(DEBUG_FLAGS) $(GTKCFLAGS)  $(XMLCFLAGS)
 
 ifdef DEBUG
@@ -89,8 +92,9 @@ all: version.h installdir.h  ./adns-1.0/src/libadns.a $(PROGS)
 
 static: version.h $(COMOBJS) $(GUIOBJS) $(GTKOBJS) $(COMLIBS) $(AGENTOBJS) $(AGENTLIBS) $(COMOBJS) $(NORMOBJS) $(COMLIBS)
 	rm cheops-ng cheops-agent -f
-	$(CC) -o cheops-ng $(COMOBJS) $(GUIOBJS) $(GTKOBJS) $(COMLIBS) $(GTKLIBS) $(CC_LIBS) ./adns-1.0/src/libadns.a $(STATIC_FLAGS) -static 
-	$(CC) -o cheops-agent $(COMOBJS) $(AGENTOBJS) $(COMLIBS) $(AGENTLIBS) $(NORMOBJS) $(CC_LIBS) $(AGENTLIBFLAGS) $(GLIB) $(STATIC_FLAGS) -static
+	$(CC) -o cheops-ng $(LDFLAGS) $(COMOBJS) $(GUIOBJS) $(GTKOBJS) $(COMLIBS) $(GTKLIBS) $(STATIC_FLAGS) -static 
+	$(CC) -o cheops-agent $(LDFLAGS) $(COMOBJS) $(AGENTOBJS) $(COMLIBS) $(AGENTLIBS) $(NORMOBJS) $(AGENTLIBFLAGS) $(GLIB) $(STATIC_FLAGS) -static
+ 
 
 strip: cheops-ng cheops-agent
 	strip cheops-ng
@@ -118,13 +122,13 @@ version.h: version
 	$(MAKE) -C ./adns-1.0/src/
 
 cheops-ng: version.h $(COMOBJS) $(GUIOBJS) $(GTKOBJS) $(COMLIBS)
-	$(CC) -o cheops-ng $(COMOBJS) $(GUIOBJS) $(GTKOBJS) $(COMLIBS) $(GTKLIBS) $(CC_LIBS) ./adns-1.0/src/libadns.a $(STATIC_FLAGS)
+	$(CC) -o cheops-ng $(LDFLAGS) $(COMOBJS) $(GUIOBJS) $(GTKOBJS) $(COMLIBS) $(GTKLIBS) $(STATIC_FLAGS)
 
 cheops-agent: version.h $(AGENTOBJS) $(AGENTLIBS) $(COMOBJS) $(NORMOBJS) $(COMLIBS)
-	$(CC) -o cheops-agent $(COMOBJS) $(AGENTOBJS) $(COMLIBS) $(AGENTLIBS) $(NORMOBJS) $(CC_LIBS) $(AGENTLIBFLAGS) $(GLIB) $(STATIC_FLAGS)
+	$(CC) -o cheops-agent $(LDFLAGS) $(COMOBJS) $(AGENTOBJS) $(COMLIBS) $(AGENTLIBS) $(NORMOBJS) $(AGENTLIBFLAGS) $(GLIB) $(STATIC_FLAGS)
 
 cheops-sh: $(COMOBJS) $(SHOBJS) $(NORMOBJS) $(COMLIBS)
-	$(CC) -o cheops-sh $(COMOBJS) $(SHOBJS) $(COMLIBS) $(SHLIBS) $(NORMOBJS) $(CC_LIBS) $(SHLIBFLAGS)
+	$(CC) -o cheops-sh $(LDFLAGS) $(COMOBJS) $(SHOBJS) $(COMLIBS) $(SHLIBS) $(NORMOBJS) $(SHLIBFLAGS)
 
 test-sched: $(TEST_OBJS) test-sched.o
 	$(CC) -o test-sched $(TEST_OBJS) $(COMLIBS) test-sched.o
@@ -145,13 +149,13 @@ gpl.c: COPYING
 	( echo "char *gpl_text = \"\\" ; cat COPYING | sed s/\\\"/\\\\\"/g | awk -v ORS="\\n" '{print $$0"\\" }'; echo "\";" ) >gpl.c
 
 agent-io.o: io.c
-	$(CC) $(CFLAGS) -c io.c -o agent-io.o $(CC_LIBS)
+	$(CC) $(CFLAGS) -c io.c -o agent-io.o $(LDFLAGS)
 
 agent-event.o: event.c
-	$(CC) $(CFLAGS) -c event.c -o agent-event.o $(CC_LIBS)
+	$(CC) $(CFLAGS) -c event.c -o agent-event.o $(LDFLAGS)
 
 agent-ip_utils.o: ip_utils.c
-	$(CC) $(CFLAGS) -c ip_utils.c -o agent-ip_utils.o $(CC_LIBS) $(GLIB)
+	$(CC) $(CFLAGS) -c ip_utils.c -o agent-ip_utils.o $(LDFLAGS) $(GLIB)
 
 dep:
 	makedepend *.c $(CFLAGS) $(GTKCFLAGS) -I./
@@ -169,18 +173,16 @@ rebuild: clean
 
 install: cheops-ng cheops-agent
 ifdef DEFAULT_PATH
-	mkdir -p $(DEFAULT_PATH)/pixmaps
-	$(INSTALL) -d $(DEFAULT_PATH)
-	$(INSTALL) -d $(bindir)
-	$(INSTALL) -d $(prefix)/share/pixmaps
-	$(INSTALL) -m 644 pixmaps/*.xpm $(DEFAULT_PATH)/pixmaps
-	$(INSTALL) -m 644 pixmaps/cheops-ng.xpm $(prefix)/share/pixmaps
-	$(INSTALL) -s -m 755 -o root -g root cheops-agent $(bindir)
-	$(INSTALL) -s -m 755 -o root -g root cheops-ng $(bindir)
-	$(INSTALL) -d $(prefix)/share/gnome/apps/Internet
-	$(INSTALL) -d $(prefix)/share/gnome/ximian/Programs/Internet
-	$(INSTALL) -m 644 cheops-ng.desktop $(prefix)/share/gnome/apps/Internet
-	$(INSTALL) -m 644 cheops-ng.desktop $(prefix)/share/gnome/ximian/Programs/Internet
+	$(INSTALL) -d $(DESTDIR)$(DEFAULT_PATH)/pixmaps
+	$(INSTALL) -d $(DESTDIR)$(bindir)
+	$(INSTALL) -d $(DESTDIR)$(sbindir)
+	$(INSTALL) -d $(DESTDIR)$(datadir)/pixmaps
+	$(INSTALL) -m 644 pixmaps/*.xpm $(DESTDIR)$(DEFAULT_PATH)/pixmaps
+	$(INSTALL) -m 644 pixmaps/cheops-ng.xpm $(DESTDIR)$(datadir)/pixmaps
+	$(INSTALL) -m 755 cheops-agent $(DESTDIR)$(sbindir)
+	$(INSTALL) -m 755 cheops-ng $(DESTDIR)$(bindir)
+	$(INSTALL) -d $(DESTDIR)$(datadir)/applications
+	$(INSTALL) -m 644 cheops-ng.desktop $(DESTDIR)$(datadir)/applications
 else
 	echo "No Default Path in Makefile"
 	if [ whoami = "root" ]; then echo "This program requires root privilege" ; fi

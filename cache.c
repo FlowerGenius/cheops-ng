@@ -46,7 +46,7 @@ void add_to_cache(void *data, cache_destructor_cb callback)
 		
 	if(count >= MAX_PING_CACHE_ENTRIES)
 	{
-		DEBUG( clog(LOG_NOTICE, "Cache is at MAX, removing an entry\n") );
+		DEBUG( c_log(LOG_NOTICE, "Cache is at MAX, removing an entry\n") );
 		for(p=Cache,old=Cache;p;p = p->next)
 		{
 			if((old->tv.tv_sec*1000 + old->tv.tv_usec/1000) < (p->tv.tv_sec*1000 + p->tv.tv_usec/1000))
@@ -60,7 +60,7 @@ void add_to_cache(void *data, cache_destructor_cb callback)
 	{
 		if((p = malloc(sizeof(struct cache)))==NULL)
 		{
-			DEBUG( clog(LOG_ERROR,"malloc returned NULL\n") );
+			DEBUG( c_log(LOG_ERROR,"malloc returned NULL\n") );
 			exit(1);
 		}
 		count++;

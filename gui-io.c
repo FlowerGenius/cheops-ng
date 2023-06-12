@@ -53,13 +53,13 @@ int *cheops_io_add(int fd, cheops_io_cb callback, short events, void *data)
 	
 	if(NULL == (l=malloc(sizeof(struct gtk_cheops_list))))
 	{
-		clog(LOG_ERROR,"NULL returned from a malloc");
+		c_log(LOG_ERROR,"NULL returned from a malloc");
 	}
 	l->fd = fd;
 	l->callback = callback;
 	l->events = events;
 	l->data = data;
-	l->id = (void *)gdk_input_add(fd,events,gtk_cheops_io_std_callback,l);
+	l->id = GINT_TO_POINTER(gdk_input_add(fd,events,gtk_cheops_io_std_callback,l));
 	l->next = list;
 	list = l;
 	
@@ -83,7 +83,7 @@ int cheops_io_remove(int *id)
 			{
 				prev->next = l->next;
 			}
-			gdk_input_remove((int)id);
+			gdk_input_remove((int)(unsigned long)id);
 			free(l);
 			ret=0;
 			break;

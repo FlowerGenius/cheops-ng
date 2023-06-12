@@ -98,7 +98,7 @@ void my_probe_callback(unsigned int ip, unsigned short port, char *version, void
 		DEBUG(printf("port %d again\n", ntohs(ee->probe_r.port)));
 		if(event_send(ud->a, eh) < 0)
 		{
-			DEBUG( clog(LOG_WARNING, "Unable to send discover reply\n") );
+			DEBUG( c_log(LOG_WARNING, "Unable to send discover reply\n") );
 		}
 	}
 	else

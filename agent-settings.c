@@ -31,7 +31,7 @@ int handle_set_settings(event_hdr *h, event *e, agent *a)
 	if(flags & SET_DISCOVER_RETRIES)
 	{
 		ping_retries = e->set_settings_e.discover_retries;
-//		clog(LOG_NOTICE, "I set the ping_retries to %d\n",ping_retries);
+//		c_log(LOG_NOTICE, "I set the ping_retries to %d\n",ping_retries);
 	}
 	return(0);
 }

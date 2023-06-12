@@ -451,7 +451,7 @@ static void do_network(GtkWidget *widget, gint data)
 					c2 = strdup(gtk_entry_get_text(GTK_ENTRY(gnome_entry_gtk_entry(GNOME_ENTRY(entry2)))) );
 					
 					DEBUG(
-						clog(LOG_DEBUG, "Discovering range %s to %s\n", c1, c2);
+						c_log(LOG_DEBUG, "Discovering range %s to %s\n", c1, c2);
 					);
 					
 					add_network_range(c1, c2); 
@@ -475,7 +475,7 @@ static void do_network(GtkWidget *widget, gint data)
 
 static void do_map(GtkWidget *w, gpointer data)
 {
-	switch((int)data)
+	switch(GPOINTER_TO_INT(data))
 	{
 		case 0:
 			net_page_map_all(get_current_net_page());
@@ -607,7 +607,7 @@ static void do_open(GtkWidget *widget, gpointer data)
 
 static void do_zoom(GtkWidget *w, gpointer data)
 {
-	switch((int)data)
+	switch(GPOINTER_TO_INT(data))
 	{
 		case 0:
 			net_page_zoom_normal(get_current_net_page());
@@ -747,7 +747,7 @@ static void do_export(GtkWidget *w, gpointer data)
 	char *name;
 	net_page *np = get_current_net_page();
 	
-	export_type = (int)data;
+	export_type = GPOINTER_TO_INT(data);
 	if(np->name && strlen(np->name) > 0)
 	{
 		name = malloc(strlen(np->name) + 1 + 4);

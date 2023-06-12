@@ -154,7 +154,7 @@ void dns_timeout(char *ip, char *hostname, void *data)
 
 static int handle_error(event_hdr *h, event *e, agent *a)
 {
-	clog(LOG_ERROR,"\nAgent reports: Error[%d] - %s", ntohs(e->error_r.error), ((char *)e) + sizeof(error_r));
+	c_log(LOG_ERROR,"\nAgent reports: Error[%d] - %s", ntohs(e->error_r.error), ((char *)e) + sizeof(error_r));
 	return(0);
 }
 
@@ -176,7 +176,7 @@ int send_discover_request(discover_dns *dd)
 		dd->cache = add_ip_cache(ntohl(dd->start_ip), dd->start);
 	
 	if (event_send(dd->a, eh) < 0) 
-		clog(LOG_WARNING, "Unable to send discover event\n");
+		c_log(LOG_WARNING, "Unable to send discover event\n");
 	else
 		done = 0;
 
@@ -522,7 +522,7 @@ int handle_discover_reply(event_hdr *h, event *e, agent *a)
 	}
 	else
 	{
-		DEBUG( clog(LOG_NOTICE, "the net page does not exist anymore\n") );
+		DEBUG( c_log(LOG_NOTICE, "the net page does not exist anymore\n") );
 	}
 	
 	if(name)
@@ -549,7 +549,7 @@ int do_os_scan(agent *a, int ip, void *np, int flags)
 	strcpy(END_OF_OPTION(&(ee->os_scan_e)), options_os_scan_ports);
 	
 	if (event_send(a, eh) < 0) 
-		clog(LOG_WARNING, "Unable to send OS-scan event\n");
+		c_log(LOG_WARNING, "Unable to send OS-scan event\n");
 	return(0);
 }
 
@@ -635,7 +635,7 @@ int handle_os_scan_reply(event_hdr *h, event *e, agent *a)
 					
 			default:
 				DEBUG( printf("unknown option\n") );
-				clog(LOG_ERROR,"\nWhat the h@#$ is this? handle_os_scan_reply\n");
+				c_log(LOG_ERROR,"\nWhat the h@#$ is this? handle_os_scan_reply\n");
 				break;
 		}
 		ptr += ntohl(opt->length);
@@ -663,7 +663,7 @@ int do_dns_request_scan(agent *a, char *host, int flags)
 	
 	DEBUG( printf("%s()\n", __FUNCTION__) );
 	if (event_send(a, eh) < 0) 
-		clog(LOG_WARNING, "Unable to send DNS Query event\n");
+		c_log(LOG_WARNING, "Unable to send DNS Query event\n");
 	return(0);
 }
 
@@ -671,7 +671,7 @@ int do_dns_request_scan(agent *a, char *host, int flags)
 int handle_dns_query_reply(event_hdr *h, event *e, agent *a)
 {
 
-	clog(LOG_NOTICE, "i got a dns reply");		
+	c_log(LOG_NOTICE, "i got a dns reply");		
 
 	return(0);
 }
@@ -691,7 +691,7 @@ int do_map_icmp(agent *a, u32 ip, void *np)
 	
 	DEBUG( printf("%s()\n", __FUNCTION__) );
 	if (event_send(a, eh) < 0) 
-		clog(LOG_WARNING, "Unable to send MAP ICMP event\n");
+		c_log(LOG_WARNING, "Unable to send MAP ICMP event\n");
 	return(0);
 }
 
@@ -705,10 +705,10 @@ int handle_map_icmp_reply(event_hdr *h, event *e, agent *a)
 	page_object *po2;
 	
 	DEBUG(
-		clog(LOG_NOTICE, "i got a map icmp reply for %s\n", inet_ntoa(*(struct in_addr *)&dest) );		
-		clog(LOG_NOTICE, "  %s\tto %s\n", inet_ntoa( *(struct in_addr *)&ip1)
+		c_log(LOG_NOTICE, "i got a map icmp reply for %s\n", inet_ntoa(*(struct in_addr *)&dest) );		
+		c_log(LOG_NOTICE, "  %s\tto %s\n", inet_ntoa( *(struct in_addr *)&ip1)
 	                                , inet_ntoa( *(struct in_addr *)&ip2) );
-		clog(LOG_NOTICE, "  np = %p\n", np);
+		c_log(LOG_NOTICE, "  np = %p\n", np);
 	)
 
 	if(ip1 != ip2)
@@ -732,13 +732,13 @@ int handle_map_icmp_reply(event_hdr *h, event *e, agent *a)
 			
 		if( !(po1 = page_object_get_by_ip(np, ip1)) )
 		{
-			clog(LOG_NOTICE, "oops why did the po1 not get added?\n");
+			c_log(LOG_NOTICE, "oops why did the po1 not get added?\n");
 		}
 		else
 		{
 			if( !(po2 = page_object_get_by_ip(np, ip2)) )
 			{
-				clog(LOG_NOTICE, "oops why did the po2 not get added?\n");
+				c_log(LOG_NOTICE, "oops why did the po2 not get added?\n");
 			}
 			else
 			{
@@ -768,7 +768,7 @@ int do_probe(agent *a, u32 ip, u16 port, u32 timeout_ms, void *np)
 	
 	DEBUG( printf("%s()\n", __FUNCTION__) );
 	if (event_send(a, eh) < 0) 
-		clog(LOG_WARNING, "Unable to send PROBE event\n");
+		c_log(LOG_WARNING, "Unable to send PROBE event\n");
 	return(0);
 }
 
@@ -784,10 +784,10 @@ int handle_probe_reply(event_hdr *h, event *e, agent *a)
 	struct servent *service;
 	
 	DEBUG(
-		clog(LOG_NOTICE, "i got a probe reply for %s\n", inet_ntoa(*(struct in_addr *)&ip) );		
-		clog(LOG_NOTICE, "port %d\n", port);
-		clog(LOG_NOTICE, "np = %p\n", np);
-		clog(LOG_NOTICE, "version = '%s'\n", version);
+		c_log(LOG_NOTICE, "i got a probe reply for %s\n", inet_ntoa(*(struct in_addr *)&ip) );		
+		c_log(LOG_NOTICE, "port %d\n", port);
+		c_log(LOG_NOTICE, "np = %p\n", np);
+		c_log(LOG_NOTICE, "version = '%s'\n", version);
 	)
 
 	po = page_object_get_by_ip(np, ip);
@@ -875,7 +875,7 @@ int send_auth_request(agent *a, char *username, char *password)
 	strcpy(ee->auth_request_e.password, password);
 	
 	if (event_send(a, eh) < 0) 
-		clog(LOG_WARNING, "Unable to send login event\n");
+		c_log(LOG_WARNING, "Unable to send login event\n");
 	
 	return(0);
 }
@@ -980,7 +980,7 @@ void register_gui_handlers()
 		/* Try to register each of our shell items, but don't replace an existing
 		   handler */
 		if (event_register_handler(h->id, h->cb, 0)) 
-			clog(LOG_WARNING, "Unable to register handler for '%s'\n", h->desc);
+			c_log(LOG_WARNING, "Unable to register handler for '%s'\n", h->desc);
 		h++;
 	}
 }

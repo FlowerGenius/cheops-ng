@@ -32,7 +32,7 @@ static char *levels[] = {
 	"ERROR"
 };
 
-extern void clog(int level, const char *file, int line, const char *function, const char *fmt, ...)
+extern void c_log(int level, const char *file, int line, const char *function, const char *fmt, ...)
 {
 	va_list ap;
 	va_start(ap, fmt);

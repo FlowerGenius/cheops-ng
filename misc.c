@@ -38,7 +38,7 @@ int make_home_dir()
 	c = getenv("HOME");
 	if (!c) {
 		/* This is extremely important to everything */
-		clog(LOG_ERROR, "No home directory!\n");
+		c_log(LOG_ERROR, "No home directory!\n");
 		exit(1);
 	}
 	snprintf(buf, sizeof(buf), "%s/.cheops", c);

@@ -164,7 +164,7 @@ static logline *readline(FILE *inf, adns_state adns, int opts) {
   return NULL;
 }
 	
-static void proclog(FILE *inf, FILE *outf, int maxpending, int opts) {
+static void proc_log(FILE *inf, FILE *outf, int maxpending, int opts) {
   int eof, err, len;
   adns_state adns;
   adns_answer *answer;
@@ -289,7 +289,7 @@ int main(int argc, char *argv[]) {
   if (!inf)
     aargh("couldn't open input");
 
-  proclog(inf, stdout, maxpending, opts);
+  proc_log(inf, stdout, maxpending, opts);
 
   if (fclose(inf))
     aargh("fclose input");

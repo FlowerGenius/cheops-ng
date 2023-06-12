@@ -76,7 +76,7 @@ service_list_t *service_list_add(char *name, int port, int protocol, char *strin
 	p = malloc(sizeof(service_list_t));
 	if(!p)
 	{
-		clog(LOG_ERROR," we ran out of memory?");
+		c_log(LOG_ERROR," we ran out of memory?");
 		exit(1);
 	}
 	p->name = makestring(name);
@@ -153,7 +153,7 @@ void service_list_default(void)
 	}
 	
 	for(c = &default_list[0]; c[0];c+=4)
-		service_list_add( *(c), (int)*(c+1), (int)*(c+2), *(c+3));
+		service_list_add( *(c), (int)(unsigned long)*(c+1), (int)(unsigned long)*(c+2), *(c+3));
 }	
 
 void service_list_remove(int port, int protocol)

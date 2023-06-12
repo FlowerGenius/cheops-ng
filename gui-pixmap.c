@@ -102,7 +102,7 @@ os_pixmap_list_t *os_pixmap_list_add(char *string, char *pixmap)
 	p = malloc(sizeof(os_pixmap_list_t));
 	if(!p)
 	{
-		clog(LOG_ERROR," we ran out of memory?");
+		c_log(LOG_ERROR," we ran out of memory?");
 		exit(1);
 	}
 	p->string = makestring(string);
@@ -260,9 +260,9 @@ char *get_my_image_path(char *filename)
 		}
 	}
 
-	clog(LOG_ERROR, "Uh where are my images. looking for '%s'\n",filename);
+	c_log(LOG_ERROR, "Uh where are my images. looking for '%s'\n",filename);
 	for(c = &paths[0]; *c[0]; c++)
-		clog(LOG_ERROR, "   looked in '%s'\n",*c);
+		c_log(LOG_ERROR, "   looked in '%s'\n",*c);
 	return("");
 }
 

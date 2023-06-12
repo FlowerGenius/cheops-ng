@@ -155,7 +155,7 @@ int start_ipv4_agent(net_page *np, char *hostname, int usessl)
 	} 
 	else 
 	{
-		clog(LOG_ERROR, "Unable to connect to local agent\n");
+		c_log(LOG_ERROR, "Unable to connect to local agent\n");
 		return(0);
 	}
 }

@@ -45,6 +45,7 @@
 #include <sys/sockio.h>
 #include <errno.h>
 #else 
+#include <time.h>
 #include <sys/time.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -104,7 +105,7 @@ int handle_map_icmp_request(event_hdr *h, event *e, agent *a)
 	u32	   ip = ntohl(e->map_icmp_e.ip);
 	void  *np = e->map_icmp_e.np;
 	
-	DEBUG( clog(LOG_NOTICE, "recieved map icmp request for %s\n", inet_ntoa(*(struct in_addr *)&ip)) );	
+	DEBUG( c_log(LOG_NOTICE, "recieved map icmp request for %s\n", inet_ntoa(*(struct in_addr *)&ip)) );	
 
 	start_mapping(ip, a, np);
 
@@ -125,7 +126,7 @@ void map_connect(agent *a, void *np, unsigned int dest, unsigned int addr1, unsi
 
 	if (event_send(a, eh) < 0)
 	{
-		DEBUG( clog(LOG_WARNING, "Unable to map icmp reply\n") );
+		DEBUG( c_log(LOG_WARNING, "Unable to map icmp reply\n") );
 	}
 }
 
@@ -135,7 +136,7 @@ void init_map_socket(void)
 	
 	if( (map_socket = socket(AF_INET, SOCK_RAW, IPPROTO_RAW)) < 0 )
 	{
-		clog(LOG_ERROR, "opening raw send socket");
+		c_log(LOG_ERROR, "opening raw send socket");
 		exit(1);
 	}
 	
@@ -143,7 +144,7 @@ void init_map_socket(void)
 	
 	if( setsockopt(map_socket, IPPROTO_IP, IP_HDRINCL, (char *)&on, sizeof(on)) < 0 )
 	{
-		clog(LOG_ERROR, "setting option IP_HDRINCL");
+		c_log(LOG_ERROR, "setting option IP_HDRINCL");
 		exit(1);
 	}
 }

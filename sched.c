@@ -123,7 +123,7 @@ int cheops_sched_wait()
 	 */
 	struct timeval tv;
 	int ms;
-	DEBUG(clog(LOG_DEBUG, "cheops_sched_wait()\n"));
+	DEBUG(c_log(LOG_DEBUG, "cheops_sched_wait()\n"));
 	if (!schedq)
 		return -1;
 	if (gettimeofday(&tv, NULL) < 0) {
@@ -170,7 +170,7 @@ static inline int sched_settime(struct timeval *tv, int when)
 {
 	if (gettimeofday(tv, NULL) < 0) {
 			/* This shouldn't ever happen, but let's be sure */
-			clog(LOG_NOTICE, "gettimeofday() failed!\n");
+			c_log(LOG_NOTICE, "gettimeofday() failed!\n");
 			return -1;
 	}
 	tv->tv_sec += when/1000;
@@ -188,9 +188,9 @@ int cheops_sched_add(int when, cheops_sched_cb callback, void *data)
 	 * Schedule callback(data) to happen when ms into the future
 	 */
 	struct sched *tmp;
-	DEBUG(clog(LOG_DEBUG, "cheops_sched_add()\n"));
+	DEBUG(c_log(LOG_DEBUG, "cheops_sched_add()\n"));
 	if (!when) {
-		clog(LOG_NOTICE, "Scheduled event in 0 ms?");
+		c_log(LOG_NOTICE, "Scheduled event in 0 ms?");
 		return -1;
 	}
 	if ((tmp = sched_alloc())) {
@@ -221,7 +221,7 @@ int cheops_sched_del(int id)
 	 * id.
 	 */
 	struct sched *last=NULL, *s;
-	DEBUG(clog(LOG_DEBUG, "cheops_sched_del()\n"));
+	DEBUG(c_log(LOG_DEBUG, "cheops_sched_del()\n"));
 USE_PTHREAD(pthread_mutex_lock(&sched_mutex));
 	s = schedq;
 	while(s) {
@@ -239,7 +239,7 @@ USE_PTHREAD(pthread_mutex_unlock(&sched_mutex));
 	}
 USE_PTHREAD(pthread_mutex_unlock(&sched_mutex));
 	
-	clog(LOG_NOTICE, "Attempted to delete non-existant schedule entry %d!\n", id);
+	c_log(LOG_NOTICE, "Attempted to delete non-existant schedule entry %d!\n", id);
 	return -1;
 }
 
@@ -253,11 +253,11 @@ void cheops_sched_dump()
 	struct timeval tv;
 	time_t s, ms;
 	gettimeofday(&tv, NULL);
-	clog(LOG_DEBUG, "Cheops Schedule Dump (%d in Q, %d Total, %d Cache)\n", 
+	c_log(LOG_DEBUG, "Cheops Schedule Dump (%d in Q, %d Total, %d Cache)\n", 
 							 schedcnt, eventcnt - 1, schedccnt);
-	clog(LOG_DEBUG, "=================================================\n");
-	clog(LOG_DEBUG, "|ID    Callback    Data        Time  (sec:ms)   |\n");
-	clog(LOG_DEBUG, "+-----+-----------+-----------+-----------------+\n");
+	c_log(LOG_DEBUG, "=================================================\n");
+	c_log(LOG_DEBUG, "|ID    Callback    Data        Time  (sec:ms)   |\n");
+	c_log(LOG_DEBUG, "+-----+-----------+-----------+-----------------+\n");
 USE_PTHREAD(pthread_mutex_lock(&sched_mutex));
 	q = schedq;
 	while(q) {
@@ -267,7 +267,7 @@ USE_PTHREAD(pthread_mutex_lock(&sched_mutex));
 			ms += 1000000;
 			s--;
 		}
-		clog(LOG_DEBUG, "|%.4d | %p | %p | %.6ld : %.6ld |\n", 
+		c_log(LOG_DEBUG, "|%.4d | %p | %p | %.6ld : %.6ld |\n", 
 				q->id,
 				q->callback,
 				q->data,
@@ -276,7 +276,7 @@ USE_PTHREAD(pthread_mutex_lock(&sched_mutex));
 		q=q->next;
 	}
 USE_PTHREAD(pthread_mutex_unlock(&sched_mutex));
-	clog(LOG_DEBUG, "=================================================\n");
+	c_log(LOG_DEBUG, "=================================================\n");
 	
 }
 
@@ -288,14 +288,14 @@ int cheops_sched_runq()
 	struct sched *current;
 	struct timeval tv;
 	int x=0;
-	DEBUG(clog(LOG_DEBUG, "cheops_sched_runq()\n"));
+	DEBUG(c_log(LOG_DEBUG, "cheops_sched_runq()\n"));
 		
 	for(;;) {
 		if (!schedq)
 			break;
 		if (gettimeofday(&tv, NULL)) {
 			/* This should never happen */
-			clog(LOG_NOTICE, "gettimeofday() failed!\n");
+			c_log(LOG_NOTICE, "gettimeofday() failed!\n");
 			return 0;
 		}
 		/* We only care about millisecond accuracy anyway, so this will

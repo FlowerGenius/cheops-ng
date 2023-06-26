@@ -20,6 +20,6 @@ fi
 echo "Generating configuration files for cheops-ng, please wait...."
 echo;
 
-aclocal --acdir=m4 || exit;
+aclocal -I./m4 || exit;
 autoconf || exit;
 

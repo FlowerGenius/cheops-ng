@@ -1,5 +1,5 @@
-%define name       cheops-ng
-%define version    0.2.2
+%define name       
+%define version    0.2.4
 %define release    1
 %define serial     1
 %define prefix     /usr

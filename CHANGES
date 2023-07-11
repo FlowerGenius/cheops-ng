@@ -1,0 +1,20 @@
+0.2.4:
+-	Changed Build System to CMAKE
+0.1.10 (what happened to .9)
+- added software to report the state of scanned ports (open,closed,filtered...)
+- added software to display the rpc version and info from nmap's scans
+- added software to take a screenshot
+- fixing xml parsing problems
+- fixed bugs in the io processing code
+- added option to truncate a FQDN down to the hostname
+- now creating rpms! yey
+
+0.1.9
+
+0.1.8
+- Fixed Merging buggs
+- Fixed a service bug that was introduced when going to enumerated protocols
+- Added the ablilty to change the Primary host in a list of merged hosts
+- Added the ability to rename the viewspace
+- Made text entries tab to other entries when the enter key is hit
+- added this file :)

@@ -1,4 +1,4 @@
 
 ./configure
-gmake
-gmake install
+cmake
+cmake install

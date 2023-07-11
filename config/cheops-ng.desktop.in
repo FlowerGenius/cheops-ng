@@ -1,0 +1,10 @@
+[Desktop Entry]
+Categories=Application;Network;System;Security;GTK;
+Name=@CHEOPS_PACKAGE@
+Version=@CHEOPS_VERSION@
+Comment=@CHEOPS_DESCRIPTION_SHORT@
+GenericName=Network mapper
+Exec=cheops-ng
+Icon=cheops-ng
+Terminal=false
+Type=Application

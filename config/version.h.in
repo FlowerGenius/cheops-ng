@@ -1,0 +1,4 @@
+#ifndef VERSION__H
+#define VERSION__H
+#define CHEOPS_VERSION "@CHEOPS_VERSION@"
+#endif

@@ -1,0 +1,10 @@
+/usr/bin/install -c -d /usr/local/share/cheops-ng/pixmaps
+/usr/bin/install -c -d /usr/local/bin
+/usr/bin/install -c -d /usr/local/sbin
+/usr/bin/install -c -d /usr/local/share/pixmaps
+/usr/bin/install -c -m 644 pixmaps/*.xpm /usr/local/share/cheops-ng/pixmaps
+/usr/bin/install -c -m 644 pixmaps/cheops-ng.xpm /usr/local/share/pixmaps
+/usr/bin/install -c -m 755 cheops-agent /usr/local/sbin
+/usr/bin/install -c -m 755 cheops-ng /usr/local/bin
+/usr/bin/install -c -d /usr/local/share/applications
+/usr/bin/install -c -m 644 cheops-ng.desktop /usr/local/share/applications

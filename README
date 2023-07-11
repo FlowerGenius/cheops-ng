@@ -52,6 +52,7 @@ locations are sited below
  esound-devel
  gnomecanvas-devel
  libxml-devel
+ cmake
 
 For FreeBSD only (in addition)
  linuxthreads

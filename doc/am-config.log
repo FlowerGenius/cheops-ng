@@ -1,0 +1,95 @@
+loading cache ./config.cache
+checking for gcc... (cached) gcc
+checking whether the C compiler (gcc  ) works... yes
+checking whether the C compiler (gcc  ) is a cross-compiler... no
+checking whether we are using GNU C... (cached) yes
+checking whether gcc accepts -g... (cached) yes
+checking for a BSD compatible install... (cached) /usr/bin/install -c
+checking for ranlib... (cached) ranlib
+checking host system type... 
+checking for flex... (cached) /usr/bin/flex
+checking for lex... (cached) /usr/bin/lex
+checking for bison... (cached) /usr/bin/bison
+checking for yacc... no
+checking for adns_processany in -ladns... (cached) yes
+checking for initscr in -lncurses... (cached) no
+checking for pthread_create in -lpthread... (cached) yes
+checking for inet_ntoa in -lnsl... (cached) yes
+checking for socket in -lsocket... (cached) no
+checking how to run the C preprocessor... (cached) gcc -E
+checking for ANSI C header files... (cached) yes
+checking for fcntl.h... (cached) yes
+checking for malloc.h... (cached) yes
+checking for strings.h... (cached) yes
+checking for sys/ioctl.h... (cached) yes
+checking for sys/time.h... (cached) yes
+checking for unistd.h... (cached) yes
+checking for adsf.h... (cached) no
+checking for working const... (cached) yes
+checking for inline... (cached) inline
+checking for pid_t... (cached) yes
+checking for size_t... (cached) yes
+checking whether time.h and sys/time.h may both be included... (cached) yes
+checking whether struct tm is in sys/time.h or time.h... (cached) time.h
+checking for the openssl library... no
+checking struct ip... yes
+checking ip_v in struct ip... yes
+checking if struct ip has member ip_csum... (cached) no
+checking if struct ip has member ip_sum... (cached) yes
+checking if sockaddr{} has sa_len member... (cached) no
+checking if struct in_addr is a wacky huge structure (some Sun boxes)... no
+checking if struct icmp exists... (cached) yes
+checking if struct ip exists... (cached) yes
+checking for bzero... (cached) yes
+checking for snprintf... (cached) yes
+checking for memcpy... (cached) yes
+checking for usleep... (cached) yes
+checking for nanosleep... (cached) yes
+checking for strerror... (cached) yes
+checking for snprintf... (cached) yes
+checking for inet_aton... (cached) yes
+checking whether gcc needs -traditional... (cached) no
+checking return type of signal handlers... (cached) void
+checking for vprintf... (cached) yes
+checking for getcwd... (cached) yes
+checking for gethostname... (cached) yes
+checking for gettimeofday... (cached) yes
+checking for mkdir... (cached) yes
+checking for select... (cached) yes
+checking for socket... (cached) yes
+checking for strdup... (cached) yes
+checking for strerror... (cached) yes
+checking for strstr... (cached) yes
+checking for strtol... (cached) yes
+checking for strtoul... (cached) yes
+checking for gnome-config... (cached) /usr/bin/gnome-config
+checking if /usr/bin/gnome-config works... yes
+checking for orbit-config... (cached) /usr/bin/orbit-config
+checking for orbit-idl... (cached) /usr/bin/orbit-idl
+checking for working ORBit environment... (cached) yes
+checking for gnorba libraries... (cached) yes
+checking extra library gnome... unknown library
+checking for pthread_create in -lpthread... (cached) yes
+checking for gtk-config... (cached) /usr/bin/gtk-config
+checking for GTK - version >= 1.2.0... yes
+checking for SmcSaveYourselfDone in -lSM... (cached) yes
+checking for X11/SM/SMlib.h... (cached) yes
+checking for XpmFreeXpmImage in -lXpm... (cached) no
+checking for gtk-config... (cached) /usr/bin/gtk-config
+checking for GTK - version >= 1.2.0... yes
+checking for glib-config... (cached) /usr/bin/glib-config
+checking for GLIB - version >= 1.2.0... yes
+checking for imlib-config... (cached) /usr/bin/imlib-config
+checking for IMLIB - version >= 1.9.0... yes
+checking for xml-config... (cached) /usr/bin/xml-config
+checking for nmap... (cached) /usr/bin/nmap
+creating ./config.status
+creating Makefile
+creating cheops-ng.spec
+creating cheops-ng-static.spec
+creating config.h
+config.h is unchanged
+#################################################
+configure done for cheops-ng 0.2.3
+now type 'make' and 'make install'
+#################################################

@@ -1,0 +1,39 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:533: checking whether you requested dynamic linking
+configure:561: checking for gcc
+configure:674: checking whether the C compiler (gcc  ) works
+configure:690: gcc -o conftest    conftest.c  1>&5
+configure:716: checking whether the C compiler (gcc  ) is a cross-compiler
+configure:721: checking whether we are using GNU C
+configure:730: gcc -E conftest.c
+configure:749: checking whether gcc accepts -g
+configure:781: checking how to run the C preprocessor
+configure:802: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:863: checking for ranlib
+configure:921: checking for a BSD compatible install
+configure:977: checking for poll
+configure:1005: gcc -o conftest -g   conftest.c  1>&5
+configure:1031: checking for socket
+configure:1059: gcc -o conftest -g   conftest.c  1>&5
+configure:1133: checking for inet_ntoa
+configure:1161: gcc -o conftest -g   conftest.c  1>&5
+configure:1237: checking for tsearch
+configure:1265: gcc -o conftest -g   conftest.c  1>&5
+configure:1292: checking for INADDR_LOOPBACK
+configure:1311: gcc -c -g  conftest.c 1>&5
+configure:1372: checking for inet_aton
+configure:1400: gcc -o conftest -g   conftest.c  1>&5
+configure:1471: checking inlines
+configure:1484: gcc -c -g  conftest.c 1>&5
+configure:1513: checking __attribute__((,,))
+configure:1526: gcc -c -g  conftest.c 1>&5
+configure:1548: checking __attribute__((noreturn))
+configure:1561: gcc -c -g  conftest.c 1>&5
+configure:1588: checking __attribute__((const))
+configure:1601: gcc -c -g  conftest.c 1>&5
+configure:1628: checking __attribute__((format...))
+configure:1641: gcc -c -g  conftest.c 1>&5
+configure:1676: checking for sys/select.h
+configure:1686: gcc -E  conftest.c >/dev/null 2>conftest.out

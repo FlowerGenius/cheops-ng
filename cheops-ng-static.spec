@@ -1,5 +1,5 @@
-%define name       cheops-ng
-%define version    0.2.2
+%define name       
+%define version    0.2.4
 %define release    1
 %define serial     1
 %define prefix     /usr
@@ -51,7 +51,8 @@ make DESTDIR=$RPM_BUILD_ROOT prefix=%{prefix} sysconfdir=%{sysconfdir} install
 %{prefix}/bin/cheops-agent
 %{prefix}/share/pixmaps/cheops-ng.xpm
 %{prefix}/share/cheops-ng/pixmaps/*
-%{prefix}/share/applications/cheops-ng.desktop
+%{prefix}/share/gnome/apps/Internet/cheops-ng.desktop
+%{prefix}/share/gnome/ximian/Programs/Internet/cheops-ng.desktop
 
 %clean
 rm -r $RPM_BUILD_ROOT

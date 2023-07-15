@@ -1,0 +1,2 @@
+/home/rpmbuild/Desktop/cheops-ng-0.2.4/cmake_build/src/CMakeFiles/cheops-agent.dir
+/home/rpmbuild/Desktop/cheops-ng-0.2.4/cmake_build/src/CMakeFiles/cheops-ng.dir

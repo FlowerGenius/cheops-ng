@@ -730,6 +730,16 @@ cheops__ng_EXTERNAL_OBJECTS =
 ../bin/x86_64-Linux/cheops-ng: src/CMakeFiles/cheops-ng.dir/sched.c.o
 ../bin/x86_64-Linux/cheops-ng: src/CMakeFiles/cheops-ng.dir/cheops-main.c.o
 ../bin/x86_64-Linux/cheops-ng: src/CMakeFiles/cheops-ng.dir/io-gk.c.o
+../bin/x86_64-Linux/cheops-ng: /usr/lib64/libglib.so
+../bin/x86_64-Linux/cheops-ng: /usr/lib64/libgtk.so
+../bin/x86_64-Linux/cheops-ng: /usr/lib64/libgdk.so
+../bin/x86_64-Linux/cheops-ng: /usr/lib64/libgmodule.so
+../bin/x86_64-Linux/cheops-ng: /usr/lib64/libgthread.so
+../bin/x86_64-Linux/cheops-ng: /usr/lib64/libglib.so
+../bin/x86_64-Linux/cheops-ng: /usr/lib64/libgtk.so
+../bin/x86_64-Linux/cheops-ng: /usr/lib64/libgdk.so
+../bin/x86_64-Linux/cheops-ng: /usr/lib64/libgmodule.so
+../bin/x86_64-Linux/cheops-ng: /usr/lib64/libgthread.so
 ../bin/x86_64-Linux/cheops-ng: src/CMakeFiles/cheops-ng.dir/build.make
 ../bin/x86_64-Linux/cheops-ng: src/CMakeFiles/cheops-ng.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking C executable ../../bin/x86_64-Linux/cheops-ng"

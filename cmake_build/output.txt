@@ -1,0 +1,134 @@
+cairo-ft																			cairo-ft	-	FreeType	font	backend	for	cairo	graphics	library
+resourceproto														ResourceProto	-	Resource	extension	headers
+xcb																								XCB	-	X-protocol	C	Binding
+xcb-xtest																		XCB	XTEST	-	XCB	XTEST	Extension
+gtk+-unix-print-2.0								GTK+	-	GTK+	Unix	print	support
+dmxproto																			DMXProto	-	DMX	extension	headers
+gnome-screensaver										gnome-screensaver	-	gnome	screensaver
+xrandr																					Xrandr	-	X	RandR	Library
+gnome-keybindings										gnome-keybindings	-	Keybindings	configuration	for	GNOME	applications
+gdk-2.0																				GDK	-	GTK+	Drawing	Kit	(x11	target)
+pangocairo																	Pango	Cairo	-	Cairo	rendering	support	for	Pango
+atk																								Atk	-	Accessibility	Toolkit
+pangoxft																			Pango	Xft	-	Xft	font	support	for	Pango
+pixman-1																			Pixman	-	The	pixman	library	(version	1)
+gtk+-x11-2.0															GTK+	-	GTK+	Graphical	UI	Library	(x11	target)
+xf86bigfontproto											XF86BigFontProto	-	XF86BigFont	extension	headers
+gdk																								GDK	-	GIMP	Drawing	Kit
+xextproto																		XExtProto	-	XExt	extension	headers
+gmodule-export-2.0									GModule	-	Dynamic	module	loader	for	GLib
+glib-2.0																			GLib	-	C	Utility	Library
+fontutil																			FontUtil	-	Font	utilities	dirs
+scrnsaverproto													ScrnSaverProto	-	ScrnSaver	extension	headers
+videoproto																	VideoProto	-	Video	extension	headers
+xcb-shape																		XCB	Shape	-	XCB	Shape	Extension
+esound																					esound	-	esound
+renderproto																RenderProto	-	Render	extension	headers
+pango																						Pango	-	Internationalized	text	handling
+fontconfig																	Fontconfig	-	Font	configuration	and	customization	library
+xi																									Xi	-	X	Input	Extension	Library
+python																					Python	-	Python	library
+xcursor																				Xcursor	-	X	Cursor	Library
+xf86driproto															XF86DRIProto	-	XF86DRI	extension	headers
+systemd																				systemd	-	systemd	System	and	Session	Manager
+cairo-ps																			cairo-ps	-	PostScript	surface	backend	for	cairo	graphics	library
+gnome-python-desktop-2.0			GNOME-python	-	Python	bindings	for	GNOME	libraries
+x11-xcb																				X11	XCB	-	X	Library	XCB	interface
+xcb-xselinux															XCB	SELinux	-	XCB	SELinux	Extension
+xt																									Xt	-	X	Toolkit	Library
+recordproto																RecordProto	-	Record	extension	headers
+gnome-default-applications	gnome-default-applications	-	Default	GNOME	applications	configuration
+xcb-render																	XCB	Render	-	XCB	Render	Extension
+gmodule-2.0																GModule	-	Dynamic	module	loader	for	GLib
+cairo-xlib-xrender									cairo-xlib-xrender	-	Xlib	Xrender	surface	backend	for	cairo	graphics	library
+xcb-record																	XCB	Record	-	XCB	Record	Extension
+cairo-svg																		cairo-svg	-	SVG	surface	backend	for	cairo	graphics	library
+xcb-composite														XCB	Composite	-	XCB	Composite	Extension
+gdk-pixbuf																	GdkPixbuf	-	Image	loading	and	scaling
+xcb-randr																		XCB	RandR	-	XCB	RandR	Extension
+glproto																				GLProto	-	GL	extension	headers
+inputproto																	InputProto	-	Input	extension	headers
+libIDL																					libIDL	-	IDL	parsing	library
+damageproto																DamageProto	-	Damage	extension	headers
+gdk-pixbuf-2.0													GdkPixbuf	-	Image	loading	and	scaling
+xrender																				Xrender	-	X	Render	Library
+xf86miscproto														XF86MiscProto	-	XF86Misc	extension	headers
+xinerama																			Xinerama	-	The	Xinerama	Library
+xcb-glx																				XCB	GLX	-	XCB	GLX	Extension
+udev																							udev	-	udev
+imlib																						Imlib	-	An	image	loading	and	rendering	library	for	X11R6
+xcb-xprint																	XCB	Xprint	-	XCB	Xprint	Extension
+python-2.7																	Python	-	Python	library
+xft																								Xft	-	X	FreeType	library
+gtk+																							GTK+	-	GIMP	Tool	Kit
+bigreqsproto															BigReqsProto	-	BigReqs	extension	headers
+pangox																					Pango	X	-	X	Window	System	font	support	for	Pango
+libxml																					libXML	-	libXML	library.
+gthread-2.0																GThread	-	Thread	support	for	GLib
+xcb-xevie																		XCB	Xevie	-	XCB	Xevie	Extension
+libpng12																			libpng	-	Loads	and	saves	PNG	files
+randrproto																	RandrProto	-	Randr	extension	headers
+fontsproto																	FontsProto	-	Fonts	extension	headers
+xcb-screensaver												XCB	Screensaver	-	XCB	Screensaver	Extension
+ORBit																						ORBit	-	High-performance	CORBA	Object	Request	Broker.
+cairo-xlib																	cairo-xlib	-	Xlib	surface	backend	for	cairo	graphics	library
+xml2po																					xml2po	-	Tool	for	translating	XML	documents
+cairo-pdf																		cairo-pdf	-	PDF	surface	backend	for	cairo	graphics	library
+gdict-1.0																		gdict-1.0	-	GNOME	Dictionary	Protocol	client	library
+xfixes																					Xfixes	-	X	Fixes		Library
+xcb-xvmc																			XCB	XvMC	-	XCB	XvMC	Extension
+compositeproto													CompositeExt	-	Composite	extension	headers
+sm																									SM	-	X	Session	Management	Library
+ice																								ICE	-	X	Inter	Client	Exchange	Library
+gmodule																				GModule	-	Dynamic	module	loader	for	GLib
+gthread																				GThread	-	Thread	support	for	GLib
+pthread-stubs														pthread	stubs	-	Stubs	missing	from	libc	for	standard	pthread	functions
+cairo																						cairo	-	Multi-platform	2D	graphics	library
+xcomposite																	Xcomposite	-	X	Composite		Library
+gdk-x11-2.0																GDK	-	GTK+	Drawing	Kit	(x11	target)
+x11																								X11	-	X	Library
+xext																							Xext	-	Misc	X	Extension	Library
+gtk+-2.0																			GTK+	-	GTK+	Graphical	UI	Library	(x11	target)
+gio-unix-2.0															GIO	unix	specific	APIs	-	unix	specific	headers	for	glib	I/O	library
+audiofile																		audiofile	-	audiofile
+kbproto																				KBProto	-	KB	extension	headers
+xf86dgaproto															XF86DGAProto	-	XF86DGA	extension	headers
+shared-mime-info											shared-mime-info	-	Freedesktop	common	MIME	database
+freetype2																		FreeType	2	-	A	free,	high-quality,	and	portable	font	engine.
+xcb-damage																	XCB	Damage	-	XCB	Damage	Extension
+pangoft2																			Pango	FT2	and	Pango	Fc	-	Freetype	2.0	and	fontconfig	font	support	for	Pango
+rpm																								RPM	-	RPM	Package	Manager
+xcb-res																				XCB	Res	-	XCB	X-Resource	Extension
+notify-python														notify-python	-	Python	bindings	for	libnotify
+gdk-pixbuf-xlib-2.0								GdkPixbuf	Xlib	-	GdkPixbuf	rendering	for	Xlib
+xcb-xf86dri																XCB	XFree86-DRI	-	XCB	XFree86-DRI	Extension
+gail																							Gail	-	GNOME	Accessibility	Implementation	Library
+gnome-python-extras-2.0				GNOME-python	-	Python	bindings	for	GNOME	libraries
+dri2proto																		DRI2Proto	-	DRI2	extension	headers
+gobject-2.0																GObject	-	GLib	Type,	Object,	Parameter	and	Signal	Library
+gmodule-no-export-2.0						GModule	-	Dynamic	module	loader	for	GLib
+xcb-sync																			XCB	Sync	-	XCB	Sync	Extension
+xf86vidmodeproto											XF86VidModeProto	-	XF86VidMode	extension	headers
+gnome-icon-theme											gnome-icon-theme	-	A	collection	of	icons	used	as	the	basis	for	GNOME	themes
+xproxymngproto												XProxyManagementProtocol	-	X	Proxy	Management	Protocol	headers
+xcb-shm																				XCB	Shm	-	XCB	Shm	Extension
+glib																							GLib	-	C	Utility	Library
+xcb-dri2																			XCB	DRI2	-	XCB	DRI2	Extension
+cairo-png																		cairo-png	-	PNG	functions	for	cairo	graphics	library
+evieproto																		EvIEExt	-	EvIE	extension	headers
+usbutils																			usbutils	-	USB	device	database
+xcmiscproto																XCMiscProto	-	XCMisc	extension	headers
+imlibgdk																			ImlibGdk	-	GDK	support	libraries	for	Imlib
+xau																								Xau	-	X	authorization	file	management	libary
+xineramaproto														XineramaProto	-	Xinerama	extension	headers
+xproto																					Xproto	-	Xproto	headers
+xcb-xinerama															XCB	Xinerama	-	XCB	Xinerama	Extension
+gio-2.0																				GIO	-	glib	I/O	library
+xcb-xv																					XCB	Xv	-	XCB	Xv	Extension
+xcb-xfixes																	XCB	XFixes	-	XCB	XFixes	Extension
+alsa																							alsa	-	Advanced	Linux	Sound	Architecture	(ALSA)	-	Library
+xcb-dpms																			XCB	DPMS	-	XCB	DPMS	Extension
+zlib																							zlib	-	zlib	compression	library
+cairo-fc																			cairo-fc	-	Fontconfig	font	backend	for	cairo	graphics	library
+fixesproto																	FixesProto	-	X	Fixes	extension	headers
+libpng																					libpng	-	Loads	and	saves	PNG	files

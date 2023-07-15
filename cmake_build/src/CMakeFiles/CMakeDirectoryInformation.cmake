@@ -12,6 +12,15 @@ SET(CMAKE_FORCE_UNIX_PATHS 1)
 SET(CMAKE_C_INCLUDE_PATH
   "../PUBLIC"
   "../include"
+  "/usr/include/glib-1.2"
+  "/usr/lib64/glib/include"
+  "/usr/include/gtk-1.2"
+  "/usr/lib64/gnome-libs/include"
+  "/usr/include/gnome-1.0"
+  "/usr/include/orbit-1.0"
+  "/usr/include/gnome-xml"
+  "../adns-1.0/src"
+  "../src"
   )
 SET(CMAKE_CXX_INCLUDE_PATH ${CMAKE_C_INCLUDE_PATH})
 SET(CMAKE_Fortran_INCLUDE_PATH ${CMAKE_C_INCLUDE_PATH})

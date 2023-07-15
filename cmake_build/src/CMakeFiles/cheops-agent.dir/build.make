@@ -530,6 +530,17 @@ cheops__agent_EXTERNAL_OBJECTS =
 ../bin/x86_64-Linux/cheops-agent: src/CMakeFiles/cheops-agent.dir/script.c.o
 ../bin/x86_64-Linux/cheops-agent: src/CMakeFiles/cheops-agent.dir/sched.c.o
 ../bin/x86_64-Linux/cheops-agent: src/CMakeFiles/cheops-agent.dir/cheops-main.c.o
+../bin/x86_64-Linux/cheops-agent: /usr/lib64/libglib.so
+../bin/x86_64-Linux/cheops-agent: /usr/lib64/libgtk.so
+../bin/x86_64-Linux/cheops-agent: /usr/lib64/libgdk.so
+../bin/x86_64-Linux/cheops-agent: /usr/lib64/libgmodule.so
+../bin/x86_64-Linux/cheops-agent: /usr/lib64/libgthread.so
+../bin/x86_64-Linux/cheops-agent: ../adns-1.0/src/libadns.a
+../bin/x86_64-Linux/cheops-agent: /usr/lib64/libglib.so
+../bin/x86_64-Linux/cheops-agent: /usr/lib64/libgtk.so
+../bin/x86_64-Linux/cheops-agent: /usr/lib64/libgdk.so
+../bin/x86_64-Linux/cheops-agent: /usr/lib64/libgmodule.so
+../bin/x86_64-Linux/cheops-agent: /usr/lib64/libgthread.so
 ../bin/x86_64-Linux/cheops-agent: ../adns-1.0/src/libadns.a
 ../bin/x86_64-Linux/cheops-agent: src/CMakeFiles/cheops-agent.dir/build.make
 ../bin/x86_64-Linux/cheops-agent: src/CMakeFiles/cheops-agent.dir/link.txt
